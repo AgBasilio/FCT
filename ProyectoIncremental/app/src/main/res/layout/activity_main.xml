@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateUserActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/nombreFormulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre" />
+
+        <EditText
+            android:id="@+id/apellido1Formulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apellido1" />
+        <EditText
+            android:id="@+id/apellido2Formulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Apellido2" />
+
+        <EditText
+            android:id="@+id/emailormulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email" />
+
+        <EditText
+            android:id="@+id/edadFormulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Edad"></EditText>
+
+        <EditText
+            android:id="@+id/contraseñaFormulario"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"></EditText>
+        <Button
+            android:hint="Crear Usuario"
+            android:id="@+id/btnCrearUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></Button>
+        <Button
+            android:hint="Iniciar Sesion"
+            android:id="@+id/btnGoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></Button>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
