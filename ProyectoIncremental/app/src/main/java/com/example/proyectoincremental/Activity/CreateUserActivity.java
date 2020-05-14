@@ -111,7 +111,7 @@ public class CreateUserActivity extends AppCompatActivity {
 
         //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
         if (mAuth.getCurrentUser() !=null){
-            startActivity(new Intent(CreateUserActivity.this, InicioActivity.class));
+            startActivity(new Intent(CreateUserActivity.this, Main2Activity.class));
             Toast.makeText(CreateUserActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
             finish();
         }

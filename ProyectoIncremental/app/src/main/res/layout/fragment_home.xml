@@ -16,21 +16,19 @@
             android:id="@+id/uno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monday" />
+            android:text="Uno" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/dos"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tuesday" />
+            android:text="Dos" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tres"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wednesday" />
+            android:text="tres" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager

@@ -31,8 +31,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.InicioActivity"
+        android:name=".Activity.InicioActivity"
+        android:label="dsfdsgsdgsd" />
+        <activity
+            android:name=".Activity.PerfilActivity"
             android:label="dsfdsgsdgsd" />
+
     </application>
 
 </manifest>

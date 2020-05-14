@@ -11,25 +11,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoincremental.R;
+import com.example.proyectoincremental.ui.home.HomeViewModel;
+import com.example.proyectoincremental.ui.home.PagerController;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
 public class GalleryFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
-
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabItem uno, dos, tres;
+    private PagerController pagerController;
+    private HomeViewModel homeViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
+
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+        viewPager = (ViewPager) view.findViewById(R.id.viewpage);
+        tabLayout = (TabLayout) view.findViewById(R.id.tab);
+        uno = (TabItem) view.findViewById(R.id.uno);
+        dos = (TabItem) view.findViewById(R.id.dos);
+        tres = (TabItem) view.findViewById(R.id.tres);
+
+        return view;
     }
 }

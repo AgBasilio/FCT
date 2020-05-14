@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-class PagerController extends FragmentPagerAdapter {
+public class PagerController extends FragmentPagerAdapter {
     int num;
 
     public PagerController(@NonNull FragmentManager fm, int behavior) {

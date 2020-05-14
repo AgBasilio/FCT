@@ -1,16 +1,13 @@
-package com.example.proyectoincremental.ui.slideshow;
+package com.example.proyectoincremental.ui.otro2;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoincremental.R;
@@ -19,17 +16,17 @@ import com.example.proyectoincremental.ui.home.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class SlideshowFragment extends Fragment {
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private TabItem uno, dos, tres;
-    private PagerController pagerController;
+public class otro2Fragment extends Fragment {
+
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    TabItem uno, dos, tres;
+    PagerController pagerController;
     private HomeViewModel homeViewModel;
-    private SlideshowViewModel slideshowViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_slideshow, container, false);
+        View view = inflater.inflate(R.layout.fragment_otro2, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpage);
         tabLayout = (TabLayout) view.findViewById(R.id.tab);
         uno = (TabItem) view.findViewById(R.id.uno);
