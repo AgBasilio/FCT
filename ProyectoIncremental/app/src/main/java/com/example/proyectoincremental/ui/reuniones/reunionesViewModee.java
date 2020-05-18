@@ -1,14 +1,13 @@
-package com.example.proyectoincremental.ui.home;
+package com.example.proyectoincremental.ui.reuniones;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
-
+public class reunionesViewModee extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public reunionesViewModee() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
@@ -33,7 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 
-public class Main2Activity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     ;
     private FirebaseAuth auth;
@@ -73,7 +74,7 @@ public class Main2Activity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Main2Activity.this, PerfilActivity.class));
+                startActivity(new Intent(MainActivity.this, PerfilActivity.class));
             }
         });
 
@@ -101,14 +102,19 @@ public class Main2Activity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String nombreUsuario = " ";
+                    String apellido1 = " ";
+                    String apellido2 = " ";
+
                     String imgPerfilBar = "";
                     nombreUsuarioMenu = (TextView) findViewById(R.id.NombreUsuario);
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
                     nombreUsuario = usuario.getNombre();
                     imgPerfilBar = usuario.getImagen();
-                    nombreUsuarioMenu.setText(nombreUsuario);
-                    //  Picasso.get().load(imgPerfilBar).into(imgPerfilMenuCircular);
+                    apellido1 = usuario.getApellido1();
+                    apellido2 = usuario.getApellido2();
 
+                    nombreUsuarioMenu.setText(nombreUsuario +" "+apellido1+" "+apellido2);
+                    Picasso.get().load(imgPerfilBar).into(imageView);
                 }
 
                 @Override

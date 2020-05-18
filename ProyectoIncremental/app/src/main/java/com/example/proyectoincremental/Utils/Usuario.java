@@ -5,12 +5,20 @@ public class Usuario {
     String email;
     String apellido1;
     String apellido2;
-    String edad;
+    int edad;
     String imagen;
     String contraseña;
 
     public Usuario() {
 
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 
     public String getContraseña() {
@@ -53,13 +61,7 @@ public class Usuario {
         this.apellido2 = apellido2;
     }
 
-    public String getEdad() {
-        return edad;
-    }
 
-    public void setEdad(String edad) {
-        this.edad = edad;
-    }
 
     public String getImagen() {
         return imagen;

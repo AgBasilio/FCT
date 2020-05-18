@@ -1,5 +1,6 @@
 package com.example.proyectoincremental.Activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,15 +34,18 @@ public class LoginActivity extends AppCompatActivity {
     private TextView btnOlvidar;
     Button resetPass;
     Button crear;
+    Switch aSwitch;
+    private FirebaseAuth mAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
-        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        aSwitch = (Switch) findViewById(R.id.switch1);
+        mAuth = FirebaseAuth.getInstance();
 
+        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         resetPass = (Button) findViewById(R.id.btnOlvidar);
         crear = (Button) findViewById(R.id.btnCrearUsuarioLogin);
         crear.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +54,23 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, CreateUserActivity.class));
             }
         });
+        //Impremetar sherfpreferences
+        /*
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked==true){
+                    //metodo para recordar usuario
+                        //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
+                        if (mAuth.getCurrentUser() != null) {
+                            startActivity(new Intent(LoginActivity.this, Main2Activity.class));
+                            Toast.makeText(LoginActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+
+                }
+        });*/
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(LoginActivity.this, Main2Activity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Los datos no pertenecen a ningun usuario", Toast.LENGTH_LONG).show();
@@ -114,6 +136,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //metodo para recordar usuario
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            Toast.makeText(LoginActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 }
 

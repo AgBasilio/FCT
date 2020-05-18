@@ -1,13 +1,13 @@
-package com.example.proyectoincremental.ui.otro1;
+package com.example.proyectoincremental.ui.cerrarSesion;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class otro1ViewModel extends ViewModel {
+public class cerrarSesionViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public otro1ViewModel() {
+    public cerrarSesionViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

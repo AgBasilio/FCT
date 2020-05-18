@@ -1,14 +1,14 @@
-package com.example.proyectoincremental.ui.gallery;
+package com.example.proyectoincremental.ui.usuarios;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class UsuariosViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public UsuariosViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is gallery fragment");
     }

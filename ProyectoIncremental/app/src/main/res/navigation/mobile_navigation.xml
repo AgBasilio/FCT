@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.proyectoincremental.ui.home.HomeFragment"
+        android:name="com.example.proyectoincremental.ui.grupos.gruposFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/actyvyty"
-        android:name="com.example.proyectoincremental.ui.otro1.otro1Fragment"
+        android:name="com.example.proyectoincremental.ui.cerrarSesion.cerrarSesionFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_otro1">
 
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/activyty"
-        android:name="com.example.proyectoincremental.ui.otro2.otro2Fragment"
+        android:name="com.example.proyectoincremental.ui.reuniones.reunionesFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_otro2">
 
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_home_second"
-        android:name="com.example.proyectoincremental.ui.home.HomeSecondFragment"
+        android:name="com.example.proyectoincremental.ui.grupos.HomeSecondFragment"
         android:label="@string/home_second"
         tools:layout="@layout/fragment_home_second">
         <action
@@ -52,13 +52,13 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.proyectoincremental.ui.gallery.GalleryFragment"
+        android:name="com.example.proyectoincremental.ui.usuarios.UsuariosFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.example.proyectoincremental.ui.slideshow.SlideshowFragment"
+        android:name="com.example.proyectoincremental.ui.asignaturas.asignaturasFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

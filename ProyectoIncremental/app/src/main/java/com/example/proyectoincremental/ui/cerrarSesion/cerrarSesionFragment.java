@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.otro1;
+package com.example.proyectoincremental.ui.cerrarSesion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,19 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.proyectoincremental.Activity.Main2Activity;
+import com.example.proyectoincremental.Activity.CreateUserActivity;
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.ui.home.HomeViewModel;
-import com.example.proyectoincremental.ui.home.PagerController;
+import com.example.proyectoincremental.ui.grupos.GruposViewModel;
+import com.example.proyectoincremental.ui.grupos.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class otro1Fragment extends Fragment {
+public class cerrarSesionFragment extends Fragment {
     private FirebaseAuth auth;
 
     Button button;
@@ -29,7 +28,7 @@ public class otro1Fragment extends Fragment {
     ViewPager viewPager;
     TabItem uno, dos, tres;
     PagerController pagerController;
-    private HomeViewModel homeViewModel;
+    private GruposViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class otro1Fragment extends Fragment {
 
     private void logOut() {
         auth.signOut();
-        Intent intent = new Intent(getContext(), Main2Activity.class);
+        Intent intent = new Intent(getContext(), CreateUserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

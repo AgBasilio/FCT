@@ -15,16 +15,17 @@ public class SplashActivity extends AppCompatActivity {
 
     private SharedPreferences prefs;
     FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
-        Intent intentLogin = new Intent(this, CreateUserActivity.class);
+        Intent intentLogin = new Intent(this, LoginActivity.class);
 
-            startActivity(intentLogin);
+        startActivity(intentLogin);
 
         finish();
     }

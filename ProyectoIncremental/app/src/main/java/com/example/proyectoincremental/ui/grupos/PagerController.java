@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.home;
+package com.example.proyectoincremental.ui.grupos;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

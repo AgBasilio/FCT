@@ -1,13 +1,14 @@
-package com.example.proyectoincremental.ui.otro2;
+package com.example.proyectoincremental.ui.grupos;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class otro2ViewModee extends ViewModel {
+public class GruposViewModel extends ViewModel {
+
     private MutableLiveData<String> mText;
 
-    public otro2ViewModee() {
+    public GruposViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

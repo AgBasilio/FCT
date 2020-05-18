@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.home;
+package com.example.proyectoincremental.ui.grupos;
 
 import android.os.Bundle;
 

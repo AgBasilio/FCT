@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.otro2;
+package com.example.proyectoincremental.ui.usuarios;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,27 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.ui.home.HomeViewModel;
-import com.example.proyectoincremental.ui.home.PagerController;
+import com.example.proyectoincremental.ui.grupos.GruposViewModel;
+import com.example.proyectoincremental.ui.grupos.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class otro2Fragment extends Fragment {
+public class UsuariosFragment extends Fragment {
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    TabItem uno, dos, tres;
-    PagerController pagerController;
-    private HomeViewModel homeViewModel;
-
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabItem uno, dos, tres;
+    private PagerController pagerController;
+    private GruposViewModel homeViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_otro2, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpage);
         tabLayout = (TabLayout) view.findViewById(R.id.tab);
         uno = (TabItem) view.findViewById(R.id.uno);

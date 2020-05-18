@@ -27,9 +27,10 @@ public class CreateUserActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference refBBD;
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "";
+    private int edadI;
     private Button btnCrearUsuario, btnGoLogin;
     private FirebaseAuth mAuth;
-    private SharedPreferences prefs,sfd;
+    private SharedPreferences prefs, sfd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +52,26 @@ public class CreateUserActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-
+        // btn para Creamos usuarios
         btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                //rellenamos el formulario , enlazmaos las variables con los datos introducidos  ,los datos son String
                 emailS = email.getText().toString();
                 contraseñaS = contraseña.getText().toString();
                 nombreS = nombre.getText().toString();
                 apellido1S = apellido1.getText().toString();
                 apellido2S = apellido2.getText().toString();
                 edadS = edad.getText().toString();
-                if (!emailS.isEmpty()&&!contraseñaS.isEmpty()&& !nombreS.isEmpty()&& !apellido1S.isEmpty()&&!apellido2S.isEmpty()&&!edadS.isEmpty()){
+
+                //validacione de control de campos vacios el unico campo que no es necesario sera el segundo apellido, hay usauios que no tendran 2 apellido;
+                if (!emailS.isEmpty() && !contraseñaS.isEmpty() && !nombreS.isEmpty() && !apellido1S.isEmpty() && !edadS.isEmpty()) {
                     mAuth.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
+                            edadI = Integer.parseInt(edadS);
 
                             //instancia de la bbd
                             FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -75,22 +81,20 @@ public class CreateUserActivity extends AppCompatActivity {
                             usuario.setNombre(nombreS);
                             usuario.setApellido1(apellido1S);
                             usuario.setApellido2(apellido2S);
+                            usuario.setEdad(edadI);
                             usuario.setContraseña(contraseñaS);
-                            usuario.setImagen("URL por defecto");
+                            usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                             refBBD.setValue(usuario);
                         }
                     });
-                }else
-                {                    Toast.makeText(CreateUserActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(CreateUserActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
                 }
-
-
-
-
 
 
             }
         });
+        //btn login // nos lleva al siguiente activity el Login
         btnGoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,17 +107,17 @@ public class CreateUserActivity extends AppCompatActivity {
         });
 
 
-
-    }
+    }/*
+//metodo para recordar usuario
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
 
         //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
-        if (mAuth.getCurrentUser() !=null){
+        if (mAuth.getCurrentUser() != null) {
             startActivity(new Intent(CreateUserActivity.this, Main2Activity.class));
             Toast.makeText(CreateUserActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
             finish();
         }
-    }
+    }*/
 }

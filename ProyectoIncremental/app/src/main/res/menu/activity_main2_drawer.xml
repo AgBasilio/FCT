@@ -9,7 +9,7 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Alumnos" />
+            android:title="Usuarios" />
 
     </group>
     <group android:checkableBehavior="single">
@@ -28,12 +28,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/activyty"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/abc_vector_test"
+            android:title="Reuniones" />
         <item
             android:id="@+id/actyvyty"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="Cerrar sesion " />
 
     </group>
 </menu>
