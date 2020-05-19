@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.grupos;
+package com.example.proyectoincremental.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,8 +18,13 @@ public class PagerController extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
+                return new asignaturasListaFragment();
             case 1:
+                return new gruposListaFragment();
+
             case 2:
+                return new asignaturasListaFragment();
+
             default:
 
                 return null;

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
     <Button
         android:id="@+id/btncerarcesion"
-        android:hint="cerrar cesion"
+        android:hint="cerrar "
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

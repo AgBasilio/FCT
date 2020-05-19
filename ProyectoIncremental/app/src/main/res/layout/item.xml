@@ -11,7 +11,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="15dp">
+    card_view:cardCornerRadius="10dp">
 
     <LinearLayout
         android:id="@+id/todo"

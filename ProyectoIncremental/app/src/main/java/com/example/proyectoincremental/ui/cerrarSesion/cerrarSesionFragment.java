@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.proyectoincremental.Activity.CreateUserActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.grupos.GruposViewModel;
-import com.example.proyectoincremental.ui.grupos.PagerController;
+import com.example.proyectoincremental.Activity.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
