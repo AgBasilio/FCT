@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/editarnombre"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="nombre"
+        tools:ignore="MissingConstraints"></EditText>
+    <EditText
+        android:id="@+id/editarapellido1"
+
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="apellido 1"
+        tools:ignore="MissingConstraints"></EditText>
+    <EditText
+        android:id="@+id/editarapellido2"
+
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="appelido 2"
+        tools:ignore="MissingConstraints"></EditText>
+    <EditText
+        android:id="@+id/editarEdad"
+
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="edad"
+        tools:ignore="MissingConstraints"></EditText>
+    <Button
+        android:layout_margin="5dp"
+
+        android:id="@+id/btnCambiarFoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"></Button>
+    <Button
+        android:layout_margin="5dp"
+
+        android:id="@+id/btnEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"></Button>
+</LinearLayout>

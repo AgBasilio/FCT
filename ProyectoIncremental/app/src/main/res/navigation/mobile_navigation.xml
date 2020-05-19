@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.proyectoincremental.ui.grupos.gruposFragment"
+        android:name="com.example.proyectoincremental.ui.gestionar.gestionarFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home">
 
@@ -28,9 +28,9 @@
 
     <fragment
         android:id="@+id/activyty"
-        android:name="com.example.proyectoincremental.ui.reuniones.reunionesFragment"
+        android:name="com.example.proyectoincremental.ui.editarUsuario.editarUsuarioFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_otro2">
+        tools:layout="@layout/fragment_editar_usuario">
 
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_home_second"
-        android:name="com.example.proyectoincremental.ui.grupos.HomeSecondFragment"
+        android:name="com.example.proyectoincremental.ui.gestionar.HomeSecondFragment"
         android:label="@string/home_second"
         tools:layout="@layout/fragment_home_second">
         <action
@@ -52,9 +52,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.proyectoincremental.ui.usuarios.UsuariosFragment"
+        android:name="com.example.proyectoincremental.ui.reuniones.ReunionesFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_reuniones" />
 
     <fragment
         android:id="@+id/nav_slideshow"

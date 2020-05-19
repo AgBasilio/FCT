@@ -63,7 +63,6 @@ public class CreateUserActivity extends AppCompatActivity {
                 nombreS = nombre.getText().toString();
                 apellido1S = apellido1.getText().toString();
                 apellido2S = apellido2.getText().toString();
-
                 edadS = edad.getText().toString();
 
                 //validacione de control de campos vacios el unico campo que no es necesario sera el segundo apellido, hay usauios que no tendran 2 apellido;

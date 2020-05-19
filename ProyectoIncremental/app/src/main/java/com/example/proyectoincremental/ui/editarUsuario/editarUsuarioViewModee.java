@@ -1,14 +1,13 @@
-package com.example.proyectoincremental.ui.grupos;
+package com.example.proyectoincremental.ui.editarUsuario;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GruposViewModel extends ViewModel {
-
+public class editarUsuarioViewModee extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public GruposViewModel() {
+    public editarUsuarioViewModee() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

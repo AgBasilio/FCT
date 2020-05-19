@@ -7,9 +7,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:icon="@drawable/ic_menu_gallery"
+
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Usuarios" />
+            android:title="Gestionar" />
 
     </group>
     <group android:checkableBehavior="single">
@@ -17,11 +18,8 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Grupos" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Asignaturas" />
+            android:title="Reuniones" />
+
     </group>
 
 
@@ -29,11 +27,16 @@
         <item
             android:id="@+id/activyty"
             android:icon="@drawable/abc_vector_test"
-            android:title="Reuniones" />
-        <item
-            android:id="@+id/actyvyty"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Cerrar sesion " />
+            android:title="EditarUsuario" />
+
 
     </group>
+    <group android:checkableBehavior="single">
+
+    <item
+        android:id="@+id/actyvyty"
+        android:icon="@drawable/ic_menu_gallery"
+        android:title="Cerrar sesion " />
+    </group>
+
 </menu>

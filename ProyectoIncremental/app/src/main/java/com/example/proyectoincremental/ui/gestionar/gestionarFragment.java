@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.grupos;
+package com.example.proyectoincremental.ui.gestionar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.example.proyectoincremental.R;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class gruposFragment extends Fragment {
+public class gestionarFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
     TabItem uno, dos, tres;
