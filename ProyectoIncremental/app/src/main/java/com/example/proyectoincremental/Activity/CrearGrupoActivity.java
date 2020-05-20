@@ -49,7 +49,10 @@ public class CrearGrupoActivity extends AppCompatActivity {
                 grupo.setNumeroGrupo(crusoS);
                 refBBD = database.getReference("Grupos");
                 DatabaseReference rf =refBBD.push();
+
                 rf.setValue(grupo);
+
+                //grupo.setId(rf.getKey());
 
             }
         });

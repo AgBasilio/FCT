@@ -122,25 +122,26 @@ public class AdaptadorGrupos extends RecyclerView.Adapter<AdaptadorGrupos.ViewHo
 
                 switch (item.getItemId()) {
                     case 1:
-                        final DatabaseReference refBBD0 = database.getReference("Grupos");
-                        refBBD0.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    id = dataSnapshot1.getKey();
-                                    refBBD = database.getReference("Grupos").child(id);
-                                    refBBD.removeValue();
-                                    break;
-                                }
-
-
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        //final DatabaseReference refBBD0 = database.getReference("Grupos");
+                        database.getReference("Grupos").child(grupos.get(getAdapterPosition()).getId()).removeValue();
+//                        refBBD0.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+//                                    id = dataSnapshot1.getKey();
+//                                    refBBD = database.getReference("Grupos").child(id);
+//                                    refBBD.removeValue();
+//                                    break;
+//                                }
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                            }
+//                        });
 
 
                         break;

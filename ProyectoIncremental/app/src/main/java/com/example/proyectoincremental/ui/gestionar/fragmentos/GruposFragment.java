@@ -80,6 +80,7 @@ public class GruposFragment extends Fragment {
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Grupos p = dataSnapshot1.getValue(Grupos.class);
+                    p.setId(dataSnapshot1.getKey());
                     listaEventos.add(p);
                 }
                 adaptadorGrupos = new AdaptadorGrupos(listaEventos, getContext(), R.layout.item_grupo, new AdaptadorGrupos.OnItemClickListener() {
