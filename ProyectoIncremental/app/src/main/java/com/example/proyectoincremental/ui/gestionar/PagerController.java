@@ -1,9 +1,13 @@
-package com.example.proyectoincremental.Activity;
+package com.example.proyectoincremental.ui.gestionar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.proyectoincremental.ui.gestionar.fragmentos.AsignaturasFagment;
+import com.example.proyectoincremental.ui.gestionar.fragmentos.GruposFragment;
+import com.example.proyectoincremental.ui.gestionar.fragmentos.UsuariosFragment;
 
 public class PagerController extends FragmentPagerAdapter {
     int num;
@@ -18,12 +22,12 @@ public class PagerController extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new asignaturasListaFragment();
+                return new AsignaturasFagment();
             case 1:
-                return new gruposListaFragment();
+                return new GruposFragment();
 
             case 2:
-                return new asignaturasListaFragment();
+                return new UsuariosFragment();
 
             default:
 
@@ -36,4 +40,11 @@ public class PagerController extends FragmentPagerAdapter {
     public int getCount() {
         return num;
     }
+
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
 }
+

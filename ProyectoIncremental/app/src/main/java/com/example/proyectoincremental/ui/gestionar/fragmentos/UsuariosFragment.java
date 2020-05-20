@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.Activity;
+package com.example.proyectoincremental.ui.gestionar.fragmentos;
 
 import android.os.Bundle;
 
@@ -13,9 +13,9 @@ import com.example.proyectoincremental.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class asignaturasListaFragment extends Fragment {
+public class UsuariosFragment extends Fragment {
 
-    public asignaturasListaFragment() {
+    public UsuariosFragment() {
         // Required empty public constructor
     }
 
@@ -24,6 +24,6 @@ public class asignaturasListaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_asignaturas_lista, container, false);
+        return inflater.inflate(R.layout.fragment_usuarios, container, false);
     }
 }

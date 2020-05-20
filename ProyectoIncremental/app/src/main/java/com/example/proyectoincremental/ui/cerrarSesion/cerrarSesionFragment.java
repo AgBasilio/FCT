@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.proyectoincremental.Activity.CreateUserActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
-import com.example.proyectoincremental.Activity.PagerController;
+import com.example.proyectoincremental.ui.gestionar.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +32,7 @@ public class cerrarSesionFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_otro1, container, false);
+        View view = inflater.inflate(R.layout.fragment_cerrar_sesion, container, false);
         auth = FirebaseAuth.getInstance();
 
 

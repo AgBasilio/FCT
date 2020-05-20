@@ -35,7 +35,7 @@ public class CreateUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_crear_usuario);
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
         email = findViewById(R.id.emailormulario);

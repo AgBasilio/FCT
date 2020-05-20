@@ -19,7 +19,7 @@
         android:id="@+id/actyvyty"
         android:name="com.example.proyectoincremental.ui.cerrarSesion.cerrarSesionFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_otro1">
+        tools:layout="@layout/fragment_cerrar_sesion">
 
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"

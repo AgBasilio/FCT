@@ -8,24 +8,24 @@
     android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab"
+        android:id="@+id/tabg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/asignaturas"
+            android:id="@+id/asignaturasg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Asignaturas" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/grupos"
+            android:id="@+id/gruposg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Grupos" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/usuarios"
+            android:id="@+id/usuariosg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Usuarios" />

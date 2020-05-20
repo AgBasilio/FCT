@@ -12,19 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.proyectoincremental.Activity.CreateUserActivity;
-import com.example.proyectoincremental.Activity.LoginActivity;
-import com.example.proyectoincremental.Activity.PerfilActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
-import com.example.proyectoincremental.Activity.PagerController;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +28,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import static android.app.Activity.RESULT_OK;
 
