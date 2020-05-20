@@ -100,13 +100,17 @@ public class MainActivity extends AppCompatActivity {
                     String imgPerfilBar = "";
                     nombreUsuarioMenu = (TextView) findViewById(R.id.NombreUsuario);
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                    nombreUsuario = usuario.getNombre();
-                    imgPerfilBar = usuario.getImagen();
-                    apellido1 = usuario.getApellido1();
-                    apellido2 = usuario.getApellido2();
+                    if(usuario != null) {
+                        nombreUsuario = usuario != null ? usuario.getNombre() : "";
+                        imgPerfilBar = usuario != null ? usuario.getImagen() : "";
+                        apellido1 = usuario != null ? usuario.getApellido1() : "";
+                        apellido2 = usuario != null ? usuario.getApellido2() : "";
 
-                    nombreUsuarioMenu.setText(nombreUsuario +" "+apellido1+" "+apellido2);
-                    Picasso.get().load(imgPerfilBar).into(imageView);
+                        nombreUsuarioMenu.setText(nombreUsuario + " " + apellido1 + " " + apellido2);
+                        if (!imgPerfilBar.isEmpty()) {
+                            Picasso.get().load(imgPerfilBar).into(imageView);
+                        }
+                    }
                 }
 
                 @Override
