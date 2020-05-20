@@ -3,7 +3,7 @@ package com.example.proyectoincremental.Utils;
 public class Grupos {
 
     String nombreGrupo;
-    int numeroGrupo;
+    String numeroGrupo;
 
     public String getNombreGrupo() {
         return nombreGrupo;
@@ -13,11 +13,11 @@ public class Grupos {
         this.nombreGrupo = nombreGrupo;
     }
 
-    public int getNumeroGrupo() {
+    public String getNumeroGrupo() {
         return numeroGrupo;
     }
 
-    public void setNumeroGrupo(int numeroGrupo) {
+    public void setNumeroGrupo(String numeroGrupo) {
         this.numeroGrupo = numeroGrupo;
     }
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/nombreAsignatura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="nombre"
+            tools:ignore="MissingConstraints"></EditText>
+
+        <EditText
+            android:id="@+id/cursoAsignatura"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="curso"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/descripcionAsignatura"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:hint="descripcion"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/imagenAsignatura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="enlace"
+            tools:ignore="MissingConstraints">
+
+        </EditText>
+
+        <Button
+            android:id="@+id/btnCrearAsignatura"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"></Button>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

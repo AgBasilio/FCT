@@ -33,14 +33,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity.InicioActivity"
-            android:label="dsfdsgsdgsd" />
+
         <activity
             android:name=".Activity.PerfilActivity"
             android:label="dsfdsgsdgsd" />
         <activity
-            android:name=".Activity.EditarUsuario"
+            android:name=".Activity.CrearAsignaturaActivity"
+            android:label="dsfdsgsdgsd" />
+        <activity
+            android:name=".Activity.CrearGrupoActivity"
+            android:label="dsfdsgsdgsd" />
+        <activity
+            android:name=".Activity.EditarAsignaturasActivity"
             android:label="dsfdsgsdgsd" />
     </application>
 
