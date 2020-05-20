@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.proyectoincremental.Activity.CreateUserActivity;
+import com.example.proyectoincremental.Activity.LoginActivity;
 import com.example.proyectoincremental.Activity.PerfilActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
@@ -54,6 +56,8 @@ public class editarUsuarioFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editar_usuario, container, false);
+
+
         mAuth = FirebaseAuth.getInstance();
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -150,7 +154,7 @@ public class editarUsuarioFragment extends Fragment {
                         Uri downloadUri = task.getResult();
                         String downloadURL = downloadUri.toString();
                         //REFERENCIAMOS AL STRING FOTO Y LE PASAMOS LA URL CONSEGUIDA
-                        DatabaseReference ref = dataBase.getReference("Users/" + currentUser.getUid()).child("imagen");
+                        DatabaseReference ref = dataBase.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
                         ref.setValue(downloadURL);
 
 
@@ -161,21 +165,6 @@ public class editarUsuarioFragment extends Fragment {
 
 
 
-       /*     vc.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-
-                    Toast.makeText(PerfilActivity.this, "Error"+e, Toast.LENGTH_SHORT).show();
-
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    Toast.makeText(PerfilActivity.this, "Exito", Toast.LENGTH_SHORT).show();
-
-                }
-            });*/
 
         }
 

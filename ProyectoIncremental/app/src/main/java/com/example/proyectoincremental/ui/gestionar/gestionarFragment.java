@@ -23,7 +23,7 @@ public class gestionarFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_geestionar, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.viewpage);
         tabLayout = (TabLayout) view.findViewById(R.id.tab);
         uno = (TabItem) view.findViewById(R.id.uno);

@@ -28,14 +28,6 @@ public class PerfilActivity extends AppCompatActivity {
         editex = (EditText) findViewById(R.id.editex);
         String f =editex.toString();
 
-        FirebaseUser firebaseUser = auth.getCurrentUser();
-        String userid = firebaseUser.getUid();
-        reference2 = FirebaseDatabase.getInstance().getReference("usuarios").child(userid).child("nombre");
-        reference2.setValue(f);
-
-
-
-
     }
 
 }

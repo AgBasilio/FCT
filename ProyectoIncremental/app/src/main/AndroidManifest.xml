@@ -39,7 +39,9 @@
         <activity
             android:name=".Activity.PerfilActivity"
             android:label="dsfdsgsdgsd" />
-
+        <activity
+            android:name=".Activity.EditarUsuario"
+            android:label="dsfdsgsdgsd" />
     </application>
 
 </manifest>
