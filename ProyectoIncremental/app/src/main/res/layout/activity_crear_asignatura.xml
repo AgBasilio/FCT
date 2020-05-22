@@ -8,7 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_marginBottom="100dp"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/nombreAsignatura"
             android:layout_width="match_parent"
@@ -44,10 +49,11 @@
             tools:ignore="MissingConstraints">
 
         </EditText>
-
+        </LinearLayout>
         <Button
+            android:text="Crear Asignatura"
             android:id="@+id/btnCrearAsignatura"
             android:layout_width="match_parent"
-            android:layout_height="100dp"></Button>
+            android:layout_height="80dp"></Button>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,50 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".Activity.LoginActivity">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_margin="5dp"
+        android:background="#9F9F9F"
+        app:cardCornerRadius="20dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
+            android:textAlignment="center"
+            android:textSize="50dp"
             ></TextView>
 
-        <EditText
-            android:id="@+id/emailLogin"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="email" />
-
-        <EditText
-            android:id="@+id/contraseñaLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="140dp"
+            android:orientation="vertical">
 
 
-        <Button
-            android:hint="Crear Usuario"
-            android:id="@+id/btnCrearUsuarioLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></Button>
-        <Button
-            android:hint="Iniciar Sesion"
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></Button>
-        <Button
-            android:hint="OLvidar cONTRASEA Sesion"
-            android:id="@+id/btnOlvidar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></Button>
+            <EditText
+                android:id="@+id/emailLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="email" />
 
-        <Switch
-            android:id="@+id/switch1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Switch" />
+            <EditText
+                android:id="@+id/contraseñaLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contraseña" />
 
-    </LinearLayout>
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recordar inicio de sision" />
+
+            <Button
+                android:id="@+id/btnOlvidar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="No recuerdas tu contraseña?"></Button>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <Button
+                    android:id="@+id/btnCrearUsuarioLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Crear Usuario"></Button>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="O">
+
+                </TextView>
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Iniciar Sesion"></Button>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
-import com.example.proyectoincremental.ui.gestionar.PagerController;
+import com.example.proyectoincremental.Adaptadores.PagerController;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 

@@ -6,61 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".Activity.CreateUserActivity">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
-        <EditText
-            android:id="@+id/nombreFormulario"
-
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre" />
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:background="#B8B8B8"
+            app:cardCornerRadius="20dp"
+            >
 
-        <EditText
-            android:id="@+id/apellido1Formulario"
+            <LinearLayout
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Apellido1" />
-        <EditText
-            android:id="@+id/apellido2Formulario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="25dp"
+                android:orientation="vertical">
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Apellido2" />
+                <EditText
+                    android:id="@+id/nombreFormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre" />
 
-        <EditText
-            android:id="@+id/emailormulario"
+                <EditText
+                    android:id="@+id/apellido1Formulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellido1" />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email" />
+                <EditText
+                    android:id="@+id/apellido2Formulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellido2" />
 
-        <EditText
-            android:id="@+id/edadFormulario"
+                <EditText
+                    android:id="@+id/emailormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email" />
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Edad"></EditText>
+                <EditText
+                    android:id="@+id/edadFormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Edad"></EditText>
 
-        <EditText
-            android:id="@+id/contraseñaFormulario"
+                <EditText
+                    android:id="@+id/contraseñaFormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"></EditText>
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginTop="110dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"></EditText>
-        <Button
-            android:hint="Crear Usuario"
-            android:id="@+id/btnCrearUsuario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></Button>
-        <Button
-            android:hint="Iniciar Sesion"
-            android:id="@+id/btnGoLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></Button>
+                    <Button
+                        android:id="@+id/btnCrearUsuario"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Crear Usuario"></Button>
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="O">
+
+                    </TextView>
+
+                    <Button
+                        android:id="@+id/btnGoLogin"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Iniciar Sesion"></Button>
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
 
 
     </LinearLayout>

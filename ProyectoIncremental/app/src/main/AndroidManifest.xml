@@ -44,7 +44,10 @@
             android:name=".Activity.CrearGrupoActivity"
             android:label="dsfdsgsdgsd" />
         <activity
-            android:name=".Activity.EditarAsignaturasActivity"
+            android:name=".Activity.EditarGrupoActivity"
+            android:label="dsfdsgsdgsd" />
+        <activity
+            android:name=".Activity.EditarAsignaturaActivity"
             android:label="dsfdsgsdgsd" />
     </application>
 

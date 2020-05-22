@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,20 +30,24 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import static android.app.Activity.RESULT_OK;
 
 public class editarUsuarioFragment extends Fragment {
     private static final int GALLERY_INTENT = 1;
 
-    private EditText ediNombre, ediApellido1, ediApellido2, foto;
-    private Button btneditar,btnfoto;
+    private EditText ediNombre, ediApellido1, ediApellido2, ediEdad;
+    private TextView edifoto;
+    private Button btneditar, btnfoto;
+    private ImageView img;
     private GruposViewModel homeViewModel;
-    private DatabaseReference refBBD,refBBD2,refBBD3,refBBD4,refBBD5;
-    private  String sNombre="",sApellido1="",sApellido2,sfoto,sEdad;
+    private DatabaseReference refBBD, refBBD2, refBBD3, refBBD4, refBBD5;
+    private String sNombre = "", sApellido1 = "", sApellido2, sfoto, sEdad;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
     private FirebaseDatabase dataBase;
+    String downloadURL;
     private StorageReference storageReference, storageReference2;
 
 
@@ -54,13 +60,16 @@ public class editarUsuarioFragment extends Fragment {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         currentUser = mAuth.getCurrentUser();
-        ediApellido1=view.findViewById(R.id.editarnombre);
-        ediApellido2=view.findViewById(R.id.editarnombre);
-        ediNombre=view.findViewById(R.id.editarnombre);
+        ediApellido1 = view.findViewById(R.id.editarapellido1);
+        ediApellido2 = view.findViewById(R.id.editarapellido2);
+        ediNombre = view.findViewById(R.id.editarnombre);
+        ediEdad = view.findViewById(R.id.editarEdad);
+        img = view.findViewById(R.id.foto);
+
         dataBase = FirebaseDatabase.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        btnfoto=view.findViewById(R.id.btnCambiarFoto);
+        btnfoto = view.findViewById(R.id.btnCambiarFoto);
         btnfoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,50 +80,45 @@ public class editarUsuarioFragment extends Fragment {
             }
         });
 
-        btneditar=view.findViewById(R.id.btnEditar);
+        btneditar = view.findViewById(R.id.btnEditar);
         btneditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sApellido1=ediApellido1.getText().toString();
-                sApellido2=ediApellido1.getText().toString();
-                sNombre=ediApellido1.getText().toString();
-                sfoto=ediApellido1.getText().toString();
-                sEdad=ediApellido1.getText().toString();
+                sApellido1 = ediApellido1.getText().toString();
+                sApellido2 = ediApellido2.getText().toString();
+                sNombre = ediNombre.getText().toString();
+                sEdad = ediEdad.getText().toString();
+                sfoto = downloadURL;
 
-                int edad=Integer.parseInt(sEdad);
+                if (isNumeric(sEdad) == true) {
+                    int edad = Integer.parseInt(sEdad);
+                    refBBD = database.getReference("Usuarios/" + currentUser.getUid()).child("apellido1");
+                    refBBD2 = database.getReference("Usuarios/" + currentUser.getUid()).child("apellido2");
+                    refBBD3 = database.getReference("Usuarios/" + currentUser.getUid()).child("edad");
+                    refBBD4 = database.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
+                    refBBD5 = database.getReference("Usuarios/" + currentUser.getUid()).child("nombre");
 
-                refBBD = database.getReference("Usuarios/" + currentUser.getUid()).child("apellido1");
-                refBBD2 = database.getReference("Usuarios/" + currentUser.getUid()).child("apellido2");
-                refBBD3 = database.getReference("Usuarios/" + currentUser.getUid()).child("edad");
-                refBBD4 = database.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
-                refBBD5  = database.getReference("Usuarios/" + currentUser.getUid()).child("nombre");
+                    refBBD.setValue(sApellido1);
+                    refBBD2.setValue(sApellido2);
+                    refBBD3.setValue(edad);
+                    if (sfoto==null) {
+                        refBBD4.setValue("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
 
-                refBBD.setValue(sApellido1);
-                refBBD2.setValue(sApellido2);
-                refBBD3.setValue(edad);
-                refBBD5.setValue(sNombre);
+                    } else {
+                        refBBD4.setValue(sfoto);
 
-
-
-
-            }
-        });
-
-
-        refBBD = database.getReference("Usuarios/" + currentUser.getUid());
-        refBBD.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    }
+                    refBBD5.setValue(sNombre);
 
 
+                } else {
+                    Toast toast1 =
+                            Toast.makeText(getContext(),
+                                    "Introducir un numero en edad, no letras", Toast.LENGTH_SHORT);
 
+                    toast1.show();
+                }
 
-                Toast toast1 = Toast.makeText(getContext(), "Tost por defecto"+dataSnapshot, Toast.LENGTH_SHORT);
-                toast1.show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -122,6 +126,7 @@ public class editarUsuarioFragment extends Fragment {
 
         return view;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -144,10 +149,14 @@ public class editarUsuarioFragment extends Fragment {
                     if (task.isSuccessful()) {
                         currentUser = mAuth.getCurrentUser();
                         Uri downloadUri = task.getResult();
-                        String downloadURL = downloadUri.toString();
+                        downloadURL = downloadUri.toString();
+                        //    edifoto.setText(downloadURL);
+                        Picasso.get().load(downloadURL).into(img);
+
+
                         //REFERENCIAMOS AL STRING FOTO Y LE PASAMOS LA URL CONSEGUIDA
-                        DatabaseReference ref = dataBase.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
-                        ref.setValue(downloadURL);
+                        //   DatabaseReference ref = dataBase.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
+                        // ref.setValue(downloadURL);
 
 
                     } else {
@@ -156,10 +165,23 @@ public class editarUsuarioFragment extends Fragment {
             });
 
 
-
-
         }
 
     }
 
+    public static boolean isNumeric(final String str) {
+
+        // null or empty
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+
+        for (char c : str.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

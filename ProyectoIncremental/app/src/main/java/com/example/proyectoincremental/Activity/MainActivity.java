@@ -1,6 +1,8 @@
 package com.example.proyectoincremental.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAtrasMenu;
     private SearchView searchView;
     private FirebaseDatabase dataBase;
+    private SharedPreferences prefs;
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dataBase = FirebaseDatabase.getInstance();
+        prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -105,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                         imgPerfilBar = usuario != null ? usuario.getImagen() : "";
                         apellido1 = usuario != null ? usuario.getApellido1() : "";
                         apellido2 = usuario != null ? usuario.getApellido2() : "";
-
                         nombreUsuarioMenu.setText(nombreUsuario + " " + apellido1 + " " + apellido2);
                         if (!imgPerfilBar.isEmpty()) {
                             Picasso.get().load(imgPerfilBar).into(imageView);
@@ -121,12 +124,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -4,24 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.proyectoincremental.Activity.CrearAsignaturaActivity;
 import com.example.proyectoincremental.Activity.CrearGrupoActivity;
+import com.example.proyectoincremental.Adaptadores.AdaptadorGrupos;
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.Utils.Asignatura;
 import com.example.proyectoincremental.Utils.Grupos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,11 +50,35 @@ public class GruposFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu2, menu);
+        MenuItem searItem = menu.findItem(R.id.search2);
+        SearchView searchView = (SearchView) searItem.getActionView();
+        searchView.onActionViewExpanded();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adaptadorGrupos.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lista_grupos, container, false);
+        setHasOptionsMenu(true);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabGrupos);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,12 +96,17 @@ public class GruposFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         listaEventos = new ArrayList<Grupos>();
         auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+
+        String userid = firebaseUser.getUid();
 
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-        referenceEventos = database.getInstance().getReference().child("Grupos");
+        referenceEventos = database.getInstance().getReference().child("Grupos").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                listaEventos.clear();
+
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Grupos p = dataSnapshot1.getValue(Grupos.class);
                     p.setId(dataSnapshot1.getKey());

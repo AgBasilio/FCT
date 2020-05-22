@@ -1,4 +1,4 @@
-package com.example.proyectoincremental.ui.gestionar;
+package com.example.proyectoincremental.Adaptadores;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

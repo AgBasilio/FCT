@@ -11,14 +11,14 @@
 
         <EditText
             android:layout_marginTop="100dp"
-            android:id="@+id/editnombreAsignatura"
+            android:id="@+id/editnombreGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="nombre"
             tools:ignore="MissingConstraints"></EditText>
 
         <EditText
-            android:id="@+id/editcursoAsignatura"
+            android:id="@+id/editnumerogrupo"
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
@@ -27,30 +27,9 @@
 
         </EditText>
 
-        <EditText
-            android:id="@+id/editdescripcionAsignatura"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Descripcion"
-            tools:ignore="MissingConstraints">
-
-        </EditText>
-        <EditText
-            android:id="@+id/editfotoAsignatura"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Imagen"
-            tools:ignore="MissingConstraints">
-
-        </EditText>
-
-
         <Button
             android:layout_marginTop="60dp"
-            android:text="Editar Asignatura"
-            android:id="@+id/btneditar"
+            android:id="@+id/btneditarGrupo"
             android:layout_width="match_parent"
             android:layout_height="100dp"></Button>
     </LinearLayout>

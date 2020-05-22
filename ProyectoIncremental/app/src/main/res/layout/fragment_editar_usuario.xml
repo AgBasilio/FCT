@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <EditText
         android:id="@+id/editarnombre"
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
         android:hint="nombre"
         tools:ignore="MissingConstraints"></EditText>
+
     <EditText
         android:id="@+id/editarapellido1"
 
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="apellido 1"
         tools:ignore="MissingConstraints"></EditText>
+
     <EditText
         android:id="@+id/editarapellido2"
 
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="appelido 2"
         tools:ignore="MissingConstraints"></EditText>
+
     <EditText
         android:id="@+id/editarEdad"
 
-        android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="edad"
         tools:ignore="MissingConstraints"></EditText>
-    <Button
-        android:layout_margin="5dp"
 
+    <ImageView
+        android:id="@+id/foto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"></ImageView>
+
+    <Button
         android:id="@+id/btnCambiarFoto"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Cambiar foto de perfil"
         tools:ignore="MissingConstraints"></Button>
-    <Button
-        android:layout_margin="5dp"
 
+    <Button
         android:id="@+id/btnEditar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="Editar usuario"
         tools:ignore="MissingConstraints"></Button>
 </LinearLayout>

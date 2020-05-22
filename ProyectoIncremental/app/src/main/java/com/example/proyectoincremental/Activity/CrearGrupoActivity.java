@@ -43,13 +43,16 @@ public class CrearGrupoActivity extends AppCompatActivity {
                 nombreS = nombre.getText().toString();
                 crusoS = curso.getText().toString();
 
-                FirebaseUser currentUser = mAuth.getCurrentUser();
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+                String userid = firebaseUser.getUid();
+
                 Grupos grupo = new Grupos();
                 grupo.setNombreGrupo(nombreS);
                 grupo.setNumeroGrupo(crusoS);
-                refBBD = database.getReference("Grupos");
-                DatabaseReference rf =refBBD.push();
 
+                refBBD = database.getReference("Grupos").child(userid);
+                DatabaseReference rf =refBBD.push();
                 rf.setValue(grupo);
 
                 //grupo.setId(rf.getKey());

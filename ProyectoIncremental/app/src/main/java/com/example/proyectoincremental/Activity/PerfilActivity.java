@@ -25,8 +25,6 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
         auth = FirebaseAuth.getInstance();
-        editex = (EditText) findViewById(R.id.editex);
-        String f =editex.toString();
 
     }
 

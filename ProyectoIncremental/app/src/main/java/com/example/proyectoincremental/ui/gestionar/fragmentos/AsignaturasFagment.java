@@ -1,25 +1,28 @@
 package com.example.proyectoincremental.ui.gestionar.fragmentos;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.proyectoincremental.Activity.CrearAsignaturaActivity;
-import com.example.proyectoincremental.Activity.CreateUserActivity;
-import com.example.proyectoincremental.Activity.LoginActivity;
+import com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,23 +39,49 @@ import java.util.List;
  */
 public class AsignaturasFagment extends Fragment {
     private AdaptadorAsignaturas adaptadorEventos;
-    private List<Asignatura> listaEventos;
+    public List<Asignatura> listaEventos;
     private FirebaseDatabase database;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private DatabaseReference referenceEventos;
+    private AlertDialog.Builder builder;
 
     public AsignaturasFagment() {
         // Required empty public constructor
     }
 
 
+
+    @Override
+    public void onCreateOptionsMenu( Menu menu,  MenuInflater inflater) {
+        inflater.inflate(R.menu.main2,menu);
+        MenuItem searItem = menu.findItem(R.id.search);
+        SearchView searchView=(SearchView)searItem.getActionView();
+        searchView.onActionViewExpanded();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adaptadorEventos.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lista_asignaturas, container, false);
+        setHasOptionsMenu(true);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabAsignaturas);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +92,6 @@ public class AsignaturasFagment extends Fragment {
             }
         });
 
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         recyclerView = (RecyclerView) v.findViewById(R.id.listaAsignaturas);
         recyclerView.setHasFixedSize(true);
@@ -71,41 +99,48 @@ public class AsignaturasFagment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         listaEventos = new ArrayList<Asignatura>();
+        listaEventos.clear();
+
         auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+
+        String userid = firebaseUser.getUid();
 
         FirebaseDatabase database1 = FirebaseDatabase.getInstance();
-        referenceEventos = database.getInstance().getReference().child("Asignaturas");
+        referenceEventos = database.getInstance().getReference().child("Asignaturas").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                listaEventos.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Asignatura p = dataSnapshot1.getValue(Asignatura.class);
+                    p.setId(dataSnapshot1.getKey());
                     listaEventos.add(p);
                 }
+
                 adaptadorEventos = new AdaptadorAsignaturas(listaEventos, getContext(), R.layout.item_asignatura, new AdaptadorAsignaturas.OnItemClickListener() {
+
                     @Override
                     public void onItemClick(Asignatura city, int position) {
-                   /*     Intent intent = new Intent(getContext(), InfoEventosActivit.class);
-                        intent.putExtra("NombreLocal", city.getNombre());
-                        intent.putExtra("Contenido", city.getFecha());
-                        intent.putExtra("Id", city.getId());
-                        intent.putExtra("Fecha", city.getFecha());
-                        intent.putExtra("PlazasDisponibles", city.getPlazasDisponibles());
 
-                        startActivity(intent);
-*/
+
                     }
                 });
                 recyclerView.setAdapter(adaptadorEventos);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 
+
         return v;
+
     }
+
 }

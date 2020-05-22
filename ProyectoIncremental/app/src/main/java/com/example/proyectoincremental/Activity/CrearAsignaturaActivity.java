@@ -48,16 +48,20 @@ public class CrearAsignaturaActivity extends AppCompatActivity {
                 crusoS = curso.getText().toString();
                 descripcionS = descipcion.getText().toString();
                 imagenS = imagen.getText().toString();
-
-                FirebaseUser currentUser = mAuth.getCurrentUser();
-
+                FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                String userid = firebaseUser.getUid();
                 Asignatura asignatura = new Asignatura();
                 asignatura.setNombre(nombreS);
                 asignatura.setCurso(crusoS);
                 asignatura.setDescricion(descripcionS);
-                asignatura.setImgAsignatura("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
+                if (!imagenS.isEmpty()){
+                    asignatura.setImgAsignatura(imagenS);
+                }else{
+                    asignatura.setImgAsignatura("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
 
-                refBBD = database.getReference("Asignaturas");
+                }
+
+                refBBD = database.getReference("Asignaturas").child(userid);
                 DatabaseReference rf =refBBD.push();
                 rf.setValue(asignatura);
 

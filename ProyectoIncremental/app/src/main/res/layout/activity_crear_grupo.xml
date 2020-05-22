@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:layout_marginTop="100dp"
             android:id="@+id/nombreGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,8 +30,10 @@
 
 
         <Button
+            android:layout_marginTop="60dp"
+            android:text="Crear Grupo"
             android:id="@+id/btn"
             android:layout_width="match_parent"
-            android:layout_height="100dp"></Button>
+            android:layout_height="60dp"></Button>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

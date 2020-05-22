@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectoincremental.R;
+import com.example.proyectoincremental.Utils.Util;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView btnOlvidar;
     Button resetPass;
     Button crear;
-    Switch aSwitch;
+    private Switch switchRemember;
     private FirebaseAuth mAuth;
 
 
@@ -42,10 +44,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        aSwitch = (Switch) findViewById(R.id.switch1);
+        switchRemember = (Switch) findViewById(R.id.switch1);
         mAuth = FirebaseAuth.getInstance();
 
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        setCredentialsIfExist();
+
+
         resetPass = (Button) findViewById(R.id.btnOlvidar);
         crear = (Button) findViewById(R.id.btnCrearUsuarioLogin);
         crear.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         editTextEmail = (EditText) findViewById(R.id.emailLogin);
         editTextPassword = (EditText) findViewById(R.id.contraseñaLogin);
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -96,9 +102,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 email = editTextEmail.getText().toString();
-                password = editTextPassword.getText().toString();
+                 password = editTextPassword.getText().toString();
                 if (!email.isEmpty() && !password.isEmpty()) {
                     login();
+                    saveOnPreferences(email, password);
+
                 } else {
                     Toast.makeText(LoginActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
                 }
@@ -114,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
                     finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Los datos no pertenecen a ningun usuario", Toast.LENGTH_LONG).show();
@@ -139,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //metodo para recordar usuario
-    @Override
+  /*  @Override
     protected void onStart() {
         super.onStart();
 
@@ -148,6 +157,25 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             Toast.makeText(LoginActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
             finish();
+        }
+    }*/
+    private void setCredentialsIfExist() {
+        editTextEmail = (EditText) findViewById(R.id.emailLogin);
+        editTextPassword = (EditText) findViewById(R.id.contraseñaLogin);
+         email = Util.getUserMailPrefs(prefs);
+         password = Util.getUserPassPrefs(prefs);
+        if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
+            editTextEmail.setText(email);
+            editTextPassword.setText(password);
+            switchRemember.setChecked(true);
+        }
+    }
+    private void saveOnPreferences(String email, String password) {
+        if (switchRemember.isChecked()) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("email", email);
+            editor.putString("pass", password);
+            editor.apply();
         }
     }
 }
