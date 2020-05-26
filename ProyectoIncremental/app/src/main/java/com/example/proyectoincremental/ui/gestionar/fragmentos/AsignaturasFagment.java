@@ -81,6 +81,7 @@ public class AsignaturasFagment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lista_asignaturas, container, false);
+
         setHasOptionsMenu(true);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.fabAsignaturas);
