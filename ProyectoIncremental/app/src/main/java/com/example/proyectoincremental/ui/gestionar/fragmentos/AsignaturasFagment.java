@@ -102,6 +102,9 @@ public class AsignaturasFagment extends Fragment {
         listaEventos = new ArrayList<Asignatura>();
         listaEventos.clear();
 
+
+
+
         auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
 
