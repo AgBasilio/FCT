@@ -5,8 +5,8 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="5dp"
+    android:layout_margin="10dp"
+
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/texviewNombregrupo"
-            android:layout_width="200dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Titulo"

@@ -9,14 +9,14 @@
         <item
             android:icon="@drawable/ic_menu_gallery"
 
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_gestionar"
             android:title="Gestionar" />
 
     </group>
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_reuniones"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Reuniones" />
 
@@ -25,7 +25,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/activyty"
+            android:id="@+id/nav_editar_usuario"
             android:icon="@drawable/abc_vector_test"
             android:title="EditarUsuario" />
 
@@ -34,7 +34,7 @@
     <group android:checkableBehavior="single">
 
     <item
-        android:id="@+id/actyvyty"
+        android:id="@+id/nav_cerrar_sesion"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Cerrar sesion " />
     </group>

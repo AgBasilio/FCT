@@ -87,6 +87,9 @@ public class CreateUserActivity extends AppCompatActivity {
                                 usuario.setContraseña(contraseñaS);
                                 usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                 refBBD.setValue(usuario);
+                                Intent intent = new Intent(CreateUserActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
 
 
@@ -96,7 +99,7 @@ public class CreateUserActivity extends AppCompatActivity {
                     }
 
 
-                }else {
+                } else {
                     Toast.makeText(CreateUserActivity.this, "la edad debeser un numero", Toast.LENGTH_LONG).show();
 
                 }
@@ -108,7 +111,6 @@ public class CreateUserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(CreateUserActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();
 
 
             }

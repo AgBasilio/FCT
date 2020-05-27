@@ -3,62 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_gestionar">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_gestionar"
         android:name="com.example.proyectoincremental.ui.gestionar.gestionarFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_gestionar"
         tools:layout="@layout/fragment_geestionar">
 
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
+    />
     </fragment>
     <fragment
-        android:id="@+id/actyvyty"
+        android:id="@+id/nav_cerrar_sesion"
         android:name="com.example.proyectoincremental.ui.cerrarSesion.cerrarSesionFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_cerrar_sesion"
         tools:layout="@layout/fragment_cerrar_sesion">
 
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
+           />
     </fragment>
 
     <fragment
-        android:id="@+id/activyty"
+        android:id="@+id/nav_editar_usuario"
         android:name="com.example.proyectoincremental.ui.editarUsuario.editarUsuarioFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_editar_usuario"
         tools:layout="@layout/fragment_editar_usuario">
 
         <action
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_home_second"
-        android:name="com.example.proyectoincremental.ui.gestionar.HomeSecondFragment"
-        android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
-        <action
-            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
-            app:destination="@id/nav_home" />
-
-        <argument
-            android:name="myArg"
-            app:argType="string" />
+     />
     </fragment>
 
+
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_reuniones"
         android:name="com.example.proyectoincremental.ui.reuniones.ReunionesFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_resuniones"
         tools:layout="@layout/fragment_reuniones" />
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.proyectoincremental.ui.asignaturas.asignaturasFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+
 </navigation>

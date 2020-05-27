@@ -15,8 +15,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.proyectoincremental.Activity.EditarAsignaturaActivity;
+import com.example.proyectoincremental.Activity.MainActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
+import com.example.proyectoincremental.ui.gestionar.fragmentos.AsignaturasFagment;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -101,7 +104,7 @@ public class editarUsuarioFragment extends Fragment {
                     refBBD.setValue(sApellido1);
                     refBBD2.setValue(sApellido2);
                     refBBD3.setValue(edad);
-                    if (sfoto==null) {
+                    if (sfoto == null) {
                         refBBD4.setValue("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
 
                     } else {
@@ -109,7 +112,8 @@ public class editarUsuarioFragment extends Fragment {
 
                     }
                     refBBD5.setValue(sNombre);
-
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
 
                 } else {
                     Toast toast1 =
