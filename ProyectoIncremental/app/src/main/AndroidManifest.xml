@@ -49,6 +49,9 @@
         <activity
             android:name=".Activity.EditarAsignaturaActivity"
             android:label="dsfdsgsdgsd" />
+        <activity
+            android:name=".Activity.CrearUsuarioActivity"
+            android:label="dsfdsgsdgsd" />
     </application>
 
 </manifest>

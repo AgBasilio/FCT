@@ -57,6 +57,7 @@ public class CrearGrupoActivity extends AppCompatActivity {
 
                 //grupo.setId(rf.getKey());
 
+
             }
         });
 

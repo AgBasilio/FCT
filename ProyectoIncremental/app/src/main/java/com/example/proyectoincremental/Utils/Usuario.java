@@ -8,9 +8,36 @@ public class Usuario {
     int edad;
     String imagen;
     String contraseña;
+    String tipo;
+    String grupo;
+    String asignaturas;
 
     public Usuario() {
 
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getAsignaturas() {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(String asignaturas) {
+        this.asignaturas = asignaturas;
     }
 
     public int getEdad() {
@@ -60,7 +87,6 @@ public class Usuario {
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
-
 
 
     public String getImagen() {

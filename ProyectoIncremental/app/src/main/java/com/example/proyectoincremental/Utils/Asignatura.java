@@ -1,5 +1,7 @@
 package com.example.proyectoincremental.Utils;
 
+import androidx.annotation.NonNull;
+
 public class Asignatura {
     String nombre;
     String curso;
@@ -45,5 +47,11 @@ public class Asignatura {
 
     public void setImgAsignatura(String imgAsignatura) {
         this.imgAsignatura = imgAsignatura;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

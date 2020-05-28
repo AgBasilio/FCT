@@ -53,12 +53,11 @@ public class AsignaturasFagment extends Fragment {
     }
 
 
-
     @Override
-    public void onCreateOptionsMenu( Menu menu,  MenuInflater inflater) {
-        inflater.inflate(R.menu.main2,menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main2, menu);
         MenuItem searItem = menu.findItem(R.id.search);
-        SearchView searchView=(SearchView)searItem.getActionView();
+        SearchView searchView = (SearchView) searItem.getActionView();
         searchView.onActionViewExpanded();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -103,10 +102,8 @@ public class AsignaturasFagment extends Fragment {
         listaEventos.clear();
 
 
-
-
         auth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = auth.getCurrentUser();
+        firebaseUser = auth.getCurrentUser();
 
         String userid = firebaseUser.getUid();
 
@@ -140,7 +137,6 @@ public class AsignaturasFagment extends Fragment {
             }
 
         });
-
 
 
         return v;
