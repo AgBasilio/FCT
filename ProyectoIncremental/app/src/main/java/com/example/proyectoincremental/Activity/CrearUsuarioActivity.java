@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,21 +46,24 @@ import java.util.List;
 
 import static com.example.proyectoincremental.Activity.CreateUserActivity.isNumeric;
 
-public class CrearUsuarioActivity extends AppCompatActivity {
+public class CrearUsuarioActivity extends AppCompatActivity  {
     private AdaptadorListaAsignturas adaptadorEventos;
     private AdaptadorListaGrupos adaptadorGrupos;
 
     private List<Asignatura> listaEventos;
     private List<Grupos> listaGrupos;
+    private List<String> listaGruposs;
+    private List<String> listaAsignaturas;
 
-    private FirebaseDatabase database,database1;
+
+    private FirebaseDatabase database, database1;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
-    private RecyclerView recyclerView,recyclerView1;
-    private LinearLayoutManager mLayoutManager,mLayoutManager1;
-    private DatabaseReference referenceEventos,referenceEventos2;
+    private RecyclerView recyclerView, recyclerView1;
+    private LinearLayoutManager mLayoutManager, mLayoutManager1;
+    private DatabaseReference referenceEventos, referenceEventos2;
     private AlertDialog.Builder builder;
-
+    private String f,a;
     private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
     private DatabaseReference refBBD, refBBD2;
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "", asignaturas = "", grupo = "", tipoS;
@@ -70,12 +74,13 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private Spinner spinner;
     private TextView y;
     private String ciudadSeleccionada = "";
-    private String userid
-;
+    private String userid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usuariodentro);
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         database1 = FirebaseDatabase.getInstance();
@@ -96,7 +101,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.listaA);
         recyclerView1 = (RecyclerView) findViewById(R.id.listaG);
-/**/
+        /**/
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mLayoutManager = new LinearLayoutManager(this);
@@ -108,19 +113,19 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
         listaEventos = new ArrayList<Asignatura>();
         listaGrupos = new ArrayList<Grupos>();
-
+        listaGruposs = new ArrayList<String>();
+        listaAsignaturas = new ArrayList<String>();
 
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-         userid = firebaseUser.getUid();
+        userid = firebaseUser.getUid();
 
-       referenceEventos = database.getInstance().getReference().child("Asignaturas").child(userid);
+        referenceEventos = database.getInstance().getReference().child("Asignaturas").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                listaEventos.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Asignatura p = dataSnapshot1.getValue(Asignatura.class);
                     p.setId(dataSnapshot1.getKey());
@@ -130,8 +135,14 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 adaptadorEventos = new AdaptadorListaAsignturas(listaEventos, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
 
                     @Override
-                    public void onItemClick(Asignatura city, int position) {
+                    public void onItemClick(Asignatura city, int position,CheckBox checkBox) {
+                        if (checkBox.isChecked()) {
+                            listaAsignaturas.add(city.getNombre());
 
+                        } else if (!checkBox.isChecked()) {
+                            listaAsignaturas.remove(city.getNombre());
+                        }
+                        a = listaAsignaturas.toString();
 
                     }
                 });
@@ -159,13 +170,22 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 }
                 adaptadorGrupos = new AdaptadorListaGrupos(listaGrupos, CrearUsuarioActivity.this, R.layout.item_b, new AdaptadorListaGrupos.OnItemClickListener() {
                     @Override
-                    public void onItemClick(Grupos city, int position) {
+                    public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
 
+                        if (checkBox.isChecked()) {
+                            listaGruposs.add(grupos.getNombreGrupo());
+
+                        } else if (!checkBox.isChecked()) {
+                            listaGruposs.remove(grupos.getNombreGrupo());
+
+
+                        }
+                        f = listaGruposs.toString();
 
                     }
+
                 });
                 recyclerView1.setAdapter(adaptadorGrupos);
-                adaptadorGrupos.setCheckedListner(this);
             }
 
             @Override
@@ -173,7 +193,6 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
             }
         });
-
 
         //
         //   loadAsignaturas();
@@ -196,9 +215,9 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
                 if (isNumeric(edadS) == true) {
                     if (!emailS.isEmpty() && !contraseñaS.isEmpty() && !nombreS.isEmpty() && !apellido1S.isEmpty() && !edadS.isEmpty()) {
-                        mAuth.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                       // mAuth.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        //@Override
+                          //  public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
                                 edadI = Integer.parseInt(edadS);
@@ -212,16 +231,20 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                                 usuario.setApellido2(apellido2S);
                                 usuario.setEdad(edadI);
                                 usuario.setContraseña(contraseñaS);
-                                usuario.setGrupo(grupo);
-                                usuario.setContraseña(asignaturas);
+                                usuario.setGrupo(a);
+                                usuario.setAsignaturas(f);
                                 usuario.setTipo(tipoS);
                                 usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
+                                String u=refBBD.push().getKey();
+                                usuario.setId(u);
                                 refBBD.push().setValue(usuario);
 
-                            }
-                        });
+                           // }
+                        //});
 
-                    } else {
+                    }
+
+                    else {
                         Toast.makeText(CrearUsuarioActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
                     }
 
@@ -232,6 +255,8 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     public void loadAsignaturas() {
@@ -280,4 +305,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
 
     }
+
+
+
 }

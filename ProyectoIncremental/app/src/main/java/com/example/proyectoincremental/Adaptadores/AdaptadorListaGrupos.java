@@ -44,7 +44,7 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private List<Grupos> listaAdinaturasfiltradas;
 
     private AdaptadorListaGrupos.OnItemClickListener itemClickListener;
-    private CheckboxChechedListener chechedLister;
+
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
@@ -79,18 +79,6 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
         grupo = grupos.get(position);
         holder.nombre.setText(grupo.getNombreGrupo());
         holder.curso.setText(grupo.getNumeroGrupo());
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (chechedLister !=null){
-                    chechedLister.getCheckboxChechedListener(grupo,position);
-
-
-
-
-                }
-            }
-        });
 
         //preguntar a agus si lo cambiamos a string par atraerlo mas facil
         //holder.plazas.setText(eventoss.getFecha());
@@ -120,10 +108,10 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
         //clik al item
         public void bind(final Grupos grupos, final AdaptadorListaGrupos.OnItemClickListener itemListener) {
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemListener.onItemClick(grupos, getAdapterPosition());
+                    itemListener.onItemClick(grupos,getAdapterPosition(),checkBox);
                 }
             });
 
@@ -316,15 +304,12 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Grupos asignatura, int position);
+        void onItemClick(Grupos asignatura, int position,CheckBox checkBox);
     }
 
 
     public interface CheckboxChechedListener {
-        void getCheckboxChechedListener(Grupos asignatura, int position);
+        void getCheckboxChechedListener(int position,Grupos grupos,CheckBox checkBox);
     }
-    public void  setCheckedListner(ValueEventListener checj){
- //       this.chechedLister =checj;
 
-    }
 }

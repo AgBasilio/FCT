@@ -49,9 +49,5 @@ public class Asignatura {
         this.imgAsignatura = imgAsignatura;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return nombre;
-    }
+
 }

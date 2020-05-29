@@ -21,16 +21,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoincremental.Activity.CrearUsuarioActivity;
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Grupos;
 import com.example.proyectoincremental.Utils.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.proyectoincremental.Adaptadores.AdaptadorListaAsignturas.URL_FOTO_USRr;
 
 public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.ViewHolder> implements ListAdapter, Filterable {
     private Context context;
@@ -39,7 +44,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
     private List<Usuario> listaAdinaturasfiltradas;
     private AdaptadorUsuarios.OnItemClickListener itemClickListener;
 
-
+    private DatabaseReference databsaserefernece;
     private FirebaseDatabase database;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
@@ -74,7 +79,13 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
         usuario = usuarios.get(position);
         holder.nombre.setText(usuario.getNombre());
         holder.tipo.setText(usuario.getTipo());
+        if (!usuario.getImagen().isEmpty()) {
+            Picasso.get().load(usuario.getImagen()).resize(540, 550).centerCrop().into(holder.imgusuario);
+        } else {
 
+            Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.imgusuario);
+
+        }
         holder.bind(usuario, itemClickListener);
 
 
@@ -139,10 +150,10 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             public void onClick(DialogInterface dialog, int which) {
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //intent.putExtra("NombreLocal", usuarios.get(getAdapterPosition()).getNombreGrupo());
-                                    //intent.putExtra("Id", usuarios.get(getAdapterPosition()).getId());
-                                    //intent.putExtra("Contenido", usuarios.get(getAdapterPosition()).getNumeroGrupo());
+                                    Intent intent = new Intent(context, CrearUsuarioActivity.class);
+                                    intent.putExtra("NombreLocal", usuarios.get(getAdapterPosition()).getNombre());
+                                    intent.putExtra("Id", usuarios.get(getAdapterPosition()).getId());
+                                    intent.putExtra("Contenido", usuarios.get(getAdapterPosition()).getEdad());
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -173,7 +184,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
 
                         builder = new AlertDialog.Builder(context);
                         builder.setTitle("ATENCION");
-                        builder.setMessage("\n" + "Seguro que quieres Editar");
+                        builder.setMessage("\n" + "Seguro que quieres eliminar este usuario?");
                         // Set up the buttons
                         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
 
@@ -181,8 +192,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             public void onClick(DialogInterface dialog, int which) {
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    //  database.getReference("Grupos").child(userid).child(usuarios.get(getAdapterPosition()).getId()).removeValue();
+                                    databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
 
+                                    databsaserefernece.removeValue();
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
                                 }
@@ -192,8 +204,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    //database.getReference("Grupos").child(userid).child(usuarios.get(getAdapterPosition()).getId()).removeValue();
+                                    databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
 
+                                    databsaserefernece.removeValue();
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
                                 }

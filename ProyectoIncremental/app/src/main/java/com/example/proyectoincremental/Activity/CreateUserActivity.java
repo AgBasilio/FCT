@@ -78,13 +78,16 @@ public class CreateUserActivity extends AppCompatActivity {
                                 FirebaseUser currentUser = mAuth.getCurrentUser();
                                 refBBD = database.getReference("Usuarios/" + currentUser.getUid());
                                 Usuario usuario = new Usuario();
-
                                 usuario.setEmail(emailS);
                                 usuario.setNombre(nombreS);
                                 usuario.setApellido1(apellido1S);
                                 usuario.setApellido2(apellido2S);
                                 usuario.setEdad(edadI);
                                 usuario.setContraseña(contraseñaS);
+                                usuario.setTipo("E");
+                                usuario.setGrupo(" ");
+                                usuario.setAsignaturas(" ");
+                                usuario.setId(currentUser.getUid());
                                 usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                 refBBD.setValue(usuario);
                                 Intent intent = new Intent(CreateUserActivity.this, LoginActivity.class);

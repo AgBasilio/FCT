@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -38,14 +39,16 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     private List<Asignatura> asignaturas;
     private List<Asignatura>listaAdinaturasfiltradas;
     private int layout;
+
+
     private AdaptadorListaAsignturas.OnItemClickListener itemClickListener;
+
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private Asignatura asignatura;
     private String id;
     private AlertDialog.Builder builder;
     String userid;
-    ArrayList<String> listaAdignaturasdentro;
     public static final String URL_FOTO_USRr = "https://firebasestorage.googleapis.com/v0/b/bbdafanigths.appspot.com/o/fotosNormales%2F2694-1.jpg?alt=media&token=522e3e15-ff17-46c5-9dbc-0379af57871c";
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
@@ -75,6 +78,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
     @Override
     public void onBindViewHolder(@NonNull AdaptadorListaAsignturas.ViewHolder holder, int position) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         asignatura = asignaturas.get(position);
         holder.nombre.setText(asignatura.getNombre());
@@ -96,13 +100,17 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
         public TextView curso, nombre;
         public ImageView img;
+        public CheckBox checkBox;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             nombre = (TextView) itemView.findViewById(R.id.name);
             curso = (TextView) itemView.findViewById(R.id.ncurso);
-         //   img = (ImageView) itemView.findViewById(R.id.imageViewCity);
+            checkBox=(CheckBox) itemView.findViewById(R.id.checkBox);
+
+            //   img = (ImageView) itemView.findViewById(R.id.imageViewCity);
 
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -114,7 +122,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
                 @Override
                 public void onClick(View view) {
-                    itemListener.onItemClick(asignaturas, getAdapterPosition());
+                    itemListener.onItemClick(asignaturas, getAdapterPosition(),checkBox);
                 }
             });
 
@@ -313,7 +321,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Asignatura asignatura, int position);
+        void onItemClick(Asignatura asignatura, int position,CheckBox checkBox);
     }
 
 

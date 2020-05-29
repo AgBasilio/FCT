@@ -11,9 +11,18 @@ public class Usuario {
     String tipo;
     String grupo;
     String asignaturas;
+    String id;
 
     public Usuario() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTipo() {
