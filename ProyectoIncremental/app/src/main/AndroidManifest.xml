@@ -22,10 +22,10 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Activity.CreateUserActivity"></activity>
         <activity
-            android:name=".Activity.SplashActivity"
+            android:name=".Activity.LoginActivity"
             android:label="dsfdsgsdgsd" />
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".Activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

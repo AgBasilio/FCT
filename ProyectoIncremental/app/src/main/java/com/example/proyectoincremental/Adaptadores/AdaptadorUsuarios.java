@@ -193,11 +193,11 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
-
                                     databsaserefernece.removeValue();
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
                                 }
+
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
