@@ -92,8 +92,8 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
 
-        public TextView curso, nombre;
-        public CheckBox checkBox;
+        private TextView curso, nombre;
+        private CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);

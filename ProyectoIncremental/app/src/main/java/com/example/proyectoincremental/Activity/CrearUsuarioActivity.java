@@ -20,10 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoincremental.Activity.CreateUserActivity;
-import com.example.proyectoincremental.Activity.LoginActivity;
-import com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas;
-import com.example.proyectoincremental.Adaptadores.AdaptadorGrupos;
+
 import com.example.proyectoincremental.Adaptadores.AdaptadorListaAsignturas;
 import com.example.proyectoincremental.Adaptadores.AdaptadorListaGrupos;
 import com.example.proyectoincremental.R;
@@ -59,22 +56,26 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
     private FirebaseDatabase database, database1;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
+    private DatabaseReference referenceEventos, referenceEventos2;
+    private DatabaseReference refBBD, refBBD2;
+    private FirebaseAuth mAuth;
+
+
     private RecyclerView recyclerView, recyclerView1;
     private LinearLayoutManager mLayoutManager, mLayoutManager1;
-    private DatabaseReference referenceEventos, referenceEventos2;
     private AlertDialog.Builder builder;
-    private String f,a;
-    private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
-    private DatabaseReference refBBD, refBBD2;
+
+    private String f="",a="";
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "", asignaturas = "", grupo = "", tipoS;
-    private int edadI;
-    private Button btnCrearUsuario, btnGoLogin;
-    private FirebaseAuth mAuth;
-    private SharedPreferences prefs, sfd;
-    private Spinner spinner;
-    private TextView y;
     private String ciudadSeleccionada = "";
+    private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
+    private Spinner spinner;
     private String userid;
+    private int edadI;
+
+    private Button btnCrearUsuario, btnGoLogin;
+    private SharedPreferences prefs, sfd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +89,10 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
         email = findViewById(R.id.email);
         contraseña = findViewById(R.id.contraseña);
         apellido1 = findViewById(R.id.apellido1);
-        y = findViewById(R.id.verselecion);
 
         apellido2 = findViewById(R.id.apellido2);
         edad = findViewById(R.id.edad);
-        tipo = findViewById(R.id.tipo);
+        spinner = findViewById(R.id.tipo);
         btnCrearUsuario = findViewById(R.id.btnCrearUsuariodentro);
         refBBD2 = database.getReference("Asignaturas/");
 //
@@ -122,7 +122,27 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
 
         userid = firebaseUser.getUid();
 
-        referenceEventos = database.getInstance().getReference().child("Asignaturas").child(userid);
+
+
+        ArrayList<String> lista = new ArrayList<>();
+        lista.add("Alumno");
+        lista.add("Profesor");
+        ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
+        spinner.setAdapter(asignaturaArrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ciudadSeleccionada = parent.getItemAtPosition(position).toString();
+                //y.setText("asignaturas :" + ciudadSeleccionada);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -135,11 +155,11 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                 adaptadorEventos = new AdaptadorListaAsignturas(listaEventos, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
 
                     @Override
-                    public void onItemClick(Asignatura city, int position,CheckBox checkBox) {
-                        if (checkBox.isChecked()) {
+                    public void onItemClick(Asignatura city, int position,CheckBox checkBoxx) {
+                        if (checkBoxx.isChecked()) {
                             listaAsignaturas.add(city.getNombre());
 
-                        } else if (!checkBox.isChecked()) {
+                        } else if (!checkBoxx.isChecked()) {
                             listaAsignaturas.remove(city.getNombre());
                         }
                         a = listaAsignaturas.toString();
@@ -233,7 +253,7 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                                 usuario.setContraseña(contraseñaS);
                                 usuario.setGrupo(a);
                                 usuario.setAsignaturas(f);
-                                usuario.setTipo(tipoS);
+                                usuario.setTipo(ciudadSeleccionada);
                                 usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                 String u=refBBD.push().getKey();
                                 usuario.setId(u);
@@ -277,13 +297,15 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                         asignaturas.add(asignatura);
 
                     }
+
+
                     ArrayAdapter<Asignatura> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, asignaturas);
                     spinner.setAdapter(asignaturaArrayAdapter);
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             ciudadSeleccionada = parent.getItemAtPosition(position).toString();
-                            y.setText("asignaturas :" + ciudadSeleccionada);
+                            //y.setText("asignaturas :" + ciudadSeleccionada);
                         }
 
                         @Override

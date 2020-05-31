@@ -35,7 +35,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.proyectoincremental.Adaptadores.AdaptadorListaAsignturas.URL_FOTO_USRr;
+import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
 
 public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.ViewHolder> implements ListAdapter, Filterable {
     private Context context;

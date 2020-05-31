@@ -61,18 +61,11 @@
                     android:layout_height="wrap_content"
                     android:hint="Contraseña"></EditText>
 
-                <EditText
+                <Spinner
                     android:id="@+id/tipo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Tipo"></EditText>
+                    android:layout_height="wrap_content"></Spinner>
 
-
-                <TextView
-                    android:id="@+id/verselecion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="verseleecion"></TextView>
 
                 <LinearLayout
                     android:layout_gravity="center"
