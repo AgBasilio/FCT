@@ -15,7 +15,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
             android:background="#B8B8B8"
             app:cardCornerRadius="20dp">
 
@@ -66,60 +66,82 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></Spinner>
 
+        <!--        <Button
+                    android:id="@+id/btnlistarA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
 
+                <Button
+                    android:id="@+id/btnlistarG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></Button>
+-->
                 <LinearLayout
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:textAlignment="center"
                         android:id="@+id/asignaturasssss"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:text="Asignaturas"></TextView>
+                        android:text="Asignaturas"
+                        android:textAlignment="center"></TextView>
 
                     <TextView
-                        android:textAlignment="center"
                         android:id="@+id/grupossssss"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:text="Grupo">
+                        android:text="Grupo"
+                        android:textAlignment="center">
 
                     </TextView>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_gravity="center"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                   >
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/listaA"
-                        android:background="#3368C1"
                         android:layout_width="180dp"
                         android:layout_height="match_parent" />
+
                     <androidx.recyclerview.widget.RecyclerView
-                        android:background="#D51F1F"
                         android:id="@+id/listaG"
                         android:layout_width="180dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        />
+                        android:layout_marginLeft="20dp" />
                 </LinearLayout>
 
-                <Button
-                    android:layout_gravity="center"
-                    android:id="@+id/btnCrearUsuariodentro"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Crear Usuario"></Button>
+                    android:layout_height="match_parent">
+
+
+                    <Button
+                        android:id="@+id/btnCrearUsuariodentro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Crear Usuario"></Button>
+
+                    <Button
+                        android:id="@+id/btnEditarUsuariodentro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Editar Usuario"
+                        android:visibility="gone"></Button>
+
+                </RelativeLayout>
+
 
             </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.proyectoincremental.Activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,9 +43,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.example.proyectoincremental.Activity.CreateUserActivity.isNumeric;
 
-public class CrearUsuarioActivity extends AppCompatActivity  {
+public class CrearUsuarioActivity extends AppCompatActivity {
     private AdaptadorListaAsignturas adaptadorEventos;
     private AdaptadorListaGrupos adaptadorGrupos;
 
@@ -57,7 +61,7 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private DatabaseReference referenceEventos, referenceEventos2;
-    private DatabaseReference refBBD, refBBD2;
+    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5;
     private FirebaseAuth mAuth;
 
 
@@ -65,15 +69,16 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
     private LinearLayoutManager mLayoutManager, mLayoutManager1;
     private AlertDialog.Builder builder;
 
-    private String f="",a="";
+    private String f = "", a = "";
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "", asignaturas = "", grupo = "", tipoS;
     private String ciudadSeleccionada = "";
     private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
     private Spinner spinner;
     private String userid;
-    private int edadI;
+    private int edadI, recuperamos_variable_integer;
+    private Switch aSwitchA;
 
-    private Button btnCrearUsuario, btnGoLogin;
+    private Button btnCrearUsuario, btnGoLogin, btnEditUsuario, btnlistarG, btnlistarA;
     private SharedPreferences prefs, sfd;
 
 
@@ -82,6 +87,7 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usuariodentro);
 
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         database1 = FirebaseDatabase.getInstance();
@@ -89,12 +95,15 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
         email = findViewById(R.id.email);
         contraseña = findViewById(R.id.contraseña);
         apellido1 = findViewById(R.id.apellido1);
+        btnEditUsuario = findViewById(R.id.btnEditarUsuariodentro);
+        // btnlistarA = findViewById(R.id.btnlistarA);
+        // btnlistarG = findViewById(R.id.btnlistarG);
 
         apellido2 = findViewById(R.id.apellido2);
         edad = findViewById(R.id.edad);
         spinner = findViewById(R.id.tipo);
         btnCrearUsuario = findViewById(R.id.btnCrearUsuariodentro);
-        refBBD2 = database.getReference("Asignaturas/");
+        //  refBBD2 = database.getReference("Asignaturas/");
 //
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -118,12 +127,58 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
 
 
         auth = FirebaseAuth.getInstance();
+
         firebaseUser = auth.getCurrentUser();
 
         userid = firebaseUser.getUid();
 
+        //INFOMACION QUE TRAEMOS DEL ANTERIOR ACTIVITY
+        if (getIntent().getExtras() != null) {
+
+            email.setText(getIntent().getExtras().getString("Email"));
+            nombre.setText(getIntent().getExtras().getString("NombreLocal"));
+            apellido1.setText(getIntent().getExtras().getString("Apellido1"));
+            apellido2.setText(getIntent().getExtras().getString("Apellido2"));
+            //taremos la edad que es un entero , lo convertimos en sting ya que no nos deha pasarle al editex un entero par editarlo volver a ser un entero
+            recuperamos_variable_integer = getIntent().getIntExtra("Edad", 0);
+            edadS = Integer.toString(recuperamos_variable_integer);
+            edad.setText(edadS);
+            contraseña.setText(getIntent().getExtras().getString("Contraseña"));
+
+            btnCrearUsuario.setVisibility(GONE);
+            btnEditUsuario.setVisibility(VISIBLE);
 
 
+        }
+        //BTN EDITAR USUARIO
+        btnEditUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                auth = FirebaseAuth.getInstance();
+                FirebaseUser firebaseUser = auth.getCurrentUser();
+                String userid = firebaseUser.getUid();
+                nombreS = nombre.getText().toString();
+                apellido1S = apellido1.getText().toString();
+                apellido2S = apellido2.getText().toString();
+                edadS = edad.getText().toString();
+                edadI = Integer.parseInt(edadS);
+
+                refBBD = database.getReference("Usuarios").child(userid).child("nombre");
+                refBBD1 = database.getReference("Usuarios").child(userid).child("apellido1");
+                refBBD2 = database.getReference("Usuarios").child(userid).child("apellido2");
+                refBBD3 = database.getReference("Usuarios").child(userid).child("edad");
+                refBBD.setValue(nombreS);
+                refBBD1.setValue(apellido1S);
+                refBBD2.setValue(apellido2S);
+                refBBD3.setValue(edadI);
+
+                //refBBD2.setValue(emailS);
+
+            }
+        });
+
+        //LISTA DE TIPOS DE USUATIOS
         ArrayList<String> lista = new ArrayList<>();
         lista.add("Alumno");
         lista.add("Profesor");
@@ -132,8 +187,10 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 ciudadSeleccionada = parent.getItemAtPosition(position).toString();
                 //y.setText("asignaturas :" + ciudadSeleccionada);
+
             }
 
             @Override
@@ -141,7 +198,7 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
 
             }
         });
-
+        //REFERENCIA ASIGNATURAS
         referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {
             @Override
@@ -155,12 +212,15 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                 adaptadorEventos = new AdaptadorListaAsignturas(listaEventos, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
 
                     @Override
-                    public void onItemClick(Asignatura city, int position,CheckBox checkBoxx) {
+                    public void onItemClick(Asignatura city, int position, CheckBox checkBoxx) {
                         if (checkBoxx.isChecked()) {
+
                             listaAsignaturas.add(city.getNombre());
 
                         } else if (!checkBoxx.isChecked()) {
+
                             listaAsignaturas.remove(city.getNombre());
+
                         }
                         a = listaAsignaturas.toString();
 
@@ -176,13 +236,11 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
             }
 
         });
-
-
+        //REFERENCIA A GRUPOS
         referenceEventos2 = database1.getInstance().getReference("Grupos").child(userid);
         referenceEventos2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Grupos p = dataSnapshot1.getValue(Grupos.class);
                     p.setId(dataSnapshot1.getKey());
@@ -191,17 +249,12 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                 adaptadorGrupos = new AdaptadorListaGrupos(listaGrupos, CrearUsuarioActivity.this, R.layout.item_b, new AdaptadorListaGrupos.OnItemClickListener() {
                     @Override
                     public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
-
                         if (checkBox.isChecked()) {
                             listaGruposs.add(grupos.getNombreGrupo());
-
                         } else if (!checkBox.isChecked()) {
                             listaGruposs.remove(grupos.getNombreGrupo());
-
-
                         }
                         f = listaGruposs.toString();
-
                     }
 
                 });
@@ -210,13 +263,9 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-        //
-        //   loadAsignaturas();
-
+        //BTN CREAR USUARIO
         btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -228,17 +277,15 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                 apellido1S = apellido1.getText().toString();
                 apellido2S = apellido2.getText().toString();
                 edadS = edad.getText().toString();
-                tipoS = tipo.getText().toString();
 
                 asignaturas = " ";
                 grupo = "";
 
                 if (isNumeric(edadS) == true) {
                     if (!emailS.isEmpty() && !contraseñaS.isEmpty() && !nombreS.isEmpty() && !apellido1S.isEmpty() && !edadS.isEmpty()) {
-                       // mAuth.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        //@Override
-                          //  public void onComplete(@NonNull Task<AuthResult> task) {
-
+                        mAuth.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
                                 //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
                                 edadI = Integer.parseInt(edadS);
                                 //instancia de la bbd
@@ -255,16 +302,14 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
                                 usuario.setAsignaturas(f);
                                 usuario.setTipo(ciudadSeleccionada);
                                 usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
-                                String u=refBBD.push().getKey();
+                                String u = refBBD.push().getKey();
                                 usuario.setId(u);
                                 refBBD.push().setValue(usuario);
 
-                           // }
-                        //});
+                            }
+                        });
 
-                    }
-
-                    else {
+                    } else {
                         Toast.makeText(CrearUsuarioActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
                     }
 
@@ -278,56 +323,6 @@ public class CrearUsuarioActivity extends AppCompatActivity  {
 
 
     }
-
-    public void loadAsignaturas() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-
-        String userid = firebaseUser.getUid();
-
-        final List<Asignatura> asignaturas = new ArrayList<>();
-        database.getReference().child("Asignaturas").child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String nombre = ds.child("nombre").getValue().toString();
-                        String id = ds.getKey();
-                        Asignatura asignatura = new Asignatura();
-                        asignatura.setNombre(nombre);
-                        asignaturas.add(asignatura);
-
-                    }
-
-
-                    ArrayAdapter<Asignatura> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, asignaturas);
-                    spinner.setAdapter(asignaturaArrayAdapter);
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            ciudadSeleccionada = parent.getItemAtPosition(position).toString();
-                            //y.setText("asignaturas :" + ciudadSeleccionada);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-
-                        }
-
-                    });
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
-
 
 
 }

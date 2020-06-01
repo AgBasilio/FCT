@@ -150,10 +150,19 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             public void onClick(DialogInterface dialog, int which) {
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
+
                                     Intent intent = new Intent(context, CrearUsuarioActivity.class);
                                     intent.putExtra("NombreLocal", usuarios.get(getAdapterPosition()).getNombre());
                                     intent.putExtra("Id", usuarios.get(getAdapterPosition()).getId());
-                                    intent.putExtra("Contenido", usuarios.get(getAdapterPosition()).getEdad());
+                                    intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
+                                    intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
+                                    intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
+                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
+                                    intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
+
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -164,11 +173,17 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //intent.putExtra("NombreLocal", usuarios.get(getAdapterPosition()).getNombreGrupo());
-                                    //intent.putExtra("Id", usuarios.get(getAdapterPosition()).getId());
-                                    //intent.putExtra("Contenido", usuarios.get(getAdapterPosition()).getNumeroGrupo());
-                                    context.startActivity(intent);
+                                    Intent intent = new Intent(context, CrearUsuarioActivity.class);
+                                    intent.putExtra("NombreLocal", usuarios.get(getAdapterPosition()).getNombre());
+                                    intent.putExtra("Id", usuarios.get(getAdapterPosition()).getId());
+                                    intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
+                                    intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
+                                    intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
+                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
+                                    intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -194,6 +209,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
                                     databsaserefernece.removeValue();
+
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
                                 }
@@ -205,7 +221,6 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
-
                                     databsaserefernece.removeValue();
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
