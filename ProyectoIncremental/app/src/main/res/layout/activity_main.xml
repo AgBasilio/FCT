@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     >
-
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"

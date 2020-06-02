@@ -41,7 +41,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     private List<Asignatura> grupos;
     private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
-
+    private String[] asignaturasusuario = null;
     private AdaptadorListaAsignturas.OnItemClickListener itemClickListener;
 
 
@@ -53,12 +53,15 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaAsignturas(List<Asignatura> asignaturas, Context context, int layout, AdaptadorListaAsignturas.OnItemClickListener itemListener) {
+    public AdaptadorListaAsignturas(List<Asignatura> asignaturas, Context context, int layout, AdaptadorListaAsignturas.OnItemClickListener itemListener, String[] asignaturasusuario) {
         this.grupos = asignaturas;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
+        this.asignaturasusuario = asignaturasusuario;
         this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
+
+
     }
 
     @Override
@@ -76,14 +79,31 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     public void onBindViewHolder(@NonNull AdaptadorListaAsignturas.ViewHolder holder, final int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         grupo = grupos.get(position);
+
+        if (asignaturasusuario!=null &&asignaturasusuario.length > 0) {
+            for (String a : asignaturasusuario) {
+                if (a.equals(grupo.getNombre()) ) {
+
+                    holder.checkBox.setChecked(true);
+
+                    //chekbox true defecto
+
+                    //Break para qtermianr el brak
+                    break;
+                }
+
+
+            }
+
+
+        }
+
         holder.nombre.setText(grupo.getNombre());
         holder.curso.setText(grupo.getDescricion());
-
         holder.bind(grupo, itemClickListener);
 
 
     }
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
@@ -97,7 +117,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
             nombre = (TextView) itemView.findViewById(R.id.name);
             curso = (TextView) itemView.findViewById(R.id.ncurso);
-            checkBox=(CheckBox) itemView.findViewById(R.id.checkBox);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
 
             itemView.setOnCreateContextMenuListener(this);
         }
@@ -108,12 +128,11 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemListener.onItemClick(grupos,getAdapterPosition(),checkBox);
+                    itemListener.onItemClick(grupos, getAdapterPosition(), checkBox);
                 }
             });
 
         }
-
 
 
         @Override
@@ -144,9 +163,9 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     Intent intent = new Intent(context, EditarGrupoActivity.class);
-                           //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
+                                    //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
                                     intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
-                             //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
+                                    //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -158,9 +177,9 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                 //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
+                                    //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
                                     intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
-                                   // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
+                                    // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
                                     context.startActivity(intent);
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
@@ -210,6 +229,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
             }
         };
     }
+
     @Override
     public Filter getFilter() {
         return filter;
@@ -301,12 +321,12 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Asignatura asignatura, int position,CheckBox checkBox);
+        void onItemClick(Asignatura asignatura, int position, CheckBox checkBox);
     }
 
 
     public interface CheckboxChechedListener {
-        void getCheckboxChechedListener(int position,Asignatura grupos,CheckBox checkBox);
+        void getCheckboxChechedListener(int position, Asignatura grupos, CheckBox checkBox);
     }
 
 }
