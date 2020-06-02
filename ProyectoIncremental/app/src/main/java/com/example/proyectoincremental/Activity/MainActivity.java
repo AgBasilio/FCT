@@ -72,14 +72,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PerfilActivity.class));
             }
         });
+        auth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        String userid = firebaseUser.getUid();
 
+        DatabaseReference r = dataBase.getReference("Usuarios").child(userid).child("tipo");
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+        if (r.equals("Profesor")){}
         mAppBarConfiguration = new AppBarConfiguration.Builder(
+
+
                 R.id.nav_gestionar, R.id.nav_reuniones, R.id.nav_editar_usuario, R.id.nav_cerrar_sesion)
                 .setDrawerLayout(drawer)
                 .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
@@ -104,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     String imgPerfilBar = "";
                     nombreUsuarioMenu = (TextView) findViewById(R.id.NombreUsuario);
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
-                    if(usuario != null) {
+                    if (usuario != null) {
                         nombreUsuario = usuario != null ? usuario.getNombre() : "";
                         imgPerfilBar = usuario != null ? usuario.getImagen() : "";
                         apellido1 = usuario != null ? usuario.getApellido1() : "";

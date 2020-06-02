@@ -62,7 +62,9 @@
                     android:id="@+id/contraseñaFormulario"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Contraseña"></EditText>
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    ></EditText>
                 <LinearLayout
                     android:layout_gravity="center"
                     android:gravity="center"

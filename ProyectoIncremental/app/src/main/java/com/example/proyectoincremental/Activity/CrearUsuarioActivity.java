@@ -1,9 +1,10 @@
+
 package com.example.proyectoincremental.Activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
+import android.icu.util.ULocale;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,7 +61,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private DatabaseReference referenceEventos, referenceEventos2;
-    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5;
+    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6;
     private FirebaseAuth mAuth;
 
 
@@ -132,13 +132,17 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
         userid = firebaseUser.getUid();
 
-        //INFOMACION QUE TRAEMOS DEL ANTERIOR ACTIVITY
+        //INFOMACION QUE TRAEMOS DEL ANTERIOR ACTIVITY para poder edditar
         if (getIntent().getExtras() != null) {
 
             email.setText(getIntent().getExtras().getString("Email"));
             nombre.setText(getIntent().getExtras().getString("NombreLocal"));
             apellido1.setText(getIntent().getExtras().getString("Apellido1"));
             apellido2.setText(getIntent().getExtras().getString("Apellido2"));
+            String tiposss = getIntent().getStringExtra("Tipo");
+            //   String asignaturassss = getIntent().getStringExtra("Asignaturas");
+
+
             //taremos la edad que es un entero , lo convertimos en sting ya que no nos deha pasarle al editex un entero par editarlo volver a ser un entero
             recuperamos_variable_integer = getIntent().getIntExtra("Edad", 0);
             edadS = Integer.toString(recuperamos_variable_integer);
@@ -148,7 +152,54 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             btnCrearUsuario.setVisibility(GONE);
             btnEditUsuario.setVisibility(VISIBLE);
 
+            ArrayList<String> lista = new ArrayList<>();
+            if (tiposss.equals("Profesor")){
+                lista.add(tiposss);
+                lista.add("Alumno");
 
+            }else{                lista.add(tiposss);
+                lista.add("Profesor");
+            }
+
+            ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
+            spinner.setAdapter(asignaturaArrayAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    ciudadSeleccionada = parent.getItemAtPosition(position).toString();
+                    //y.setText("asignaturas :" + ciudadSeleccionada);
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+     /*       adaptadorEventos = new AdaptadorListaAsignturas(listaEventos, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
+
+
+                @Override
+                public void onItemClick(Asignatura city, int position, CheckBox checkBoxx) {
+
+
+                    if (checkBoxx.isChecked()) {
+
+                        listaAsignaturas.add(city.getNombre());
+
+                    } else if (!checkBoxx.isChecked()) {
+
+                        listaAsignaturas.remove(city.getNombre());
+
+                    }
+
+                    a = listaAsignaturas.toString();
+
+                }
+            });
+            recyclerView.setAdapter(adaptadorEventos);
+*/
         }
         //BTN EDITAR USUARIO
         btnEditUsuario.setOnClickListener(new View.OnClickListener() {
@@ -168,36 +219,45 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 refBBD1 = database.getReference("Usuarios").child(userid).child("apellido1");
                 refBBD2 = database.getReference("Usuarios").child(userid).child("apellido2");
                 refBBD3 = database.getReference("Usuarios").child(userid).child("edad");
+                refBBD4 = database.getReference("Usuarios").child(userid).child("tipo");
+                refBBD5 = database.getReference("Usuarios").child(userid).child("asignaturas");
+                refBBD6 = database.getReference("Usuarios").child(userid).child("grupos");
+
+
                 refBBD.setValue(nombreS);
                 refBBD1.setValue(apellido1S);
                 refBBD2.setValue(apellido2S);
                 refBBD3.setValue(edadI);
-
+                refBBD4.setValue(ciudadSeleccionada);
+                // refBBD5.setValue(a);
+                //refBBD6.setValue(f);
                 //refBBD2.setValue(emailS);
 
             }
         });
+        if (getIntent().getExtras() == null) {
 
-        //LISTA DE TIPOS DE USUATIOS
-        ArrayList<String> lista = new ArrayList<>();
-        lista.add("Alumno");
-        lista.add("Profesor");
-        ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
-        spinner.setAdapter(asignaturaArrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            //LISTA DE TIPOS DE USUATIOS
+            ArrayList<String> lista = new ArrayList<>();
+            lista.add("Alumno");
+            lista.add("Profesor");
+            ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
+            spinner.setAdapter(asignaturaArrayAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                ciudadSeleccionada = parent.getItemAtPosition(position).toString();
-                //y.setText("asignaturas :" + ciudadSeleccionada);
+                    ciudadSeleccionada = parent.getItemAtPosition(position).toString();
+                    //y.setText("asignaturas :" + ciudadSeleccionada);
 
-            }
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }
         //REFERENCIA ASIGNATURAS
         referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
         referenceEventos.addValueEventListener(new ValueEventListener() {

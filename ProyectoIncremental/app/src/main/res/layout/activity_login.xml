@@ -39,7 +39,12 @@
                 android:id="@+id/contraseñaLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña" />
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+
+
+
+                />
 
             <Switch
                 android:id="@+id/switch1"

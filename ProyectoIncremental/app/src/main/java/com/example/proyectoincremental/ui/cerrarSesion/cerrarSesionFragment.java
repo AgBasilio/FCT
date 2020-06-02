@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectoincremental.Activity.CreateUserActivity;
+import com.example.proyectoincremental.Activity.LoginActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Util;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
@@ -55,7 +56,7 @@ public class cerrarSesionFragment extends Fragment {
 
     private void logOut() {
         auth.signOut();
-        Intent intent = new Intent(getContext(), CreateUserActivity.class);
+        Intent intent = new Intent(getContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
