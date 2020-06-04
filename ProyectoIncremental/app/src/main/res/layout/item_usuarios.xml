@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/imagenusuario"
             android:layout_width="170dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:fontFamily="sans-serif"
             android:text="Titulo"
             android:textSize="25dp" />
@@ -32,6 +32,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -42,6 +43,7 @@
                 android:textSize="20dp">
 
             </TextView>
+
             <TextView
                 android:id="@+id/tipodeusuario"
                 android:layout_width="200dp"

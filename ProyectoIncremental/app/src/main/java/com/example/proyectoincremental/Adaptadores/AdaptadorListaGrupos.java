@@ -36,12 +36,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGrupos.ViewHolder> implements ListAdapter, Filterable {
+public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGrupos.ViewHolder> implements ListAdapter{
     private FirebaseDatabase database;
     private Context context;
     private List<Grupos> grupos;
     private int layout;
     private List<Grupos> listaAdinaturasfiltradas;
+    private String[] grupoUsuario = null;
 
     private AdaptadorListaGrupos.OnItemClickListener itemClickListener;
 
@@ -54,11 +55,13 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaGrupos(List<Grupos> asignaturas, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener) {
+    public AdaptadorListaGrupos(List<Grupos> asignaturas, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener, String[] grupoUsuario) {
         this.grupos = asignaturas;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
+        this.grupoUsuario = grupoUsuario;
+
         this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
     }
 
@@ -77,6 +80,22 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     public void onBindViewHolder(@NonNull AdaptadorListaGrupos.ViewHolder holder, final int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         grupo = grupos.get(position);
+
+        if (grupoUsuario != null && grupoUsuario.length > 0) {
+            for (String a : grupoUsuario) {
+                if (a.equals(grupo.getNombreGrupo())) {
+                    holder.checkBox.setChecked(true);
+                    //chekbox true defecto
+                    //Break para qtermianr el brak
+                    break;
+                }
+
+
+            }
+
+
+        }
+
         holder.nombre.setText(grupo.getNombreGrupo());
         holder.curso.setText(grupo.getNumeroGrupo());
 
@@ -213,39 +232,6 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
             }
         };
     }
-    @Override
-    public Filter getFilter() {
-        return filter;
-    }
-
-    private Filter filter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Grupos> filtrada = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                filtrada.addAll(listaAdinaturasfiltradas);
-            } else {
-                String letras = constraint.toString().toLowerCase().trim();
-                for (Grupos grupos : listaAdinaturasfiltradas) {
-                    if (grupos.getNombreGrupo().toLowerCase().contains(letras)) {
-                        filtrada.add(grupos);
-                    }
-                }
-
-            }
-            FilterResults results = new FilterResults();
-            results.values = filtrada;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            grupos.clear();
-            grupos.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-
-    };
 
     @Override
     public int getItemCount() {

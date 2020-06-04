@@ -21,7 +21,7 @@
         >
         <TextView
             android:id="@+id/name1"
-            android:layout_width="45dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Titulo1"
@@ -30,7 +30,7 @@
 
         <TextView
             android:id="@+id/ncurso1"
-            android:layout_width="45dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:hint="curso"
             android:textSize="10dp">

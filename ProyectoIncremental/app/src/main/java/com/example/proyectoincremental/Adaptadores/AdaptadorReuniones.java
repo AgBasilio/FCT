@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,13 +21,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoincremental.Activity.EditarAsignaturaActivity;
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
-import com.example.proyectoincremental.Utils.Grupos;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,14 +35,17 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorListaAsignturas.ViewHolder> implements ListAdapter {
+import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
+
+public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.ViewHolder> implements ListAdapter {
     private FirebaseDatabase database;
     private Context context;
     private List<Asignatura> grupos;
     private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
     private String[] asignaturasusuario = null;
-    private AdaptadorListaAsignturas.OnItemClickListener itemClickListener;
+    private AdaptadorReuniones.OnItemClickListener itemClickListener;
+
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
@@ -52,47 +55,44 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaAsignturas(List<Asignatura> asignaturas, Context context, int layout, AdaptadorListaAsignturas.OnItemClickListener itemListener, String[] asignaturasusuario) {
+    public AdaptadorReuniones(List<Asignatura> asignaturas, Context context, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
         this.grupos = asignaturas;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
-        this.asignaturasusuario = asignaturasusuario;
         this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
 
 
     }
 
     @Override
-    public AdaptadorListaAsignturas.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AdaptadorReuniones.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         database = FirebaseDatabase.getInstance();
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         context = parent.getContext();
         auth = FirebaseAuth.getInstance();
-        AdaptadorListaAsignturas.ViewHolder vh = new AdaptadorListaAsignturas.ViewHolder(v);
+        AdaptadorReuniones.ViewHolder vh = new AdaptadorReuniones.ViewHolder(v);
         return vh;
     }
 
     //traemos la informacion de la BBD
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorListaAsignturas.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull AdaptadorReuniones.ViewHolder holder, final int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         grupo = grupos.get(position);
 
-        if (asignaturasusuario != null && asignaturasusuario.length > 0) {
-            for (String a : asignaturasusuario) {
-                if (a.equals(grupo.getNombre())) {
-                    holder.checkBox.setChecked(true);
-                    //chekbox true defecto
-                    //Break para qtermianr el brak
-                    break;
-                }
-            }
-        }
-
+        holder.curso.setText(grupo.getCurso());
         holder.nombre.setText(grupo.getNombre());
         holder.curso.setText(grupo.getDescricion());
         holder.bind(grupo, itemClickListener);
+        if (!grupo.getImgAsignatura().isEmpty()) {
+
+            Picasso.get().load(grupo.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
+        } else {
+
+            Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.img);
+
+        }
 
 
     }
@@ -102,30 +102,30 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
 
 
         private TextView curso, nombre;
-        private CheckBox checkBox;
+        public ImageView img;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            nombre = (TextView) itemView.findViewById(R.id.name);
-            curso = (TextView) itemView.findViewById(R.id.ncurso);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
+            nombre = (TextView) itemView.findViewById(R.id.texviewNombre);
+            curso = (TextView) itemView.findViewById(R.id.texviewCurso);
+            img = (ImageView) itemView.findViewById(R.id.imageViewCity);
 
             itemView.setOnCreateContextMenuListener(this);
         }
 
         //clik al item
-        public void bind(final Asignatura grupos, final AdaptadorListaAsignturas.OnItemClickListener itemListener) {
+        public void bind(final Asignatura grupos, final AdaptadorReuniones.OnItemClickListener itemListener) {
 
-            checkBox.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    itemListener.onItemClick(grupos, getAdapterPosition(), checkBox);
+               //     itemView.setBackgroundColor(Color.parseColor("#567845"));
+                    itemListener.onItemClick(grupos, getAdapterPosition());
                 }
             });
 
         }
-
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -223,7 +223,6 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     }
 
 
-
     @Override
     public int getItemCount() {
         return grupos.size();
@@ -281,12 +280,9 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Asignatura asignatura, int position, CheckBox checkBox);
+        void onItemClick(Asignatura asignatura, int position);
     }
 
 
-    public interface CheckboxChechedListener {
-        void getCheckboxChechedListener(int position, Asignatura grupos, CheckBox checkBox);
-    }
 
 }

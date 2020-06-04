@@ -102,10 +102,7 @@ public class UsuariosFragment extends Fragment {
                 listaUsuarios.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Usuario p = dataSnapshot1.getValue(Usuario.class);
-
                     //p.setId(dataSnapshot1.getKey());
-
-
                     listaUsuarios.add(p);
                 }
                 adaptadorUsuarios = new AdaptadorUsuarios(listaUsuarios, getContext(), R.layout.item_usuarios, new AdaptadorUsuarios.OnItemClickListener() {

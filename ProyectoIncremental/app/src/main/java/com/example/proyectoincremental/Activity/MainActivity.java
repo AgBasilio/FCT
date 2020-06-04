@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-
-
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_gestionar, R.id.nav_reuniones, R.id.nav_editar_usuario, R.id.nav_cerrar_sesion)
                 .setDrawerLayout(drawer)
