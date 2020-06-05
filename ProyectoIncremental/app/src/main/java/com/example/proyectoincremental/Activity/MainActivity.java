@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchView;
     private FirebaseDatabase dataBase;
     private SharedPreferences prefs;
+    String f;
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -62,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         View heaView = navigationView.getHeaderView(0);
         imageView = (ImageView) heaView.findViewById(R.id.imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -77,24 +78,46 @@ public class MainActivity extends AppCompatActivity {
         String userid = firebaseUser.getUid();
 
         DatabaseReference r = dataBase.getReference("Usuarios").child(userid).child("tipo");
+        r.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 f = dataSnapshot.getValue().toString();
+                //Nav profesor/alumno
+                NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment);
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+                //if (true){
+                if (f.equals("Profesor")){
 
-        if (r.equals("Profesor")){
+                    //mostrar todo
+
+                    //empezar desde gestionar
+                    navController.navigate(R.id.nav_gestionar);
+                }
+                else
+                {
+                    //sino, no mostrar gestionar
+                    Menu nav_Menu = navigationView.getMenu();
+                    nav_Menu.findItem(R.id.nav_gestionar).setVisible(false);
+                }
+
+                mAppBarConfiguration = new AppBarConfiguration.Builder(
+                        R.id.nav_gestionar, R.id.nav_reuniones, R.id.nav_editar_usuario, R.id.nav_cerrar_sesion)
+                        .setDrawerLayout(drawer)
+                        .build();
 
 
+                NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, mAppBarConfiguration);
+                NavigationUI.setupWithNavController(navigationView, navController);
+                //--fin Nav profesor/alumno
+            }
 
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_gestionar, R.id.nav_reuniones, R.id.nav_editar_usuario, R.id.nav_cerrar_sesion)
-                .setDrawerLayout(drawer)
-                .build();
+            }
+        });
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override

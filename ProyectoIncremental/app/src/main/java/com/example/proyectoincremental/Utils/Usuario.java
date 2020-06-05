@@ -6,6 +6,7 @@ public class Usuario {
     String apellido1;
     String apellido2;
     int edad;
+    String idgrupo;
     String imagen;
     String contraseña;
     String tipo;
@@ -15,6 +16,14 @@ public class Usuario {
 
     public Usuario() {
 
+    }
+
+    public String getIdgrupo() {
+        return idgrupo;
+    }
+
+    public void setIdgrupo(String idgrupo) {
+        this.idgrupo = idgrupo;
     }
 
     public String getId() {

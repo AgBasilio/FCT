@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -54,16 +55,18 @@ public class CrearAsignaturaActivity extends AppCompatActivity {
                 asignatura.setNombre(nombreS);
                 asignatura.setCurso(crusoS);
                 asignatura.setDescricion(descripcionS);
-                if (!imagenS.isEmpty()){
+                if (!imagenS.isEmpty()) {
                     asignatura.setImgAsignatura(imagenS);
-                }else{
+                } else {
                     asignatura.setImgAsignatura("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
 
                 }
 
                 refBBD = database.getReference("Asignaturas").child(userid);
-                DatabaseReference rf =refBBD.push();
+                DatabaseReference rf = refBBD.push();
                 rf.setValue(asignatura);
+                Toast.makeText(CrearAsignaturaActivity.this, "Grupo creado!", Toast.LENGTH_SHORT).show();
+                onBackPressed();
 
             }
         });

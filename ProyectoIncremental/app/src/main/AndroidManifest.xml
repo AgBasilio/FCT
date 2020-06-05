@@ -18,12 +18,12 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activity.MainActivity"
-            android:label="@string/title_activity_main2"
+            android:label=""
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".Activity.CreateUserActivity"></activity>
         <activity
             android:name=".Activity.LoginActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Login" />
         <activity
             android:name=".Activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -36,22 +36,22 @@
 
         <activity
             android:name=".Activity.PerfilActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Perfil" />
         <activity
             android:name=".Activity.CrearAsignaturaActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Crear Asignatura" />
         <activity
             android:name=".Activity.CrearGrupoActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Crear Grupo" />
         <activity
             android:name=".Activity.EditarGrupoActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Editar Grupo" />
         <activity
             android:name=".Activity.EditarAsignaturaActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="Editar Asignatura" />
         <activity
             android:name=".Activity.CrearUsuarioActivity"
-            android:label="dsfdsgsdgsd" />
+            android:label="CrearUsuario" />
     </application>
 
 </manifest>

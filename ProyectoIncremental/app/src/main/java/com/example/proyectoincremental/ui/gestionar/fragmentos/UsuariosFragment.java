@@ -71,6 +71,7 @@ public class UsuariosFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_usuarios, container, false);

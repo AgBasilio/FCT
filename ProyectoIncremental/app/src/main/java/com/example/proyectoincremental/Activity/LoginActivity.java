@@ -33,9 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private String password = "";
     private DatabaseReference databaseReference;
     private FirebaseAuth auth;
-    private TextView btnOlvidar;
-    Button resetPass;
-    Button crear;
+    private Button resetPass;
+    private Button crear;
     private Switch switchRemember;
     private FirebaseAuth mAuth;
 
@@ -50,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         prefs = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         setCredentialsIfExist();
 
-
         resetPass = (Button) findViewById(R.id.btnOlvidar);
         crear = (Button) findViewById(R.id.btnCrearUsuarioLogin);
         crear.setOnClickListener(new View.OnClickListener() {
@@ -59,23 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, CreateUserActivity.class));
             }
         });
-        //Impremetar sherfpreferences
-        /*
-        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked==true){
-                    //metodo para recordar usuario
-                        //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
-                        if (mAuth.getCurrentUser() != null) {
-                            startActivity(new Intent(LoginActivity.this, Main2Activity.class));
-                            Toast.makeText(LoginActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                    }
 
-                }
-        });*/
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 email = editTextEmail.getText().toString();
-                 password = editTextPassword.getText().toString();
+                password = editTextPassword.getText().toString();
                 if (!email.isEmpty() && !password.isEmpty()) {
                     login();
                     saveOnPreferences(email, password);
@@ -159,14 +141,15 @@ public class LoginActivity extends AppCompatActivity {
     private void setCredentialsIfExist() {
         editTextEmail = (EditText) findViewById(R.id.emailLogin);
         editTextPassword = (EditText) findViewById(R.id.contraseñaLogin);
-         email = Util.getUserMailPrefs(prefs);
-         password = Util.getUserPassPrefs(prefs);
+        email = Util.getUserMailPrefs(prefs);
+        password = Util.getUserPassPrefs(prefs);
         if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
             editTextEmail.setText(email);
             editTextPassword.setText(password);
             switchRemember.setChecked(true);
         }
     }
+
     private void saveOnPreferences(String email, String password) {
         if (switchRemember.isChecked()) {
             SharedPreferences.Editor editor = prefs.edit();

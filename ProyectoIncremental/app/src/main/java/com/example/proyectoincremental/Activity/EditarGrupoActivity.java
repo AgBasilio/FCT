@@ -64,6 +64,8 @@ public class EditarGrupoActivity extends AppCompatActivity {
                 refBBD2 = database.getReference("Grupos").child(userid).child(id).child("numeroGrupo");
                 refBBD.setValue(snombreeditGrupo);
                 refBBD2.setValue(snumeroditGrupo);
+                onBackPressed();
+
 
             }
         });

@@ -23,9 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateUserActivity extends AppCompatActivity {
-    private EditText email, contraseña, nombre, apellido1, apellido2, edad;
     private FirebaseDatabase database;
     private DatabaseReference refBBD;
+    private EditText email, contraseña, nombre, apellido1, apellido2, edad;
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "";
     private int edadI;
     private Button btnCrearUsuario, btnGoLogin;
@@ -87,6 +87,7 @@ public class CreateUserActivity extends AppCompatActivity {
                                     usuario.setContraseña(contraseñaS);
                                     usuario.setTipo("E");
                                     usuario.setGrupo(" ");
+                                    usuario.setIdgrupo("");
                                     usuario.setAsignaturas(" ");
                                     usuario.setId(currentUser.getUid());
                                     usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
@@ -95,7 +96,7 @@ public class CreateUserActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                            Toast.makeText(CreateUserActivity.this, "No se apodido crear usuario", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(CreateUserActivity.this, "No se apodido crear usuario", Toast.LENGTH_LONG).show();
 
 
                                 }

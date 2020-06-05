@@ -12,21 +12,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
+import com.example.proyectoincremental.Utils.Reuniones;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,23 +38,28 @@ import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.U
 public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.ViewHolder> implements ListAdapter {
     private FirebaseDatabase database;
     private Context context;
-    private List<Asignatura> grupos;
+    private List<Asignatura> asignaturas;
+    private List<Reuniones> listaReuniones;
+
     private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
     private String[] asignaturasusuario = null;
     private AdaptadorReuniones.OnItemClickListener itemClickListener;
+    private CardView cardView;
 
+    private RecyclerView recyclerView, recyclerView1;
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
-    private Asignatura grupo;
+    private Asignatura asignatura;
     private String id;
     private AlertDialog.Builder builder;
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorReuniones(List<Asignatura> asignaturas, Context context, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
-        this.grupos = asignaturas;
+    public AdaptadorReuniones(List<Reuniones> listareuniones, List<Asignatura> asignaturas, Context context, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
+        this.asignaturas = asignaturas;
+        this.listaReuniones = listareuniones;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
@@ -69,6 +72,8 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     public AdaptadorReuniones.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         database = FirebaseDatabase.getInstance();
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+        recyclerView = (RecyclerView) v.findViewById(R.id.listarasignaturasparareunion);
+
         context = parent.getContext();
         auth = FirebaseAuth.getInstance();
         AdaptadorReuniones.ViewHolder vh = new AdaptadorReuniones.ViewHolder(v);
@@ -78,16 +83,35 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     //traemos la informacion de la BBD
     @Override
     public void onBindViewHolder(@NonNull AdaptadorReuniones.ViewHolder holder, final int position) {
+        /**/
+
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        grupo = grupos.get(position);
+        asignatura = asignaturas.get(position);
+        Asignatura asignatura = asignaturas.get(position);
 
-        holder.curso.setText(grupo.getCurso());
-        holder.nombre.setText(grupo.getNombre());
-        holder.curso.setText(grupo.getDescricion());
-        holder.bind(grupo, itemClickListener);
-        if (!grupo.getImgAsignatura().isEmpty()) {
 
-            Picasso.get().load(grupo.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
+
+
+
+        if (listaReuniones != null && listaReuniones.size() > 0) {
+            for (Reuniones a : listaReuniones) {
+                if (a.getAsignarra().equals(asignatura.getId())) {
+                    ((CardView) holder.itemView).setCardBackgroundColor(Color.parseColor("#2d572c")) ;
+                } else {
+                    ((CardView) holder.itemView).setCardBackgroundColor(Color.parseColor("#FFFFFF")) ;
+                }
+                break;
+
+            }
+        }
+
+        holder.curso.setText(this.asignatura.getCurso());
+        holder.nombre.setText(this.asignatura.getNombre());
+        holder.curso.setText(this.asignatura.getDescricion());
+        holder.bind(this.asignatura, itemClickListener);
+        if (!this.asignatura.getImgAsignatura().isEmpty()) {
+
+            Picasso.get().load(this.asignatura.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
         } else {
 
             Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.img);
@@ -117,11 +141,13 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
         //clik al item
         public void bind(final Asignatura grupos, final AdaptadorReuniones.OnItemClickListener itemListener) {
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-               //     itemView.setBackgroundColor(Color.parseColor("#567845"));
-                    itemListener.onItemClick(grupos, getAdapterPosition());
+
+                    //  itemView.setBackgroundColor(Color.parseColor("#000000"));
+                    itemListener.onItemClick(grupos, getAdapterPosition(),itemView);
                 }
             });
 
@@ -156,7 +182,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     Intent intent = new Intent(context, EditarGrupoActivity.class);
                                     //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
+                                    intent.putExtra("Id", asignaturas.get(getAdapterPosition()).getId());
                                     //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
@@ -170,7 +196,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     Intent intent = new Intent(context, EditarGrupoActivity.class);
                                     //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
+                                    intent.putExtra("Id", asignaturas.get(getAdapterPosition()).getId());
                                     // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
                                     context.startActivity(intent);
                                     context.startActivity(intent);
@@ -196,7 +222,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                             public void onClick(DialogInterface dialog, int which) {
 
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(grupos.get(getAdapterPosition()).getId()).removeValue();
+                                    database.getReference("Grupos").child(userid).child(asignaturas.get(getAdapterPosition()).getId()).removeValue();
 
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -207,7 +233,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(grupos.get(getAdapterPosition()).getId()).removeValue();
+                                    database.getReference("Grupos").child(userid).child(asignaturas.get(getAdapterPosition()).getId()).removeValue();
 
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -225,7 +251,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
 
     @Override
     public int getItemCount() {
-        return grupos.size();
+        return asignaturas.size();
     }
 
     @Override
@@ -280,9 +306,8 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Asignatura asignatura, int position);
+        void onItemClick(Asignatura asignatura, int position, View itemView);
     }
-
 
 
 }

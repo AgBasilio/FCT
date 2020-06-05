@@ -70,6 +70,8 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
                 refBBD2.setValue(sdescripcioneditAsignatura);
                 refBBD3.setValue(sfotoeditAsignatura);
                 refBBD4.setValue(snombreeditAsignatura);
+                onBackPressed();
+
 
 
             }

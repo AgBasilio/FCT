@@ -5,23 +5,23 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="10dp">
 
     <LinearLayout
-        android:layout_gravity="center"
         android:id="@+id/todo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/name1"
-            android:layout_width="180dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:text="Titulo1"

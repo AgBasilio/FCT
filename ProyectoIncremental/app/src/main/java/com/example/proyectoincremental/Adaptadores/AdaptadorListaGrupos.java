@@ -42,7 +42,7 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private List<Grupos> grupos;
     private int layout;
     private List<Grupos> listaAdinaturasfiltradas;
-    private String[] grupoUsuario = null;
+    private String grupoUsuario = null;
 
     private AdaptadorListaGrupos.OnItemClickListener itemClickListener;
 
@@ -55,7 +55,7 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaGrupos(List<Grupos> asignaturas, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener, String[] grupoUsuario) {
+    public AdaptadorListaGrupos(List<Grupos> asignaturas, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener, String grupoUsuario) {
         this.grupos = asignaturas;
         this.layout = layout;
         this.context = context;
@@ -80,19 +80,12 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     public void onBindViewHolder(@NonNull AdaptadorListaGrupos.ViewHolder holder, final int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         grupo = grupos.get(position);
-
-        if (grupoUsuario != null && grupoUsuario.length > 0) {
-            for (String a : grupoUsuario) {
-                if (a.equals(grupo.getNombreGrupo())) {
+        if (grupoUsuario != null) {
+                if (grupoUsuario.equals(grupo.getNombreGrupo())) {
                     holder.checkBox.setChecked(true);
                     //chekbox true defecto
                     //Break para qtermianr el brak
-                    break;
                 }
-
-
-            }
-
 
         }
 

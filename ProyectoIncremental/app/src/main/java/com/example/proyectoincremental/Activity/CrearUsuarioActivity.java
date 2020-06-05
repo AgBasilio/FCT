@@ -55,7 +55,8 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
     private List<Asignatura> listaEventos;
     private List<Grupos> listaGrupos;
-    private List<String> listaGruposs;
+    private List<String> listaGruposs, listaIdGruposs;
+
     private List<String> listaAsignaturas;
 
 
@@ -63,7 +64,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private DatabaseReference referenceEventos, referenceEventos2;
-    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6, refBBD0;
+    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6, refBBD0, refBBD7;
     private FirebaseAuth mAuth;
 
 
@@ -71,7 +72,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager, mLayoutManager1;
     private AlertDialog.Builder builder;
 
-    private String f = "", a = "";
+    private String f = "", a = "", b = "";
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "", asignaturas = "", grupo = "", tipoS;
     private String ciudadSeleccionada = "";
     private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
@@ -80,7 +81,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private int edadI, recuperamos_variable_integer;
     private Switch aSwitchA;
     private String[] asignaturasusurio;
-    private String[] gruposusurio;
+    private String gruposusurio;
 
     private Button btnCrearUsuario, btnGoLogin, btnEditUsuario, btnlistarG, btnlistarA;
     private SharedPreferences prefs, sfd;
@@ -92,43 +93,49 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_usuariodentro);
+
+        //Variables de firebase
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         database1 = FirebaseDatabase.getInstance();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        userid = firebaseUser.getUid();
 
+        //Editex del formulario
         nombre = findViewById(R.id.nombre);
         email = findViewById(R.id.email);
         contraseña = findViewById(R.id.contraseña);
         apellido1 = findViewById(R.id.apellido1);
-        btnEditUsuario = findViewById(R.id.btnEditarUsuariodentro);
         apellido2 = findViewById(R.id.apellido2);
         edad = findViewById(R.id.edad);
 
+        //Btns y wiwets
+        btnEditUsuario = findViewById(R.id.btnEditarUsuariodentro);
         spinner = findViewById(R.id.tipo);
         btnCrearUsuario = findViewById(R.id.btnCrearUsuariodentro);
 
+        //Recicler de la lista grupos
         recyclerView = (RecyclerView) findViewById(R.id.listaA);
-        recyclerView1 = (RecyclerView) findViewById(R.id.listaG);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
+
+        //Recicler de la lista asignaturas
+        recyclerView1 = (RecyclerView) findViewById(R.id.listaG);
         recyclerView1.setHasFixedSize(true);
         recyclerView1.setItemAnimator(new DefaultItemAnimator());
         mLayoutManager1 = new LinearLayoutManager(this);
         recyclerView1.setLayoutManager(mLayoutManager1);
+
+        //Listas
         listaEventos = new ArrayList<Asignatura>();
         listaGrupos = new ArrayList<Grupos>();
         listaGruposs = new ArrayList<String>();
+        listaIdGruposs = new ArrayList<String>();
         listaAsignaturas = new ArrayList<String>();
-
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-
-        userid = firebaseUser.getUid();
 
 
         //-----------------------------------------------------------------------------------------------------------------------------//
@@ -143,7 +150,14 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             id = getIntent().getExtras().getString("Id");
             String tiposss = getIntent().getStringExtra("Tipo");
             asignaturasusurio = getIntent().getStringExtra("Asignaturas").split(",");
-            gruposusurio = getIntent().getStringExtra("Grupos").split(",");
+            for (String a : asignaturasusurio) {
+                if (!a.isEmpty()) {
+                    listaAsignaturas.add(a);
+
+                }
+            }
+            gruposusurio = getIntent().getStringExtra("Grupos");
+
 
             recuperamos_variable_integer = getIntent().getIntExtra("Edad", 0);
             edadS = Integer.toString(recuperamos_variable_integer);
@@ -188,17 +202,35 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
                     if (checkBoxx.isChecked()) {
                         //alomjor funcina comentarlo con agus ,cremos otro nodo, preguntar a vr si se le ocurre como realizar esto cuando presionesmos el boton
-
                         listaAsignaturas.add(asignatura.getNombre());
+                        String a = "";
+                        for (int i = 0; i < listaAsignaturas.size(); i++) {
+                            a += listaAsignaturas.get(i) + ",";
+                        }
+                        if (!a.isEmpty()) {
+                            a = a.substring(0, a.length() - 1);
+                        }
+
+                        refBBD5 = database.getReference("Usuarios").child(id).child("asignaturas");
+                        refBBD5.setValue(a);
+
                         refBBD = database.getReference("AsignaturasDefinidas").child(id).child(asignatura.getId());
                         refBBD.setValue(asignatura);
 
 
                     } else if (!checkBoxx.isChecked()) {
-
+                        listaAsignaturas.remove(asignatura.getNombre());
+                        String a = "";
+                        for (int i = 0; i < listaAsignaturas.size(); i++) {
+                            a += listaAsignaturas.get(i) + ",";
+                        }
+                        if (!a.isEmpty()) {
+                            a = a.substring(0, a.length() - 1);
+                        }
+                        refBBD5 = database.getReference("Usuarios").child(id).child("asignaturas");
+                        refBBD5.setValue(a);
                         //alomjor funcina comentarlo con agus ,cramos otro nodo
 
-                        listaAsignaturas.remove(asignatura.getNombre());
                         refBBD = database.getReference("AsignaturasDefinidas").child(id).child(asignatura.getId());
                         refBBD.removeValue();
 
@@ -219,15 +251,22 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
                     if (checkBox.isChecked()) {
-                        listaGruposs.add(grupos.getNombreGrupo());
+                        refBBD6 = database.getReference("Usuarios").child(id).child("grupo");
+                        refBBD7 = database.getReference("Usuarios").child(id).child("idgrupo");
                         refBBD0 = database.getReference("GruposDefinidos").child(grupos.getId()).child(id);
+                        refBBD6.setValue(grupos.getNombreGrupo());
+                        refBBD7.setValue(grupos.getId());
                         refBBD0.setValue("");
+                        Toast.makeText(CrearUsuarioActivity.this, "solo se guardara el ultimo selecionado", Toast.LENGTH_LONG).show();
 
                     } else if (!checkBox.isChecked()) {
+                        refBBD6.setValue("");
+                        refBBD7.setValue("");
                         refBBD0 = database.getReference("GruposDefinidos").child(grupos.getId()).child(id);
                         refBBD0.removeValue();
-                        listaGruposs.remove(grupos.getNombreGrupo());
                     }
+                    b = listaIdGruposs.toString();
+
                     f = listaGruposs.toString();
                 }
 
@@ -239,6 +278,24 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             btnEditUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    String b = "";
+                    String c = "";
+
+
+                    for (int i = 0; i < listaIdGruposs.size(); i++) {
+                        b += listaIdGruposs.get(i) + ",";
+                    }
+                    for (int i = 0; i < listaGruposs.size(); i++) {
+                        c += listaGruposs.get(i) + ",";
+                    }
+                    if (!b.isEmpty()) {
+                        b = b.substring(0, b.length() - 1);
+                    }
+
+                    if (!c.isEmpty()) {
+                        c = c.substring(0, c.length() - 1);
+                    }
 
                     auth = FirebaseAuth.getInstance();
                     FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -255,17 +312,17 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     refBBD3 = database.getReference("Usuarios").child(id).child("edad");
                     refBBD4 = database.getReference("Usuarios").child(id).child("tipo");
                     refBBD5 = database.getReference("Usuarios").child(id).child("asignaturas");
-                    refBBD6 = database.getReference("Usuarios").child(id).child("grupos");
 
                     refBBD.setValue(nombreS);
                     refBBD1.setValue(apellido1S);
                     refBBD2.setValue(apellido2S);
                     refBBD3.setValue(edadI);
                     refBBD4.setValue(ciudadSeleccionada);
-
-
                     refBBD5.setValue(a);
-                    //refBBD6.setValue(f);
+                    refBBD6.setValue(c);
+                    refBBD7.setValue(b);
+                    onBackPressed();
+
                     //refBBD2.setValue(emailS);
 
                 }
@@ -359,10 +416,16 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                         public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
                             if (checkBox.isChecked()) {
                                 listaGruposs.add(grupos.getNombreGrupo());
+                                listaIdGruposs.add(grupos.getId());
+
                             } else if (!checkBox.isChecked()) {
                                 listaGruposs.remove(grupos.getNombreGrupo());
+                                listaIdGruposs.add(grupos.getId());
+
                             }
                             f = listaGruposs.toString();
+                            b = listaIdGruposs.toString();
+
                         }
 
                     }, null);
@@ -412,10 +475,28 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         String a = "";
+                                        String b = "";
+                                        String c = "";
+
+
                                         for (int i = 0; i < listaAsignaturas.size(); i++) {
                                             a += listaAsignaturas.get(i) + ",";
                                         }
-                                        a = a.substring(0, a.length() - 1);
+                                        for (int i = 0; i < listaIdGruposs.size(); i++) {
+                                            b += listaIdGruposs.get(i) + ",";
+                                        }
+                                        for (int i = 0; i < listaGruposs.size(); i++) {
+                                            c += listaGruposs.get(i) + ",";
+                                        }
+                                        if (!b.isEmpty()) {
+                                            b = b.substring(0, b.length() - 1);
+                                        }
+                                        if (!a.isEmpty()) {
+                                            a = a.substring(0, a.length() - 1);
+                                        }
+                                        if (!c.isEmpty()) {
+                                            c = c.substring(0, c.length() - 1);
+                                        }
                                         //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
                                         edadI = Integer.parseInt(edadS);
                                         //instancia de la bbd
@@ -427,13 +508,16 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                                         usuario.setApellido2(apellido2S);
                                         usuario.setEdad(edadI);
                                         usuario.setContraseña(contraseñaS);
-                                        usuario.setGrupo(a);
-                                        usuario.setAsignaturas(f);
+                                        usuario.setGrupo(c);
+                                        usuario.setIdgrupo(b);
+                                        usuario.setAsignaturas(a);
                                         usuario.setTipo(ciudadSeleccionada);
                                         usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                         usuario.setId(task.getResult().getUser().getUid());
                                         refBBD.setValue(usuario);
                                         Toast.makeText(CrearUsuarioActivity.this, "se a creado correctamente", Toast.LENGTH_LONG).show();
+
+                                        onBackPressed();
                                     } else {
 
                                         Toast.makeText(CrearUsuarioActivity.this, "no se ha creado", Toast.LENGTH_LONG).show();

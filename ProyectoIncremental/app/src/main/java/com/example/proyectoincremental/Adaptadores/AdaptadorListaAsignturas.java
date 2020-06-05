@@ -82,6 +82,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
         if (asignaturasusuario != null && asignaturasusuario.length > 0) {
             for (String a : asignaturasusuario) {
                 if (a.equals(grupo.getNombre())) {
+
                     holder.checkBox.setChecked(true);
                     //chekbox true defecto
                     //Break para qtermianr el brak
