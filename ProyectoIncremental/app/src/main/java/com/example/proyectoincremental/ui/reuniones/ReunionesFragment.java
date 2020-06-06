@@ -61,7 +61,7 @@ public class ReunionesFragment extends Fragment {
     private AdaptadorReuniones adaptadorEventos;
     private AdaptadorListaGrupos adaptadorGrupos;
 
-    private List<Asignatura> listaEventos;
+    private List<Asignatura> listaAsiganturasDefinidas;
     private List<Reuniones> listaReuniones;
     private List<Grupos> listaGrupos;
     private List<String> listaGruposs;
@@ -95,7 +95,7 @@ public class ReunionesFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
 
 
-        listaEventos = new ArrayList<Asignatura>();
+        listaAsiganturasDefinidas = new ArrayList<Asignatura>();
         listaReuniones = new ArrayList<Reuniones>();
 
         mAuth = FirebaseAuth.getInstance();
@@ -105,59 +105,47 @@ public class ReunionesFragment extends Fragment {
         firebaseUser = auth.getCurrentUser();
 
         userid = firebaseUser.getUid();
-        //Referencia a las asgnaturas asignadas del usuario
 
-        // referenceEventos2 = database.getInstance().getReference("Usuarios").child(userid).child("asignaturas");
-
-/*
-        referenceEventos2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                d = dataSnapshot.getValue().toString();
-                Toast toast1 = Toast.makeText(getContext(), "Toast por defecto" + d, Toast.LENGTH_SHORT);
-                toast1.show();
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-
-            }
-        });
-*/
         database.getReference("Usuarios").child(userid).child("idgrupo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() != null)
-                    idgrupo = dataSnapshot.getValue().toString();
-                else
-                    idgrupo = "";
+
+                idgrupo = dataSnapshot.getValue(String.class);
+
+                if (idgrupo.isEmpty()){
+                    Toast toast1 = Toast.makeText(getContext(), "Usted no tiene grupo asignado.", Toast.LENGTH_LONG);
+                    return;
+                }
+
                 //REFERENCIA ASIGNATURAS
                 referenceEventos = database.getInstance().getReference("AsignaturasDefinidas").child(userid);
 
                 referenceEventos.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        //listaAsiganturasDefinidas
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                             Asignatura p = dataSnapshot1.getValue(Asignatura.class);
                             p.setId(dataSnapshot1.getKey());
-                            listaEventos.add(p);
+                            listaAsiganturasDefinidas.add(p);
                         }
                         DatabaseReference refReuniones = database.getInstance().getReference("Reuniones").child(idgrupo);
+
                         //se realiza el lisener continuamente por si hay cambios no com el resto que se ejecuta una vez
                         refReuniones.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    Reuniones p = dataSnapshot1.getValue(Reuniones.class);
-                                    listaReuniones.add(p);
-                                }
+                                    listaReuniones = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                        Reuniones p = dataSnapshot1.getValue(Reuniones.class);
+                                        p.setId(dataSnapshot1.getKey());
+                                        listaReuniones.add(p);
+                                    }
 
-                                adaptadorEventos = new AdaptadorReuniones(listaReuniones, listaEventos, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
+                                adaptadorEventos = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
 
                                     @Override
-                                    public void onItemClick(Asignatura asignatura, int position, View itemView) {
+                                    public void onItemClick(Reuniones reunionTarjeta, int position, View itemView) {
                                         cardView = (CardView) recyclerView.getChildAt(position);
 
                                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -166,22 +154,21 @@ public class ReunionesFragment extends Fragment {
                                         refreuniones = database.getReference("Reuniones").child(idgrupo);
 
                                         if (cardView.getCardBackgroundColor().getDefaultColor() == -1) {
-                                            cardView.setCardBackgroundColor(Color.parseColor("#2d572c"));
+                                            //cardView.setCardBackgroundColor(Color.parseColor("#2d572c"));
 
 
                                             Reuniones reunion = new Reuniones();
-                                            reunion.setAsignarra(listaEventos.get(position).getId());
+                                            reunion.setAsignarra(listaAsiganturasDefinidas.get(position).getId());
                                             reunion.setGrupo(idgrupo);
                                             reunion.setHora(currentDateandTime);
 
                                             refreuniones.push().setValue(reunion);
 
                                         } else {
-                                            //cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                                            cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                                            //cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 
-                                            refreuniones.removeValue();
-
+                                            //mal, remueve todas las reuniones, revisar
+                                            refreuniones.child(reunionTarjeta.getId()).removeValue();
                                         }
 
                                         Toast toast1 = Toast.makeText(getContext(), "Toast por defecto" + position, Toast.LENGTH_SHORT);
