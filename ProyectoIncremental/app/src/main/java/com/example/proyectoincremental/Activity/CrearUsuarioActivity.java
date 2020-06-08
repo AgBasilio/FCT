@@ -319,6 +319,8 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     refBBD3.setValue(edadI);
                     refBBD4.setValue(ciudadSeleccionada);
                     refBBD5.setValue(a);
+
+
                     refBBD6.setValue(c);
                     refBBD7.setValue(b);
                     onBackPressed();
@@ -328,7 +330,6 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 }
             });
         }
-
         //-----------------------------------------------------------------------------------------------------------------------------//
         //SI NO RECIBE INFOMACION PODEMOS CREAR USUARIOOS
         //-----------------------------------------------------------------------------------------------------------------------------//

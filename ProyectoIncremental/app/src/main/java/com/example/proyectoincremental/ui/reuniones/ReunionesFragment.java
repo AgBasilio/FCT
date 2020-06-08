@@ -1,5 +1,7 @@
 package com.example.proyectoincremental.ui.reuniones;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -69,6 +71,7 @@ public class ReunionesFragment extends Fragment {
     private String a, idgrupo;
     DatabaseReference refreuniones;
 
+    private AlertDialog.Builder builder;
 
     private FirebaseDatabase database, database1;
     private FirebaseUser firebaseUser;
@@ -112,7 +115,7 @@ public class ReunionesFragment extends Fragment {
 
                 idgrupo = dataSnapshot.getValue(String.class);
 
-                if (idgrupo.isEmpty()){
+                if (idgrupo.isEmpty()) {
                     Toast toast1 = Toast.makeText(getContext(), "Usted no tiene grupo asignado.", Toast.LENGTH_LONG);
                     return;
                 }
@@ -135,17 +138,17 @@ public class ReunionesFragment extends Fragment {
                         refReuniones.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    listaReuniones = new ArrayList<>();
-                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                        Reuniones p = dataSnapshot1.getValue(Reuniones.class);
-                                        p.setId(dataSnapshot1.getKey());
-                                        listaReuniones.add(p);
-                                    }
+                                listaReuniones = new ArrayList<>();
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    Reuniones p = dataSnapshot1.getValue(Reuniones.class);
+                                    p.setId(dataSnapshot1.getKey());
+                                    listaReuniones.add(p);
+                                }
 
                                 adaptadorEventos = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
 
                                     @Override
-                                    public void onItemClick(Reuniones reunionTarjeta, int position, View itemView) {
+                                    public void onItemClick(final Reuniones reunionTarjeta, int position, View itemView) {
                                         cardView = (CardView) recyclerView.getChildAt(position);
 
                                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -156,7 +159,6 @@ public class ReunionesFragment extends Fragment {
                                         if (cardView.getCardBackgroundColor().getDefaultColor() == -1) {
                                             //cardView.setCardBackgroundColor(Color.parseColor("#2d572c"));
 
-
                                             Reuniones reunion = new Reuniones();
                                             reunion.setAsignarra(listaAsiganturasDefinidas.get(position).getId());
                                             reunion.setGrupo(idgrupo);
@@ -165,10 +167,40 @@ public class ReunionesFragment extends Fragment {
                                             refreuniones.push().setValue(reunion);
 
                                         } else {
+                                            builder = new AlertDialog.Builder(getContext());
+                                            builder.setTitle("ATENCION");
+                                            builder.setMessage("\n" + "Seguro que quieres eliminar la reunion del dia "+reunionTarjeta.getHora());
+                                            // Set up the buttons
+                                            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                                                        refreuniones.child(reunionTarjeta.getId()).removeValue();
+
+                                                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                            });
+                                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+
+                                                        refreuniones.child(reunionTarjeta.getId()).removeValue();
+
+                                                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                            });
+                                            builder.show();
+
                                             //cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
 
                                             //mal, remueve todas las reuniones, revisar
-                                            refreuniones.child(reunionTarjeta.getId()).removeValue();
+                                            //      refreuniones.child(reunionTarjeta.getId()).removeValue();
                                         }
 
                                         Toast toast1 = Toast.makeText(getContext(), "Toast por defecto" + position, Toast.LENGTH_SHORT);
