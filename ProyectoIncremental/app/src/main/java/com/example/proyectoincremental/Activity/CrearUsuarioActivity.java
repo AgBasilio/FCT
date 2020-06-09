@@ -279,23 +279,6 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    String b = "";
-                    String c = "";
-
-
-                    for (int i = 0; i < listaIdGruposs.size(); i++) {
-                        b += listaIdGruposs.get(i) + ",";
-                    }
-                    for (int i = 0; i < listaGruposs.size(); i++) {
-                        c += listaGruposs.get(i) + ",";
-                    }
-                    if (!b.isEmpty()) {
-                        b = b.substring(0, b.length() - 1);
-                    }
-
-                    if (!c.isEmpty()) {
-                        c = c.substring(0, c.length() - 1);
-                    }
 
                     auth = FirebaseAuth.getInstance();
                     FirebaseUser firebaseUser = auth.getCurrentUser();
@@ -319,14 +302,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     refBBD3.setValue(edadI);
                     refBBD4.setValue(ciudadSeleccionada);
                     refBBD5.setValue(a);
-
-
-                    refBBD6.setValue(c);
-                    refBBD7.setValue(b);
                     onBackPressed();
-
-                    //refBBD2.setValue(emailS);
-
                 }
             });
         }
