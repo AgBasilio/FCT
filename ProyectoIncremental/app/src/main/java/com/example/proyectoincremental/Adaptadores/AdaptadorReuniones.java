@@ -46,9 +46,8 @@ import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.U
 public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.ViewHolder> implements ListAdapter {
     private FirebaseDatabase database;
     private Context context;
-    private List<Asignatura> asignaturas;
+    protected List<Asignatura> asignaturas;
     private List<Reuniones> listaReuniones;
-    private Reuniones reuniones;
     private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
     private String[] asignaturasusuario = null;
@@ -59,7 +58,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
-    private Asignatura asignatura;
+    protected Asignatura asignatura;
     private String id;
     private AlertDialog.Builder builder;
     private String userid, idgrupo;
@@ -131,7 +130,8 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     public class ViewHolder extends RecyclerView.ViewHolder  {
 
 
-        private TextView curso, nombre;
+        protected TextView curso;
+        protected TextView nombre;
         public ImageView img;
 
         public ViewHolder(View itemView) {

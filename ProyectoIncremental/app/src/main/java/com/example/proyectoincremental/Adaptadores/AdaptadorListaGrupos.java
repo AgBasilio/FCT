@@ -12,10 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -23,15 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoincremental.Activity.EditarAsignaturaActivity;
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.Utils.Asignatura;
 import com.example.proyectoincremental.Utils.Grupos;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +34,8 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private Context context;
     private List<Grupos> grupos;
     private int layout;
-    private List<Grupos> listaAdinaturasfiltradas;
-    private String grupoUsuario = null;
+    private List<Grupos> listaGruposFiltrados;
+    private String idGrupoDelUsuario = "";
 
     private AdaptadorListaGrupos.OnItemClickListener itemClickListener;
 
@@ -55,14 +48,14 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaGrupos(List<Grupos> asignaturas, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener, String grupoUsuario) {
-        this.grupos = asignaturas;
+    public AdaptadorListaGrupos(List<Grupos> gruposList, Context context, int layout, AdaptadorListaGrupos.OnItemClickListener itemListener, String idGrupoDelUsuario) {
+        this.grupos = gruposList;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
-        this.grupoUsuario = grupoUsuario;
+        this.idGrupoDelUsuario = idGrupoDelUsuario;
 
-        this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
+        this.listaGruposFiltrados = new ArrayList<>(gruposList);
     }
 
     @Override
@@ -80,23 +73,17 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
     public void onBindViewHolder(@NonNull AdaptadorListaGrupos.ViewHolder holder, final int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         grupo = grupos.get(position);
-        if (grupoUsuario != null) {
-                if (grupoUsuario.equals(grupo.getNombreGrupo())) {
-                    holder.checkBox.setChecked(true);
-                    //chekbox true defecto
-                    //Break para qtermianr el brak
-                }
-
+        if (idGrupoDelUsuario != null) {
+            if (idGrupoDelUsuario.equals(grupo.getId())) {
+                holder.checkBox.setChecked(true);
+                //chekbox true
+            }
         }
 
         holder.nombre.setText(grupo.getNombreGrupo());
         holder.curso.setText(grupo.getNumeroGrupo());
 
-        //preguntar a agus si lo cambiamos a string par atraerlo mas facil
-        //holder.plazas.setText(eventoss.getFecha());
         holder.bind(grupo, itemClickListener);
-
-
     }
 
 

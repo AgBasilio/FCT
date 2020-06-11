@@ -53,18 +53,23 @@ public class CrearGrupoActivity extends AppCompatActivity {
                 grupo.setNombreGrupo(nombre.getText().toString());
                 grupo.setNumeroGrupo(curso.getText().toString());
 
-                database.getReference("Grupos").child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                database.getReference("Grupos").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         boolean repetido = false;
-                        for (DataSnapshot a : dataSnapshot.getChildren()) {
 
-                            if (a.getValue(Grupos.class).getNumeroGrupo().equals(grupo.getNumeroGrupo())) {
-                                Toast.makeText(CrearGrupoActivity.this, "Existe un grupo con este numero de grupo.", Toast.LENGTH_SHORT).show();
-                                repetido = true;
-                                break;
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            for (DataSnapshot a : ds.getChildren()){
+                                if (a.getValue(Grupos.class).getNumeroGrupo().equals(grupo.getNumeroGrupo())) {
+                                    Toast.makeText(CrearGrupoActivity.this, "Existe un grupo con este numero de grupo.", Toast.LENGTH_SHORT).show();
+                                    repetido = true;
+                                    break;
+                                }
                             }
+                            if(repetido)
+                                return;
                         }
+
                         ngrupo = grupo.getNumeroGrupo();
 
                         if (isNumeric(ngrupo) == true) {

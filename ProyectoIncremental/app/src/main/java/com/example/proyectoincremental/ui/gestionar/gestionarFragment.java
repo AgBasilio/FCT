@@ -48,9 +48,8 @@ public class gestionarFragment extends Fragment {
                 }else  if (tab.getPosition() == 1) {
                     pagerController.notifyDataSetChanged();
 
-                }  else     if (tab.getPosition() == 2) {
+                }  else if (tab.getPosition() == 2) {
                             pagerController.notifyDataSetChanged();
-
                         }
                     }
 
