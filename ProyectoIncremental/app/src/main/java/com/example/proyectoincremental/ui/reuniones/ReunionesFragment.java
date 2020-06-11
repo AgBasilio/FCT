@@ -1,5 +1,4 @@
 package com.example.proyectoincremental.ui.reuniones;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,23 +28,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 public class ReunionesFragment extends Fragment {
-
     private String userid;
     private AdaptadorReuniones adaptadorReuniones;
-
     private List<Asignatura> listaAsiganturasDefinidas;
     private List<Reuniones> listaReuniones;
     private String idgrupo;
     DatabaseReference refreuniones;
-
-
     private FirebaseDatabase database;
     private DatabaseReference referenceEventos;
     CardView cardView;
-
-
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private int containerId;
@@ -57,7 +49,6 @@ public class ReunionesFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         listaAsiganturasDefinidas = new ArrayList<>();
         listaReuniones = new ArrayList<>();
-
         userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         database.getReference("Usuarios").child(userid).addListenerForSingleValueEvent(
@@ -82,8 +73,6 @@ public class ReunionesFragment extends Fragment {
                     }
                 }
         );
-
-
         recyclerView = (RecyclerView) view.findViewById(R.id.listarasignaturasparareunion);
         /**/
         recyclerView.setHasFixedSize(true);
@@ -93,7 +82,6 @@ public class ReunionesFragment extends Fragment {
 
         return view;
     }
-
     private void loadLayoutProfesor(Usuario usr) {
         //buscar las asignaturas con idProfesor
         database.getInstance().getReference("AsignaturasDefinidas").child(userid).addListenerForSingleValueEvent(
@@ -139,10 +127,8 @@ public class ReunionesFragment extends Fragment {
             Toast.makeText(getContext(), "Usted no tiene grupo asignado.", Toast.LENGTH_LONG).show();
             return;
         }
-
         //REFERENCIA ASIGNATURAS
         referenceEventos = database.getInstance().getReference("AsignaturasDefinidas").child(userid);
-
         referenceEventos.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
@@ -153,7 +139,6 @@ public class ReunionesFragment extends Fragment {
                     listaAsiganturasDefinidas.add(p);
                 }
                 DatabaseReference refReuniones = database.getInstance().getReference("Reuniones").child(idgrupo);
-
                 //se realiza el lisener continuamente por si hay cambios no com el resto que se ejecuta una vez
                 refReuniones.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -164,7 +149,6 @@ public class ReunionesFragment extends Fragment {
                             p.setId(dataSnapshot1.getKey());
                             listaReuniones.add(p);
                         }
-
                         adaptadorReuniones = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
 
                             @Override
@@ -179,7 +163,6 @@ public class ReunionesFragment extends Fragment {
                                 if (cardView.getCardBackgroundColor().getDefaultColor() == -1) {
                                     //cardView.setCardBackgroundColor(Color.parseColor("#2d572c"));
 
-
                                     Reuniones reunion = new Reuniones();
                                     reunion.setAsignarra(listaAsiganturasDefinidas.get(position).getId());
                                     reunion.setGrupo(idgrupo);
@@ -193,16 +176,12 @@ public class ReunionesFragment extends Fragment {
                             }
                         });
                         recyclerView.setAdapter(adaptadorReuniones);
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
-
-
             }
 
             @Override

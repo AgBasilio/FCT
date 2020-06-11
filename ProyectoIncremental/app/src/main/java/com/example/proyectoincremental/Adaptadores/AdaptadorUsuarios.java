@@ -25,8 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectoincremental.Activity.CrearUsuarioActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Usuario;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +35,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
 
 public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.ViewHolder> implements ListAdapter, Filterable {
     private Context context;
@@ -86,14 +84,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
         } else {
             Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb").resize(540, 450).centerCrop().into(holder.imgusuario);
         }
-
-/*
-        if (!usuario.getImagen().isEmpty()) {
-            Picasso.get().load(usuario.getImagen()).resize(540, 550).centerCrop().into(holder.imgusuario);
-        } else {
-            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb").resize(540, 450).centerCrop().into(holder.imgusuario);
-        }
-   */     holder.bind(usuario, itemClickListener);
+        holder.bind(usuario, itemClickListener);
 
 
     }
@@ -224,21 +215,6 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     database.getReference("AsignaturasDefinidas").child(usuarios.get(getAdapterPosition()).getId()).removeValue();
                                     //eliminar de grupo definido
                                     database.getReference("GruposDefinidos").child(usuarios.get(getAdapterPosition()).getIdgrupo()).child(usuarios.get(getAdapterPosition()).getId()).removeValue();
-
-//                                    FirebaseOptions o = new FirebaseOptions.Builder()
-//                                            .setDatabaseUrl("https://proyecto-fct-83b84.firebaseio.com")
-//                                            .setApiKey("AIzaSyC_XHzyTqoJ7Vn5kegroWEYLxx9M0XovSQ")
-//                                            .setApplicationId("proyecto-fct-83b84").build();
-//
-//                                    FirebaseAuth authParaCrearUsuario;
-//                                    try {
-//                                        FirebaseApp myApp = FirebaseApp.initializeApp(context.getApplicationContext(), o, "otro");
-//                                        authParaCrearUsuario = FirebaseAuth.getInstance(myApp);
-//                                    } catch (IllegalStateException e) {
-//                                        authParaCrearUsuario = FirebaseAuth.getInstance(FirebaseApp.getInstance("otro"));
-//                                    }
-//
-//                                    authParaCrearUsuario
 
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();

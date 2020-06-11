@@ -54,7 +54,7 @@ public class EditarGrupoActivity extends AppCompatActivity {
                 FirebaseUser firebaseUser = auth.getCurrentUser();
 
 
-                String userid = firebaseUser.getUid();
+                final String userid = firebaseUser.getUid();
                 snombreeditGrupo = nombreGrupo.getText().toString();
                 snumeroditGrupo = numeroGrupo.getText().toString();
                 refBBD = database.getReference("Grupos").child(userid).child(id).child("nombreGrupo");

@@ -5,15 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.reuniones.ReunionesFragment">
+    tools:context=".ui.reuniones.ReunionesFragment"
+    android:padding="20dp">
 
    <TextView
+       android:textColor="#000000"
        android:id="@+id/textViewAsignatura"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:textAlignment="center"
        android:textSize="35dp"
-       android:text="Nombre asignatura" />
+       android:text="Nombre asignatura"
+       android:layout_marginBottom="10dp"/>
 
    <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/listarasignaturasparareunionprofesores"

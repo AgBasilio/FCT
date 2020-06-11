@@ -97,9 +97,9 @@ public class AdaptadorListaGrupos extends RecyclerView.Adapter<AdaptadorListaGru
         public ViewHolder(View itemView) {
             super(itemView);
 
-            nombre = (TextView) itemView.findViewById(R.id.name1);
-            curso = (TextView) itemView.findViewById(R.id.ncurso1);
-            checkBox=(CheckBox) itemView.findViewById(R.id.checkBox2);
+     //       nombre = (TextView) itemView.findViewById(R.id.name1);
+       //     curso = (TextView) itemView.findViewById(R.id.ncurso1);
+         //   checkBox=(CheckBox) itemView.findViewById(R.id.checkBox2);
 
             itemView.setOnCreateContextMenuListener(this);
         }

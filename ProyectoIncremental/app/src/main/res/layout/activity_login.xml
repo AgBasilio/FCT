@@ -14,65 +14,74 @@
         android:background="#9F9F9F"
         app:cardCornerRadius="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
-            android:textAlignment="center"
-            android:textSize="50dp"
-            ></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="140dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:text="Login"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="50dp"></TextView>
 
             <EditText
                 android:id="@+id/emailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="email" />
+                android:hint="Email" />
 
             <EditText
                 android:id="@+id/contraseñaLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
-
-
 
                 />
 
             <Switch
                 android:id="@+id/switch1"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Recordar inicio de sision" />
+                android:layout_marginBottom="20dp"
+                android:text="Recordar inicio de sesion"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/btnOlvidar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="No recuerdas tu contraseña?"></Button>
+                android:hint="No recuerdas tu contraseña?"
+                android:textColorHint="#000000"></Button>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
 
                 <Button
-                    android:id="@+id/btnCrearUsuarioLogin"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
-                    android:hint="Crear Usuario"></Button>
+                    android:background="#92CF81"
+                    android:hint="Iniciar Sesion"
+                    android:textColorHint="#000000"></Button>
 
                 <TextView
+                    android:textSize="30sp"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -81,12 +90,15 @@
 
                 </TextView>
 
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Iniciar Sesion"></Button>
 
+                <Button
+                    android:id="@+id/btnCrearUsuarioLogin"
+                    android:background="#CFCFCF"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Crear Usuario"
+                    android:textColorHint="#000000"></Button>
 
             </LinearLayout>
 

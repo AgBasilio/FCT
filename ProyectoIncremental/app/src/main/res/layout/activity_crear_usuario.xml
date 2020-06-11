@@ -10,16 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="15dp"
             android:background="#B8B8B8"
-            app:cardCornerRadius="20dp"
-            >
+            app:cardCornerRadius="20dp">
 
             <LinearLayout
 
@@ -63,41 +61,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Contraseña"
-                    android:inputType="textPassword"
-                    ></EditText>
+                    android:inputType="textPassword"></EditText>
+
                 <LinearLayout
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="110dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
                     android:orientation="vertical">
 
                     <Button
                         android:id="@+id/btnCrearUsuario"
-                        android:layout_width="150dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Crear Usuario"></Button>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:background="#92CF81"
+                        android:hint="Crear Usuario"
+                        android:textColorHint="#000000">
+                    </Button>
 
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="O">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="O"
+                        android:textSize="30sp">
 
                     </TextView>
 
                     <Button
                         android:id="@+id/btnGoLogin"
-                        android:layout_width="150dp"
+                        android:layout_width="match_parent"
+
                         android:layout_height="wrap_content"
-                        android:hint="Iniciar Sesion"></Button>
+                        android:background="#CFCFCF"
+                        android:hint="Iniciar Sesion"
+                        android:textColorHint="#000000"></Button>
 
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-
 
 
     </LinearLayout>

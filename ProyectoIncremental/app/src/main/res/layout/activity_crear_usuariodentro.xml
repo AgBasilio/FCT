@@ -15,125 +15,160 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="15dp">
 
-            <androidx.cardview.widget.CardView
+
+            <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:background="#B8B8B8"
-                app:cardCornerRadius="20dp">
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre" />
+
+                <EditText
+                    android:id="@+id/apellido1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellido1" />
+
+                <EditText
+                    android:id="@+id/apellido2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Apellido2" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email" />
+
+                <EditText
+                    android:id="@+id/edad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Edad"></EditText>
+
+                <EditText
+                    android:id="@+id/fotoedi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Imagen"></EditText>
+
+
+                <EditText
+                    android:id="@+id/contraseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"></EditText>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tipo de usuario"
+                    android:textAlignment="center"
+                    android:textColorHint="#000000"
+                    android:textSize="20sp"></TextView>
+
+                <Spinner
+                    android:id="@+id/tipo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></Spinner>
 
                 <LinearLayout
-
+                    android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE4E4"
                     android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/nombre"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Nombre" />
-
-                    <EditText
-                        android:id="@+id/apellido1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Apellido1" />
-
-                    <EditText
-                        android:id="@+id/apellido2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Apellido2" />
-
-                    <EditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email" />
-
-                    <EditText
-                        android:id="@+id/edad"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Edad"></EditText>
-                    <EditText
-                        android:id="@+id/fotoedi"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Imagen"></EditText>
-
-
-                    <EditText
-                        android:id="@+id/contraseña"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Contraseña"></EditText>
-
-                    <Spinner
-                        android:id="@+id/tipo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></Spinner>
-
                     <TextView
-                            android:id="@+id/asignaturasssss"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Asignaturas"
-                            android:textAlignment="center"></TextView>
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/listaA"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    <TextView
-                        android:id="@+id/gruposLabel"
+                        android:id="@+id/asignaturasssss"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Grupo"
-                        android:textAlignment="center">
-
-                    </TextView>
-
-                    <Spinner
-                        android:id="@+id/grupoSelector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></Spinner>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/listaG"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
+                        android:text="Asignaturas"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textSize="20sp"></TextView>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:background="#EAE4E4"
+                        >
 
-
-                        <Button
-                            android:id="@+id/btnCrearUsuariodentro"
+                        <androidx.cardview.widget.CardView
+                            android:background="#000000"
+                            app:cardCornerRadius="20dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:hint="Crear Usuario"></Button>
+                            android:layout_height="wrap_content">
 
-                        <Button
-                            android:id="@+id/btnEditarUsuariodentro"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:hint="Editar Usuario"
-                            android:visibility="gone"></Button>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/listaA"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:foregroundGravity="center" />
+                        </androidx.cardview.widget.CardView>
+
 
                     </RelativeLayout>
-
-
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/gruposLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Grupo"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="20dp">
+
+                </TextView>
+
+                <Spinner
+                    android:id="@+id/grupoSelector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></Spinner>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <Button
+                        android:id="@+id/btnCrearUsuariodentro"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="#92CF81"
+                        android:hint="Crear Usuario"></Button>
+
+                    <Button
+                        android:id="@+id/btnEditarUsuariodentro"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="#92CF81"
+                        android:hint="Editar Usuario"
+                        android:textColorHint="#000000"
+                        android:visibility="gone"></Button>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

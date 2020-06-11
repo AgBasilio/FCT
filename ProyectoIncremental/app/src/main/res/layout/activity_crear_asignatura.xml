@@ -18,7 +18,7 @@
             android:id="@+id/nombreAsignatura"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nombre"
+            android:hint="Nombre"
             tools:ignore="MissingConstraints"></EditText>
 
         <EditText
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="curso"
+            android:hint="Curso"
             tools:ignore="MissingConstraints">
 
         </EditText>
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="descripcion"
+            android:hint="Descripcion"
             tools:ignore="MissingConstraints">
 
         </EditText>
@@ -45,12 +45,14 @@
             android:id="@+id/imagenAsignatura"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="enlace"
+            android:hint="Enlace"
             tools:ignore="MissingConstraints">
 
         </EditText>
         </LinearLayout>
         <Button
+            android:background="#92CF81"
+
             android:text="Crear Asignatura"
             android:id="@+id/btnCrearAsignatura"
             android:layout_width="match_parent"
