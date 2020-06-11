@@ -156,7 +156,7 @@ public class ReunionesFragment extends Fragment {
                         adaptadorReuniones = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
 
                             @Override
-                            public void onItemClick(Reuniones reunionTarjeta, int position, View itemView) {
+                            public void onItemClick(final Reuniones reunionTarjeta, int position, View itemView) {
                                 cardView = (CardView) recyclerView.getChildAt(position);
 
                                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
