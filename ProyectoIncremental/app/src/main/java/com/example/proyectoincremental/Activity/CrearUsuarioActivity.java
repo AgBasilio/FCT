@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.proyectoincremental.Adaptadores.AdaptadorListaAsignturas;
-import com.example.proyectoincremental.Adaptadores.AdaptadorListaGrupos;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
 import com.example.proyectoincremental.Utils.Grupos;
@@ -46,10 +48,17 @@ import static com.example.proyectoincremental.Activity.CreateUserActivity.isNume
 
 public class CrearUsuarioActivity extends AppCompatActivity {
 
+    private List<Asignatura> asignaturaList;
+    private List<Grupos> listaGrupos;
+    private Grupos grupoParaGuardar;
+
+
+    private List<String> listaIdsAsignaturasParaGuardar;
 
     private FirebaseDatabase database;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
+
     private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6, refBBD0, refBBD7, referenceEventos, referenceEventos2;
 
     private AdaptadorListaAsignturas adaptadorListaAsignturas;
@@ -62,19 +71,26 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private RecyclerView recyclerViewListaAsignatura, recyclerViewListaGrupos;
     private LinearLayoutManager mLayoutManager, mLayoutManager1;
 
-    private String f = "", a = "", b = "";
+    private TextView labelGrupos;
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "";
-    private String tipoSeleccion = "";
+    private String tipoUsuarioSeleccionado = "";
+
+    private Spinner spinner, grupoSelector;
     private String userid;
+    private int edadI, recuperamos_variable_integer;
+
+    private Button btnCrearUsuario, btnEditUsuario;
+    private String id;
+
+    private String f = "", a = "", b = "";
+   
+    private String tipoSeleccion = "";
+  
     private String[] asignaturasusurio;
     private String gruposusurio;
     private String idUsuario;
-    private int edadI, recuperamos_variable_integer;
 
     private EditText email, contraseña, nombre, apellido1, apellido2, edad, foto;
-    private Spinner spinner;
-    private Button btnCrearUsuario, btnEditUsuario;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +113,12 @@ public class CrearUsuarioActivity extends AppCompatActivity {
         edad = findViewById(R.id.edad);
         foto = findViewById(R.id.fotoedi);
 
+        labelGrupos = findViewById(R.id.gruposLabel);
+
         //Btns y wiwets
         btnEditUsuario = findViewById(R.id.btnEditarUsuariodentro);
         spinner = findViewById(R.id.tipo);
+        grupoSelector = findViewById(R.id.grupoSelector);
         btnCrearUsuario = findViewById(R.id.btnCrearUsuariodentro);
 
         //Recicler de la lista grupos
@@ -117,12 +136,104 @@ public class CrearUsuarioActivity extends AppCompatActivity {
         recyclerViewListaGrupos.setLayoutManager(mLayoutManager1);
 
         //Listas
-        listaAsignaturas = new ArrayList<Asignatura>();
+        asignaturaList = new ArrayList<Asignatura>();
         listaGrupos = new ArrayList<Grupos>();
-        listaGruposS = new ArrayList<String>();
-        listaIdGruposs = new ArrayList<String>();
-        listaAsignaturasS = new ArrayList<String>();
+        grupoParaGuardar = new Grupos();//new ArrayList<String>();
+        listaIdsAsignaturasParaGuardar = new ArrayList<String>();
 
+
+        //CARGAR ASIGNATURAS
+        //REFERENCIA ASIGNATURAS OBTENER LISTA DE TODAS LAS ASIGNATURAS
+        referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
+        referenceEventos.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                asignaturaList.clear();
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Asignatura p = dataSnapshot1.getValue(Asignatura.class);
+                    p.setId(dataSnapshot1.getKey());
+                    asignaturaList.add(p);
+                }
+
+                //cargar grupos
+                referenceEventos2 = database1.getInstance().getReference("Grupos").child(userid);
+                referenceEventos2.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
+                        listaGrupos.clear();
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            Grupos p = dataSnapshot1.getValue(Grupos.class);
+                            p.setId(dataSnapshot1.getKey());
+                            listaGrupos.add(p);
+                        }
+
+                        //Lista grupos para el usuario
+                        listaGrupos.add(0, new Grupos());
+
+                        ArrayAdapter<Grupos> gruposArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, listaGrupos);
+                        grupoSelector.setAdapter(gruposArrayAdapter);
+                        grupoSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                grupoParaGuardar = (Grupos)parent.getItemAtPosition(position);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
+                        //LISTA DE TIPOS DE USUATIOS
+                        ArrayList<String> lista = new ArrayList<>();
+                        lista.add(Usuario.TIPO_ALUMNO);
+                        lista.add(Usuario.TIPO_PROFESOR);
+                        ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
+                        spinner.setAdapter(asignaturaArrayAdapter);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                tipoUsuarioSeleccionado = parent.getItemAtPosition(position).toString();
+                                if(((String)parent.getItemAtPosition(position)).equals(Usuario.TIPO_PROFESOR)) {
+//                                    recyclerView1.setVisibility(view.GONE);
+                                    labelGrupos.setVisibility(view.GONE);
+                                    grupoSelector.setVisibility(view.GONE);
+                                }
+                                else{
+//                                    recyclerView1.setVisibility(view.VISIBLE);
+                                    labelGrupos.setVisibility(view.VISIBLE);
+                                    grupoSelector.setVisibility(view.VISIBLE);
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+
+            AdaptadorListaAsignturas.OnItemClickListener onItemClickListenerAdaptadorAsignaturas = new AdaptadorListaAsignturas.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(Asignatura asignatura, int position, CheckBox checkBoxx) {
+
+                //EDITAR usuario, ASIGNATURA, checked
+                if (checkBoxx.isChecked()) {
+                    //si la asignatura a guardar no esta, la agrego
+                    if(!listaIdsAsignaturasParaGuardar.contains(asignatura.getId())){
+                        listaIdsAsignaturasParaGuardar.add(asignatura.getId());
+                    }
+                    //EDITAR usuario, ASIGNATURA, NO checked
+                } else if (!checkBoxx.isChecked()) {
+                    //si la asignatura a quitar esta, la quito
+                    if(listaIdsAsignaturasParaGuardar.contains(asignatura.getId())){
+                        listaIdsAsignaturasParaGuardar.remove(asignatura.getId());
+                    }
+                }
+            }
+
+        };
 
         //-----------------------------------------------------------------------------------------------------------------------------//
         //SI RECIbE INFORMACION PODEMOS EDITAR USUARIO
@@ -138,135 +249,48 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             idUsuario = getIntent().getExtras().getString("Id");
 
             String tiposss = getIntent().getStringExtra("Tipo");
-            asignaturasusurio = getIntent().getStringExtra("Asignaturas").split(",");
-            for (String a : asignaturasusurio) {
+            for (String a : getIntent().getStringExtra("Asignaturas").split(",")) {
                 if (!a.isEmpty()) {
-                    listaAsignaturasS.add(a);
-
+                    listaIdsAsignaturasParaGuardar.add(a);
                 }
             }
-            gruposusurio = getIntent().getStringExtra("Grupos");
+
+            final String ID_GRUPO_ORIGINAL = getIntent().getStringExtra("IdGrupo");
+            grupoParaGuardar = ObtenerGrupoParaGuardar(ID_GRUPO_ORIGINAL);
+
+
             recuperamos_variable_integer = getIntent().getIntExtra("Edad", 0);
             edadS = Integer.toString(recuperamos_variable_integer);
             edad.setText(edadS);
             contraseña.setText(getIntent().getExtras().getString("Contraseña"));
+
             //OCULTAR BTN CREAR USUARIO  USUARIO Y MOSTRAMOS EL BTN EDITAR
             btnCrearUsuario.setVisibility(GONE);
             btnEditUsuario.setVisibility(VISIBLE);
 
-            //LISTA DE TIPO DE USURIO A ELEGUIR EN UN SPINNER
-            ArrayList<String> lista = new ArrayList<>();
-            if (tiposss.equals("Profesor")) {
-                lista.add(tiposss);
-                lista.add("Alumno");
-
-            } else {
-                lista.add(tiposss);
-                lista.add("Profesor");
+            if (tiposss.equals(Usuario.TIPO_PROFESOR)) {
+                spinner.setSelection(1);//0:Alumnoo;1:Profesor
             }
-            ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
-            spinner.setAdapter(asignaturaArrayAdapter);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    tipoSeleccion = parent.getItemAtPosition(position).toString();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-            cargarAsignaturas();
 
             //LISTAR TODAS LAS ASIGNATURAS Y MARCAR LAS QUE YA TIENE ASIGNADAS
-            adaptadorListaAsignturas = new AdaptadorListaAsignturas(listaAsignaturas, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
+            recyclerView.setAdapter(new AdaptadorListaAsignturas(asignaturaList, listaIdsAsignaturasParaGuardar,CrearUsuarioActivity.this, R.layout.item_a, onItemClickListenerAdaptadorAsignaturas));
 
+            if (tiposss.equals(Usuario.TIPO_PROFESOR)) {
+                spinner.setSelection(1);//0:Alumnoo;1:Profesor
+            }
 
-                @Override
-                public void onItemClick(Asignatura asignatura, int position, CheckBox checkBoxx) {
+            //si hay un grupo seleccionado
+            grupoSelector.setSelection(((ArrayAdapter)grupoSelector.getAdapter()).getPosition(grupoParaGuardar));
 
-                    if (checkBoxx.isChecked()) {
-                        //alomjor funcina comentarlo con agus ,cremos otro nodo, preguntar a vr si se le ocurre como realizar esto cuando presionesmos el boton
-                        listaAsignaturasS.add(asignatura.getNombre());
-                        String a = "";
-                        for (int i = 0; i < listaAsignaturasS.size(); i++) {
-                            a += listaAsignaturasS.get(i) + ",";
-                        }
-                        if (!a.isEmpty()) {
-                            a = a.substring(0, a.length() - 1);
-                        }
-
-                        refBBD5 = database.getReference("Usuarios").child(idUsuario).child("asignaturas");
-                        refBBD5.setValue(a);
-
-                        refBBD = database.getReference("AsignaturasDefinidas").child(idUsuario).child(asignatura.getId());
-                        refBBD.setValue(asignatura);
-
-
-                    } else if (!checkBoxx.isChecked()) {
-                        listaAsignaturasS.remove(asignatura.getNombre());
-                        String a = "";
-                        for (int i = 0; i < listaAsignaturasS.size(); i++) {
-                            a += listaAsignaturasS.get(i) + ",";
-                        }
-                        if (!a.isEmpty()) {
-                            a = a.substring(0, a.length() - 1);
-                        }
-                        refBBD5 = database.getReference("Usuarios").child(idUsuario).child("asignaturas");
-                        refBBD5.setValue(a);
-                        //alomjor funcina comentarlo con agus ,cramos otro nodo
-
-                        refBBD = database.getReference("AsignaturasDefinidas").child(idUsuario).child(asignatura.getId());
-                        refBBD.removeValue();
-
-                    }
-                    //LISTA DE ASIGNATURAS SELECIONADAS ACTIVA EL CHECK
-
-                    a = listaAsignaturasS.toString();
-
-                }
-
-            }, asignaturasusurio);
-
-
-            recyclerViewListaAsignatura.setAdapter(adaptadorListaAsignturas);
-
-            cargarGrupos();
-            adaptadorListaGrupos = new AdaptadorListaGrupos(listaGrupos, CrearUsuarioActivity.this, R.layout.item_b, new AdaptadorListaGrupos.OnItemClickListener() {
-                @Override
-                public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
-                    if (checkBox.isChecked()) {
-                        refBBD6 = database.getReference("Usuarios").child(idUsuario).child("grupo");
-                        refBBD7 = database.getReference("Usuarios").child(idUsuario).child("idgrupo");
-                        refBBD0 = database.getReference("GruposDefinidos").child(grupos.getId()).child(idUsuario);
-                        refBBD6.setValue(grupos.getNombreGrupo());
-                        refBBD7.setValue(grupos.getId());
-                        refBBD0.setValue("");
-                        Toast.makeText(CrearUsuarioActivity.this, "solo se guardara el ultimo selecionado", Toast.LENGTH_LONG).show();
-
-                    } else if (!checkBox.isChecked()) {
-                        refBBD6.setValue("");
-                        refBBD7.setValue("");
-                        refBBD0 = database.getReference("GruposDefinidos").child(grupos.getId()).child(idUsuario);
-                        refBBD0.removeValue();
-                    }
-                    b = listaIdGruposs.toString();
-                    f = listaGruposS.toString();
-                }
-
-            }, gruposusurio);
-            recyclerViewListaGrupos.setAdapter(adaptadorListaGrupos);
-
-
+            //GUARDAR USUARIO EDITADO
             //BTN EDITAR USUARIO
             btnEditUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    auth = FirebaseAuth.getInstance();
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
-                    String userid = firebaseUser.getUid();
+
+                    String asignaturasParaGuardar = listaToString(listaIdsAsignaturasParaGuardar);
+
+
                     nombreS = nombre.getText().toString();
                     String fotoS = foto.getText().toString();
                     apellido1S = apellido1.getText().toString();
@@ -274,137 +298,69 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     edadS = edad.getText().toString();
                     edadI = Integer.parseInt(edadS);
 
-                    refBBD = database.getReference("Usuarios").child(idUsuario).child("nombre");
-                    refBBD1 = database.getReference("Usuarios").child(idUsuario).child("apellido1");
-                    refBBD2 = database.getReference("Usuarios").child(idUsuario).child("apellido2");
-                    refBBD3 = database.getReference("Usuarios").child(idUsuario).child("edad");
-                    refBBD4 = database.getReference("Usuarios").child(idUsuario).child("tipo");
-                    refBBD5 = database.getReference("Usuarios").child(idUsuario).child("asignaturas");
-                    DatabaseReference refBBDIMG = database.getReference("Usuarios").child(idUsuario).child("imagen");
+                    refBBD = database.getReference("Usuarios").child(id).child("nombre");
+                    refBBD1 = database.getReference("Usuarios").child(id).child("apellido1");
+                    refBBD2 = database.getReference("Usuarios").child(id).child("apellido2");
+                    refBBD3 = database.getReference("Usuarios").child(id).child("edad");
+                    refBBD4 = database.getReference("Usuarios").child(id).child("tipo");
+                    refBBD5 = database.getReference("Usuarios").child(id).child("asignaturas");
+                    refBBD6 = database.getReference("Usuarios").child(id).child("grupo");
+                    refBBD7 = database.getReference("Usuarios").child(id).child("idgrupo");
+                  DatabaseReference refBBDIMG = database.getReference("Usuarios").child(id).child("imagen");
 
 
                     refBBD.setValue(nombreS);
                     refBBD1.setValue(apellido1S);
                     refBBD2.setValue(apellido2S);
                     refBBD3.setValue(edadI);
-                    refBBD4.setValue(tipoSeleccion);
-                    refBBD5.setValue(a);
-                    if (fotoS.isEmpty()) {
+
+                    refBBD4.setValue(tipoUsuarioSeleccionado);
+                    refBBD5.setValue(asignaturasParaGuardar);
+
+                    //quitar todas las asignatura definidas para este usuario
+                    database.getReference("AsignaturasDefinidas").child(id).removeValue();
+                    //agregar a asignatura definida
+                    for (String idAsignatura : listaIdsAsignaturasParaGuardar ) {
+                        //buscar asignatura por id y annadir a asignatura definida
+                        database.getReference("AsignaturasDefinidas").child(id).child(idAsignatura).setValue(asignaturaList.get(asignaturaList.indexOf(new Asignatura(idAsignatura))));
+                    }
+
+                    //quitar de grupo definido original
+                    database.getReference("GruposDefinidos").child(ID_GRUPO_ORIGINAL).child(id).removeValue();
+
+                    if(tipoUsuarioSeleccionado.equals(Usuario.TIPO_PROFESOR)){
+                        refBBD6.setValue("");
+                        refBBD7.setValue("");
+                    }
+                    else{
+                        refBBD6.setValue(grupoParaGuardar.getNombreGrupo());
+                        refBBD7.setValue(grupoParaGuardar.getId());
+                        //si es alumno
+                        //agregar a grupo definido actual
+                        if(!grupoParaGuardar.getId().isEmpty())//si es que hay algoo
+                            database.getReference("GruposDefinidos").child(grupoParaGuardar.getId()).child(id).setValue(":)");
+                    }
+                  
+                  if (fotoS.isEmpty()) {
                         refBBDIMG.setValue("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                     } else {
                         refBBDIMG.setValue(fotoS);
                     }
+
+                    Toast.makeText(CrearUsuarioActivity.this, "Usuario actualizado", Toast.LENGTH_LONG).show();
+
                     onBackPressed();
                 }
             });
         }
+        else
         //-----------------------------------------------------------------------------------------------------------------------------//
         //SI NO RECIBE INFOMACION PODEMOS CREAR USUARIOOS
         //-----------------------------------------------------------------------------------------------------------------------------//
         if (getIntent().getExtras() == null) {
-
-            //LISTA DE TIPOS DE USUATIOS
-            ArrayList<String> lista = new ArrayList<>();
-            lista.add("Alumno");
-            lista.add("Profesor");
-            ArrayAdapter<String> asignaturaArrayAdapter = new ArrayAdapter<>(CrearUsuarioActivity.this, android.R.layout.simple_list_item_1, lista);
-            spinner.setAdapter(asignaturaArrayAdapter);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                    tipoSeleccion = parent.getItemAtPosition(position).toString();
-                    //y.setText("asignaturas :" + ciudadSeleccionada);
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            //REFERENCIA ASIGNATURAS
-            referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
-            referenceEventos.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                    listaAsignaturas.clear();
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-
-                        Asignatura p = dataSnapshot1.getValue(Asignatura.class);
-                        p.setId(dataSnapshot1.getKey());
-                        listaAsignaturas.add(p);
-                    }
-
-                    adaptadorListaAsignturas = new AdaptadorListaAsignturas(listaAsignaturas, CrearUsuarioActivity.this, R.layout.item_a, new AdaptadorListaAsignturas.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(Asignatura city, int position, CheckBox checkBoxx) {
-                            if (checkBoxx.isChecked()) {
-
-                                listaAsignaturasS.add(city.getNombre());
-                                // refBBD = database.getReference("AsignaturasDefinidas").child(uu);
-                                //  refBBD.setValue(city);
-
-
-                            } else if (!checkBoxx.isChecked()) {
-                                // refBBD = database.getReference("AsignaturasDefinidas").child(uu);
-                                // refBBD.removeValue();
-
-                                listaAsignaturasS.remove(city.getNombre());
-
-                            }
-                            a = listaAsignaturasS.toString();
-
-                        }
-                    }, null);
-                    recyclerViewListaAsignatura.setAdapter(adaptadorListaAsignturas);
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-
-            });
-            //REFERENCIA A GRUPOS
-            referenceEventos2 = database.getInstance().getReference("Grupos").child(userid);
-            referenceEventos2.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                    listaGrupos.clear();
-                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                        Grupos p = dataSnapshot1.getValue(Grupos.class);
-                        p.setId(dataSnapshot1.getKey());
-                        listaGrupos.add(p);
-                    }
-                    adaptadorListaGrupos = new AdaptadorListaGrupos(listaGrupos, CrearUsuarioActivity.this, R.layout.item_b, new AdaptadorListaGrupos.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Grupos grupos, int position, CheckBox checkBox) {
-                            if (checkBox.isChecked()) {
-                                listaGruposS.add(grupos.getNombreGrupo());
-                                listaIdGruposs.add(grupos.getId());
-
-                            } else if (!checkBox.isChecked()) {
-                                listaGruposS.remove(grupos.getNombreGrupo());
-                                listaIdGruposs.add(grupos.getId());
-
-                            }
-                            f = listaGruposS.toString();
-                            b = listaIdGruposs.toString();
-
-                        }
-
-                    }, null);
-                    recyclerViewListaGrupos.setAdapter(adaptadorListaGrupos);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
+            //adaptador para lista de asignaturas
+            recyclerView.setAdapter(new AdaptadorListaAsignturas(asignaturaList, null,CrearUsuarioActivity.this, R.layout.item_a, onItemClickListenerAdaptadorAsignaturas));
+            //TODO: crear usuario
             //BTN CREAR USUARIO
             btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
 
@@ -418,7 +374,6 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     apellido2S = apellido2.getText().toString();
                     edadS = edad.getText().toString();
 
-
                     if (isNumeric(edadS) == true) {
                         if (!emailS.isEmpty() && !contraseñaS.isEmpty() && !nombreS.isEmpty() && !apellido1S.isEmpty() && !edadS.isEmpty()) {
 
@@ -427,71 +382,74 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                                     .setApiKey("AIzaSyC_XHzyTqoJ7Vn5kegroWEYLxx9M0XovSQ")
                                     .setApplicationId("proyecto-fct-83b84").build();
 
-
-                            FirebaseAuth authParaCrearUsuario = null;
+                            FirebaseAuth authParaCrearUsuario;
 
                             try {
                                 FirebaseApp myApp = FirebaseApp.initializeApp(getApplicationContext(), o, "otro");
                                 authParaCrearUsuario = FirebaseAuth.getInstance(myApp);
                             } catch (IllegalStateException e) {
-                                authParaCrearUsuario = FirebaseAuth.getInstance(FirebaseApp.getInstance("AnyAppName"));
+                                authParaCrearUsuario = FirebaseAuth.getInstance(FirebaseApp.getInstance("otro"));
                             }
 
+                            final FirebaseAuth finalAuthParaCrearUsuario = authParaCrearUsuario;
                             authParaCrearUsuario.createUserWithEmailAndPassword(emailS, contraseñaS).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        String a = "";
-                                        String b = "";
-                                        String c = "";
 
+                                        id = task.getResult().getUser().getUid();
+                                        String asignaturasParaGuardar = listaToString(listaIdsAsignaturasParaGuardar);
 
-                                        for (int i = 0; i < listaAsignaturasS.size(); i++) {
-                                            a += listaAsignaturasS.get(i) + ",";
-                                        }
-                                        for (int i = 0; i < listaIdGruposs.size(); i++) {
-                                            b += listaIdGruposs.get(i) + ",";
-                                        }
-                                        for (int i = 0; i < listaGruposS.size(); i++) {
-                                            c += listaGruposS.get(i) + ",";
-                                        }
-                                        if (!b.isEmpty()) {
-                                            b = b.substring(0, b.length() - 1);
-                                        }
-                                        if (!a.isEmpty()) {
-                                            a = a.substring(0, a.length() - 1);
-                                        }
-                                        if (!c.isEmpty()) {
-                                            c = c.substring(0, c.length() - 1);
-                                        }
                                         //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
                                         edadI = Integer.parseInt(edadS);
                                         //instancia de la bbd
-                                        refBBD = database.getReference("Usuarios/").child(task.getResult().getUser().getUid());
+                                        refBBD = database.getReference("Usuarios/").child(id);
                                         Usuario usuario = new Usuario();
                                         usuario.setEmail(emailS);
                                         usuario.setNombre(nombreS);
                                         usuario.setApellido1(apellido1S);
                                         usuario.setApellido2(apellido2S);
                                         usuario.setEdad(edadI);
-                                        usuario.setContraseña(contraseñaS);
-                                        usuario.setGrupo(c);
-                                        usuario.setIdgrupo(b);
-                                        usuario.setAsignaturas(a);
-                                        usuario.setTipo(tipoSeleccion);
+
+                                        usuario.setContrasenna(contraseñaS);
+                                        usuario.setGrupo(grupoParaGuardar.getNombreGrupo());
+                                        usuario.setIdgrupo(grupoParaGuardar.getId());
+                                        usuario.setAsignaturas(asignaturasParaGuardar);
+                                        usuario.setTipo(tipoUsuarioSeleccionado);
+
                                         usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
-                                        usuario.setId(task.getResult().getUser().getUid());
+                                        usuario.setId(id);
+
+                                        //si es profesor borrar el grupo
+                                        if(tipoUsuarioSeleccionado.equals(Usuario.TIPO_PROFESOR)){
+                                            usuario.setGrupo("");
+                                            usuario.setIdgrupo("");
+                                        }
+
                                         refBBD.setValue(usuario);
-                                        Toast.makeText(CrearUsuarioActivity.this, "se a creado correctamente", Toast.LENGTH_LONG).show();
+
+                                        //agregar a asignatura definida
+                                        for (String idAsignatura : listaIdsAsignaturasParaGuardar ) {
+                                            //buscar asignatura por id y annadir a asignatura definida
+                                            database.getReference("AsignaturasDefinidas").child(id).child(idAsignatura).setValue(asignaturaList.get(asignaturaList.indexOf(new Asignatura(idAsignatura))));
+                                        }
+
+                                        //si es alumno
+                                        if(tipoUsuarioSeleccionado.equals(Usuario.TIPO_ALUMNO) && !grupoParaGuardar.getId().isEmpty()){
+                                            //agregar a grupo definido actual
+                                            database.getReference("GruposDefinidos").child(grupoParaGuardar.getId()).child(id).setValue(":)");
+                                        }
+
+                                        Toast.makeText(CrearUsuarioActivity.this, "El usuario se ha creado correctamente", Toast.LENGTH_LONG).show();
 
                                         onBackPressed();
                                     } else {
-
-                                        Toast.makeText(CrearUsuarioActivity.this, "no se ha creado", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(CrearUsuarioActivity.this, "No se ha creado el usuario", Toast.LENGTH_LONG).show();
                                     }
+                                    finalAuthParaCrearUsuario.signOut();
                                 }
                             });
-                            authParaCrearUsuario.signOut();
+
 
                         } else {
                             Toast.makeText(CrearUsuarioActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
@@ -506,23 +464,14 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             });
 
         }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-    }
+                    }
+                });
 
-    public void cargarAsignaturas() {
-        //REFERENCIA ASIGNATURAS OBTENER LISTA DE TODAS LAS ASIGNATURAS
-        referenceEventos = database.getInstance().getReference("Asignaturas").child(userid);
-        referenceEventos.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                listaAsignaturas.clear();
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Asignatura p = dataSnapshot1.getValue(Asignatura.class);
-                    p.setId(dataSnapshot1.getKey());
-                    listaAsignaturas.add(p);
-                }
             }
 
             @Override
@@ -533,26 +482,20 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
     }
 
-    public void cargarGrupos() {
-
-        referenceEventos2 = database.getInstance().getReference("Grupos").child(userid);
-        referenceEventos2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
-                listaGrupos.clear();
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    Grupos p = dataSnapshot1.getValue(Grupos.class);
-                    p.setId(dataSnapshot1.getKey());
-                    listaGrupos.add(p);
-                }
+    private Grupos ObtenerGrupoParaGuardar(String idGrupo) {
+        Grupos grupo = new Grupos();
+        //recorrer lista de grupos, buscando idGrupo
+        for(Grupos g : listaGrupos){
+            if(g.getId().equals(idGrupo)) {
+                grupo = g;
+                break;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        }
+        return grupo;
     }
 
-
+    private String listaToString(List<String> stringList) {
+        String s = stringList.toString().replace(", ", ",");
+        return s.substring(1, s.length()-1);// s=['a'] --> s='a'
+    }
 }

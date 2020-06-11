@@ -23,10 +23,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoincremental.Activity.CrearUsuarioActivity;
-import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.Utils.Grupos;
 import com.example.proyectoincremental.Utils.Usuario;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -133,8 +133,8 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
+            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Editar");
+            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Eliminar");
             Edit.setOnMenuItemClickListener(onEditMenu);
             Delete.setOnMenuItemClickListener(onEditMenu);
         }
@@ -164,9 +164,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
                                     intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
                                     intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
-                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContrasenna());
                                     intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
-                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("IdGrupo", usuarios.get(getAdapterPosition()).getIdgrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
                                     intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
@@ -187,9 +187,9 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
                                     intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
                                     intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
-                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContrasenna());
                                     intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
-                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("IdGrupo", usuarios.get(getAdapterPosition()).getIdgrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
                                     intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
@@ -219,6 +219,26 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
                                     databsaserefernece.removeValue();
+
+                                    //eliminar de asignaturas definidas
+                                    database.getReference("AsignaturasDefinidas").child(usuarios.get(getAdapterPosition()).getId()).removeValue();
+                                    //eliminar de grupo definido
+                                    database.getReference("GruposDefinidos").child(usuarios.get(getAdapterPosition()).getIdgrupo()).child(usuarios.get(getAdapterPosition()).getId()).removeValue();
+
+//                                    FirebaseOptions o = new FirebaseOptions.Builder()
+//                                            .setDatabaseUrl("https://proyecto-fct-83b84.firebaseio.com")
+//                                            .setApiKey("AIzaSyC_XHzyTqoJ7Vn5kegroWEYLxx9M0XovSQ")
+//                                            .setApplicationId("proyecto-fct-83b84").build();
+//
+//                                    FirebaseAuth authParaCrearUsuario;
+//                                    try {
+//                                        FirebaseApp myApp = FirebaseApp.initializeApp(context.getApplicationContext(), o, "otro");
+//                                        authParaCrearUsuario = FirebaseAuth.getInstance(myApp);
+//                                    } catch (IllegalStateException e) {
+//                                        authParaCrearUsuario = FirebaseAuth.getInstance(FirebaseApp.getInstance("otro"));
+//                                    }
+//
+//                                    authParaCrearUsuario
 
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();

@@ -77,47 +77,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></Spinner>
 
-                    <!--        <Button
-                    android:id="@+id/btnlistarA"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Button>
-
-                <Button
-                    android:id="@+id/btnlistarG"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></Button>
--->
-         <!--           <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                     -->
-                        <TextView
+                    <TextView
                             android:id="@+id/asignaturasssss"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Asignaturas"
                             android:textAlignment="center"></TextView>
 
-
-                    <!--
-                    </LinearLayout>-->
-
-                    <!-- <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-                    -->
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/listaA"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     <TextView
-                        android:id="@+id/grupossssss"
+                        android:id="@+id/gruposLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Grupo"
@@ -125,13 +97,16 @@
 
                     </TextView>
 
-                        <androidx.recyclerview.widget.RecyclerView
+                    <Spinner
+                        android:id="@+id/grupoSelector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+
+                    <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/listaG"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             />
-                    <!--
-                    </LinearLayout>-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"

@@ -85,8 +85,10 @@ public class CreateUserActivity extends AppCompatActivity {
                                     usuario.setApellido1(apellido1S);
                                     usuario.setApellido2(apellido2S);
                                     usuario.setEdad(edadI);
+
                                     usuario.setContraseña(contraseñaS);
-                                    usuario.setTipo("Alumnos");
+                                    usuario.setTipo(Usuario.TIPO_ALUMNO);
+
                                     usuario.setGrupo(" ");
                                     usuario.setIdgrupo("");
                                     usuario.setAsignaturas(" ");
