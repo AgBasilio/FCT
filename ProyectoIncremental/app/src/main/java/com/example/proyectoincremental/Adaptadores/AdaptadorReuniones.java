@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,19 +16,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoincremental.Activity.CrearAsignaturaActivity;
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
+import com.example.proyectoincremental.Utils.Grupos;
 import com.example.proyectoincremental.Utils.Reuniones;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,13 +48,12 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     private Context context;
     protected List<Asignatura> asignaturas;
     private List<Reuniones> listaReuniones;
-
-    protected int layout;
+    private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
     private String[] asignaturasusuario = null;
     private AdaptadorReuniones.OnItemClickListener itemClickListener;
     private CardView cardView;
-
+    private Grupos pp;
     private RecyclerView recyclerView, recyclerView1;
 
     private FirebaseUser firebaseUser;
@@ -54,7 +61,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     protected Asignatura asignatura;
     private String id;
     private AlertDialog.Builder builder;
-    private String userid;
+    private String userid, idgrupo;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
     public AdaptadorReuniones(List<Reuniones> listareuniones, List<Asignatura> asignaturas, Context context, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
@@ -87,6 +94,8 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         asignatura = asignaturas.get(position);
+//        reuniones=listaReuniones.get(position);
+
         Asignatura asignatura = asignaturas.get(position);
 
         //por defecto a blanco
@@ -101,7 +110,6 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                     ((CardView) holder.itemView).setCardBackgroundColor(Color.parseColor("#2d572c"));
                     //para reservas
                     holder.bind(r, itemClickListener);
-                    //--
                     break;
                 }
             }
@@ -119,7 +127,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
 
         protected TextView curso;
@@ -133,7 +141,6 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
             curso = (TextView) itemView.findViewById(R.id.texviewCurso);
             img = (ImageView) itemView.findViewById(R.id.imageViewCity);
 
-            itemView.setOnCreateContextMenuListener(this);
         }
 
         //clik al item
@@ -145,105 +152,13 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
                 public void onClick(View view) {
 
                     //  itemView.setBackgroundColor(Color.parseColor("#000000"));
-                    itemListener.onItemClick(reuniones, getAdapterPosition(),itemView);
+                    itemListener.onItemClick(reuniones, getAdapterPosition(), itemView);
                 }
             });
 
         }
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-//            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
-//            Edit.setOnMenuItemClickListener(onEditMenu);
-//            Delete.setOnMenuItemClickListener(onEditMenu);
-        }
 
-        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-//                FirebaseUser firebaseUser = auth.getCurrentUser();
-//
-//                userid = firebaseUser.getUid();
-//                switch (item.getItemId()) {
-//                    case 1:
-//
-//                        builder = new AlertDialog.Builder(context);
-//                        builder.setTitle("ATENCION");
-//                        builder.setMessage("\n" + "Seguro que quieres Editar");
-//                        // Set up the buttons
-//                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                                if (which == DialogInterface.BUTTON_POSITIVE) {
-//                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-//                                    //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-//                                    intent.putExtra("Id", asignaturas.get(getAdapterPosition()).getId());
-//                                    //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-//                                    context.startActivity(intent);
-//                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-//                                    dialog.cancel();
-//                                }
-//                            }
-//                        });
-//                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (which == DialogInterface.BUTTON_POSITIVE) {
-//                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-//                                    //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-//                                    intent.putExtra("Id", asignaturas.get(getAdapterPosition()).getId());
-//                                    // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-//                                    context.startActivity(intent);
-//                                    context.startActivity(intent);
-//                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-//                                    dialog.cancel();
-//                                }
-//                            }
-//                        });
-//                        builder.show();
-//
-//
-//                        break;
-//
-//                    case 2:
-//
-//                        builder = new AlertDialog.Builder(context);
-//                        builder.setTitle("ATENCION");
-//                        builder.setMessage("\n" + "Seguro que quieres Editar");
-//                        // Set up the buttons
-//                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-//
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                                if (which == DialogInterface.BUTTON_POSITIVE) {
-//                                    database.getReference("Grupos").child(userid).child(asignaturas.get(getAdapterPosition()).getId()).removeValue();
-//
-//                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-//                                    dialog.cancel();
-//                                }
-//                            }
-//                        });
-//                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                if (which == DialogInterface.BUTTON_POSITIVE) {
-//                                    database.getReference("Grupos").child(userid).child(asignaturas.get(getAdapterPosition()).getId()).removeValue();
-//
-//                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-//                                    dialog.cancel();
-//                                }
-//                            }
-//                        });
-//                        builder.show();
-//                        break;
-//                }
-                return true;
-            }
-        };
     }
 
 

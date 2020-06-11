@@ -74,6 +74,8 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
     @Override
     public void onBindViewHolder(@NonNull AdaptadorAsignaturas.ViewHolder holder, int position) {
         asignatura = asignaturas.get(position);
+
+
         holder.nombre.setText(asignatura.getNombre());
         holder.curso.setText(asignatura.getCurso());
         holder.bind(asignatura, itemClickListener);

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_margin="10dp"
-
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="5dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -23,8 +24,8 @@
 
         <ImageView
             android:id="@+id/imagenusuario"
-            android:layout_width="170dp"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:fontFamily="sans-serif"
             android:text="Titulo"
             android:textSize="25dp" />
@@ -32,7 +33,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_marginLeft="20dp"
             android:orientation="vertical">
 
             <TextView
