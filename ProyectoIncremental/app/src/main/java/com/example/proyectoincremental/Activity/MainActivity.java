@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
-    ;
+
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private ArrayList<String> list;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //mostrar todo
 
-                    //empezar desde gestionar
+                    //empezar desde gestion
                     navController.navigate(R.id.nav_gestionar);
                 }
                 else

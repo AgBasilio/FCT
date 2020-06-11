@@ -1,6 +1,8 @@
 package com.example.proyectoincremental.Utils;
 
 public class Usuario {
+    public static final String TIPO_PROFESOR = "Profesor";
+    public static final String TIPO_ALUMNO = "Alumno";
     String nombre;
     String email;
     String apellido1;
@@ -8,7 +10,7 @@ public class Usuario {
     int edad;
     String idgrupo;
     String imagen;
-    String contraseña;
+    String contrasenna;
     String tipo;
     String grupo;
     String asignaturas;
@@ -66,12 +68,12 @@ public class Usuario {
         this.edad = edad;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getContrasenna() {
+        return contrasenna;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setContrasenna(String contrasenna) {
+        this.contrasenna = contrasenna;
     }
 
     public String getNombre() {
