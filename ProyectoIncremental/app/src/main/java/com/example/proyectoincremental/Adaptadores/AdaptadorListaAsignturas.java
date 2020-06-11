@@ -90,7 +90,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         private TextView curso, nombre;
@@ -103,7 +103,6 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
             curso = (TextView) itemView.findViewById(R.id.ncurso);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
 
-            itemView.setOnCreateContextMenuListener(this);
         }
 
         //clik al item
@@ -119,102 +118,7 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
         }
 
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Editar");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Eliminar");
-            Edit.setOnMenuItemClickListener(onEditMenu);
-            Delete.setOnMenuItemClickListener(onEditMenu);
-        }
-
-        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                FirebaseUser firebaseUser = auth.getCurrentUser();
-
-                userid = firebaseUser.getUid();
-                switch (item.getItemId()) {
-                    case 1:
-
-                        builder = new AlertDialog.Builder(context);
-                        builder.setTitle("ATENCION");
-                        builder.setMessage("\n" + "Seguro que quieres Editar");
-                        // Set up the buttons
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", asignaturaList.get(getAdapterPosition()).getId());
-                                    //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-                                    context.startActivity(intent);
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", asignaturaList.get(getAdapterPosition()).getId());
-                                    // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-                                    context.startActivity(intent);
-                                    context.startActivity(intent);
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.show();
-
-
-                        break;
-
-                    case 2:
-
-                        builder = new AlertDialog.Builder(context);
-                        builder.setTitle("ATENCION");
-                        builder.setMessage("\n" + "Seguro que quieres Editar");
-                        // Set up the buttons
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(asignaturaList.get(getAdapterPosition()).getId()).removeValue();
-
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(asignaturaList.get(getAdapterPosition()).getId()).removeValue();
-
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.show();
-                        break;
-                }
-                return true;
-            }
-        };
     }
-
-
 
     @Override
     public int getItemCount() {

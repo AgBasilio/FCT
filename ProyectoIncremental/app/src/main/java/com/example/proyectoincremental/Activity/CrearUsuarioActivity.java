@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.proyectoincremental.Adaptadores.AdaptadorListaAsignturas;
-import com.example.proyectoincremental.Adaptadores.AdaptadorListaGrupos;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
 import com.example.proyectoincremental.Utils.Grupos;
