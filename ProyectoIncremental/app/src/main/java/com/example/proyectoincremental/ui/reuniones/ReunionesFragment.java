@@ -24,6 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +44,7 @@ public class ReunionesFragment extends Fragment {
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private int containerId;
+    private AlertDialog.Builder builder;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -171,7 +175,36 @@ public class ReunionesFragment extends Fragment {
                                     refreuniones.push().setValue(reunion);
 
                                 } else {
-                                    refreuniones.child(reunionTarjeta.getId()).removeValue();
+                                    //refreuniones.child(reunionTarjeta.getId()).removeValue();
+                                     builder = new AlertDialog.Builder(getContext());
+                                            builder.setTitle("ATENCION");
+                                            builder.setMessage("\n" + "Seguro que quieres eliminar la reunion del dia "+reunionTarjeta.getHora());
+                                            // Set up the buttons
+                                            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                                                        refreuniones.child(reunionTarjeta.getId()).removeValue();
+
+                                                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                            });
+                                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+
+                                                        refreuniones.child(reunionTarjeta.getId()).removeValue();
+
+                                                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                            });
+                                            builder.show();
                                 }
                             }
                         });
