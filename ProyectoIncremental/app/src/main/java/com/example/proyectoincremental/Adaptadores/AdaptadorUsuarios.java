@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -79,14 +80,20 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
         usuario = usuarios.get(position);
         holder.nombre.setText(usuario.getNombre());
         holder.tipo.setText(usuario.getTipo());
+        if (URLUtil.isValidUrl(usuario.getImagen())) {
+            Picasso.get().load(usuario.getImagen()).error(R.drawable.cuenta).resize(540, 550).centerCrop().into(holder.imgusuario);
+
+        } else {
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb").resize(540, 450).centerCrop().into(holder.imgusuario);
+        }
+
+/*
         if (!usuario.getImagen().isEmpty()) {
             Picasso.get().load(usuario.getImagen()).resize(540, 550).centerCrop().into(holder.imgusuario);
         } else {
-
-            Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.imgusuario);
-
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb").resize(540, 450).centerCrop().into(holder.imgusuario);
         }
-        holder.bind(usuario, itemClickListener);
+   */     holder.bind(usuario, itemClickListener);
 
 
     }
@@ -162,6 +169,7 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
+                                    intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
 
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
@@ -184,6 +192,8 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
+                                    intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
+
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();

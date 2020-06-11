@@ -30,7 +30,7 @@ public class CreateUserActivity extends AppCompatActivity {
     private int edadI;
     private Button btnCrearUsuario, btnGoLogin;
     private FirebaseAuth mAuth;
-    private SharedPreferences prefs, sfd;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class CreateUserActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+
                                     //edad recibe un string del editex , pasmos el string recibido a entero //edad del usuario
                                     edadI = Integer.parseInt(edadS);
 
@@ -85,13 +86,14 @@ public class CreateUserActivity extends AppCompatActivity {
                                     usuario.setApellido2(apellido2S);
                                     usuario.setEdad(edadI);
                                     usuario.setContraseña(contraseñaS);
-                                    usuario.setTipo("E");
+                                    usuario.setTipo("Alumnos");
                                     usuario.setGrupo(" ");
                                     usuario.setIdgrupo("");
                                     usuario.setAsignaturas(" ");
                                     usuario.setId(currentUser.getUid());
                                     usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                     refBBD.setValue(usuario);
+                                    Toast.makeText(CreateUserActivity.this, "El usuario se ha creado correctamente!", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(CreateUserActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -127,19 +129,7 @@ public class CreateUserActivity extends AppCompatActivity {
         });
 
 
-    }/*
-//metodo para recordar usuario
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
-        if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(CreateUserActivity.this, Main2Activity.class));
-            Toast.makeText(CreateUserActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }*/
+    }
 
     public static boolean isNumeric(final String str) {
 
