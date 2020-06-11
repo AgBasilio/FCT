@@ -1,6 +1,5 @@
 package com.example.proyectoincremental.Activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,10 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.Utils.Asignatura;
 import com.example.proyectoincremental.Utils.Grupos;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,15 +21,13 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.proyectoincremental.Activity.CreateUserActivity.isNumeric;
 
 public class CrearGrupoActivity extends AppCompatActivity {
-    private EditText curso, nombre, descipcion, imagen;
+    private EditText curso, nombre;
     private FirebaseDatabase database;
     private DatabaseReference refBBD;
-    private String nombreS = "", crusoS = "", descripcionS = "", imagenS, ngrupo = "";
-    private int edadI;
-    private Button btnCrear, btnGoLogin;
+    private String ngrupo = "";
+    private Button btnCrearGrupo;
     private FirebaseAuth mAuth;
-    private SharedPreferences prefs, sfd;
-    Grupos grupo;
+    private Grupos grupo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +38,8 @@ public class CrearGrupoActivity extends AppCompatActivity {
         nombre = findViewById(R.id.nombreGrupo);
         curso = findViewById(R.id.numeroCruso);
 
-        btnCrear = findViewById(R.id.btn);
-        btnCrear.setOnClickListener(new View.OnClickListener() {
+        btnCrearGrupo = findViewById(R.id.btn);
+        btnCrearGrupo.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

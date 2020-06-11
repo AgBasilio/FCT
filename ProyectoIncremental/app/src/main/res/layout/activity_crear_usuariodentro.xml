@@ -59,6 +59,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Edad"></EditText>
+                    <EditText
+                        android:id="@+id/fotoedi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Imagen"></EditText>
+
 
                     <EditText
                         android:id="@+id/contraseña"

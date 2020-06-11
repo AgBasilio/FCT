@@ -15,14 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class EditarAsignaturaActivity extends AppCompatActivity {
-    private FirebaseDatabase database;
-    private DatabaseReference refBBD, refBBD2,refBBD3,refBBD4;
-    private int edadI;
-    private FirebaseAuth mAuth;
+    private DatabaseReference refBBD, refBBD2, refBBD3, refBBD4;
     private EditText nombreAsignatura, cursoAsignatura, fotoAsignatura, desripcionAsignatura;
     private Button btnEditar;
     private String id;
-    private String snombreeditAsignatura = "", scursoditAsignatura = "",sfotoeditAsignatura = "",sdescripcioneditAsignatura = "";
+    private String snombreeditAsignatura = "", scursoditAsignatura = "", sfotoeditAsignatura = "", sdescripcioneditAsignatura = "";
     private FirebaseAuth auth;
 
     @Override
@@ -30,12 +27,10 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_asignatura);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-
         nombreAsignatura = (EditText) findViewById(R.id.editnombreAsignatura);
         cursoAsignatura = (EditText) findViewById(R.id.editcursoAsignatura);
         fotoAsignatura = (EditText) findViewById(R.id.editfotoAsignatura);
         desripcionAsignatura = (EditText) findViewById(R.id.editdescripcionAsignatura);
-
 
         if (getIntent().getExtras() != null) {
             nombreAsignatura.setText(getIntent().getExtras().getString("NombreAsignatura"));
@@ -71,7 +66,6 @@ public class EditarAsignaturaActivity extends AppCompatActivity {
                 refBBD3.setValue(sfotoeditAsignatura);
                 refBBD4.setValue(snombreeditAsignatura);
                 onBackPressed();
-
 
 
             }

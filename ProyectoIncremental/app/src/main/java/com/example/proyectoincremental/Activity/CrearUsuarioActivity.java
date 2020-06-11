@@ -1,8 +1,6 @@
 
 package com.example.proyectoincremental.Activity;
 
-import android.app.AlertDialog;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +9,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,22 +52,29 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private List<Grupos> listaGrupos;
     private Grupos grupoParaGuardar;
 
+
     private List<String> listaIdsAsignaturasParaGuardar;
 
-    private FirebaseDatabase database, database1;
+    private FirebaseDatabase database;
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
-    private DatabaseReference referenceEventos, referenceEventos2;
-    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6, refBBD0, refBBD7;
 
-    private RecyclerView recyclerView, recyclerView1;
+    private DatabaseReference refBBD, refBBD1, refBBD2, refBBD3, refBBD4, refBBD5, refBBD6, refBBD0, refBBD7, referenceEventos, referenceEventos2;
+
+    private AdaptadorListaAsignturas adaptadorListaAsignturas;
+    private AdaptadorListaGrupos adaptadorListaGrupos;
+
+    private List<Asignatura> listaAsignaturas;
+    private List<Grupos> listaGrupos;
+    private List<String> listaGruposS, listaIdGruposs, listaAsignaturasS;
+
+    private RecyclerView recyclerViewListaAsignatura, recyclerViewListaGrupos;
     private LinearLayoutManager mLayoutManager, mLayoutManager1;
-    private AlertDialog.Builder builder;
 
     private TextView labelGrupos;
     private String emailS = "", contraseñaS = "", nombreS = "", apellido1S = "", apellido2S = "", edadS = "";
     private String tipoUsuarioSeleccionado = "";
-    private EditText email, contraseña, nombre, apellido1, apellido2, edad, tipo;
+
     private Spinner spinner, grupoSelector;
     private String userid;
     private int edadI, recuperamos_variable_integer;
@@ -75,6 +82,15 @@ public class CrearUsuarioActivity extends AppCompatActivity {
     private Button btnCrearUsuario, btnEditUsuario;
     private String id;
 
+    private String f = "", a = "", b = "";
+   
+    private String tipoSeleccion = "";
+  
+    private String[] asignaturasusurio;
+    private String gruposusurio;
+    private String idUsuario;
+
+    private EditText email, contraseña, nombre, apellido1, apellido2, edad, foto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +99,9 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
         //Variables de firebase
         database = FirebaseDatabase.getInstance();
-        database1 = FirebaseDatabase.getInstance();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
+        //ID usuario
         userid = firebaseUser.getUid();
 
         //Editex del formulario
@@ -96,6 +111,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
         apellido1 = findViewById(R.id.apellido1);
         apellido2 = findViewById(R.id.apellido2);
         edad = findViewById(R.id.edad);
+        foto = findViewById(R.id.fotoedi);
 
         labelGrupos = findViewById(R.id.gruposLabel);
 
@@ -106,18 +122,18 @@ public class CrearUsuarioActivity extends AppCompatActivity {
         btnCrearUsuario = findViewById(R.id.btnCrearUsuariodentro);
 
         //Recicler de la lista grupos
-        recyclerView = (RecyclerView) findViewById(R.id.listaA);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewListaAsignatura = (RecyclerView) findViewById(R.id.listaA);
+        recyclerViewListaAsignatura.setHasFixedSize(true);
+        recyclerViewListaAsignatura.setItemAnimator(new DefaultItemAnimator());
         mLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerViewListaAsignatura.setLayoutManager(mLayoutManager);
 
         //Recicler de la lista asignaturas
-        recyclerView1 = (RecyclerView) findViewById(R.id.listaG);
-        recyclerView1.setHasFixedSize(true);
-        recyclerView1.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewListaGrupos = (RecyclerView) findViewById(R.id.listaG);
+        recyclerViewListaGrupos.setHasFixedSize(true);
+        recyclerViewListaGrupos.setItemAnimator(new DefaultItemAnimator());
         mLayoutManager1 = new LinearLayoutManager(this);
-        recyclerView1.setLayoutManager(mLayoutManager1);
+        recyclerViewListaGrupos.setLayoutManager(mLayoutManager1);
 
         //Listas
         asignaturaList = new ArrayList<Asignatura>();
@@ -228,7 +244,10 @@ public class CrearUsuarioActivity extends AppCompatActivity {
             nombre.setText(getIntent().getExtras().getString("NombreLocal"));
             apellido1.setText(getIntent().getExtras().getString("Apellido1"));
             apellido2.setText(getIntent().getExtras().getString("Apellido2"));
-            id = getIntent().getExtras().getString("Id");
+            foto.setText(getIntent().getExtras().getString("Foto"));
+
+            idUsuario = getIntent().getExtras().getString("Id");
+
             String tiposss = getIntent().getStringExtra("Tipo");
             for (String a : getIntent().getStringExtra("Asignaturas").split(",")) {
                 if (!a.isEmpty()) {
@@ -238,6 +257,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
             final String ID_GRUPO_ORIGINAL = getIntent().getStringExtra("IdGrupo");
             grupoParaGuardar = ObtenerGrupoParaGuardar(ID_GRUPO_ORIGINAL);
+
 
             recuperamos_variable_integer = getIntent().getIntExtra("Edad", 0);
             edadS = Integer.toString(recuperamos_variable_integer);
@@ -270,7 +290,9 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
                     String asignaturasParaGuardar = listaToString(listaIdsAsignaturasParaGuardar);
 
+
                     nombreS = nombre.getText().toString();
+                    String fotoS = foto.getText().toString();
                     apellido1S = apellido1.getText().toString();
                     apellido2S = apellido2.getText().toString();
                     edadS = edad.getText().toString();
@@ -284,11 +306,14 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                     refBBD5 = database.getReference("Usuarios").child(id).child("asignaturas");
                     refBBD6 = database.getReference("Usuarios").child(id).child("grupo");
                     refBBD7 = database.getReference("Usuarios").child(id).child("idgrupo");
+                  DatabaseReference refBBDIMG = database.getReference("Usuarios").child(id).child("imagen");
+
 
                     refBBD.setValue(nombreS);
                     refBBD1.setValue(apellido1S);
                     refBBD2.setValue(apellido2S);
                     refBBD3.setValue(edadI);
+
                     refBBD4.setValue(tipoUsuarioSeleccionado);
                     refBBD5.setValue(asignaturasParaGuardar);
 
@@ -315,8 +340,15 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                         if(!grupoParaGuardar.getId().isEmpty())//si es que hay algoo
                             database.getReference("GruposDefinidos").child(grupoParaGuardar.getId()).child(id).setValue(":)");
                     }
+                  
+                  if (fotoS.isEmpty()) {
+                        refBBDIMG.setValue("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
+                    } else {
+                        refBBDIMG.setValue(fotoS);
+                    }
 
                     Toast.makeText(CrearUsuarioActivity.this, "Usuario actualizado", Toast.LENGTH_LONG).show();
+
                     onBackPressed();
                 }
             });
@@ -378,11 +410,13 @@ public class CrearUsuarioActivity extends AppCompatActivity {
                                         usuario.setApellido1(apellido1S);
                                         usuario.setApellido2(apellido2S);
                                         usuario.setEdad(edadI);
+
                                         usuario.setContrasenna(contraseñaS);
                                         usuario.setGrupo(grupoParaGuardar.getNombreGrupo());
                                         usuario.setIdgrupo(grupoParaGuardar.getId());
                                         usuario.setAsignaturas(asignaturasParaGuardar);
                                         usuario.setTipo(tipoUsuarioSeleccionado);
+
                                         usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                         usuario.setId(id);
 
@@ -437,6 +471,7 @@ public class CrearUsuarioActivity extends AppCompatActivity {
 
                     }
                 });
+
             }
 
             @Override

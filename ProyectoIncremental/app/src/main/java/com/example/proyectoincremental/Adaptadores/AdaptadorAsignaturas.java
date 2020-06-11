@@ -41,7 +41,6 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
     private List<Asignatura>listaAdinaturasfiltradas;
     private int layout;
     private AdaptadorAsignaturas.OnItemClickListener itemClickListener;
-    private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private Asignatura asignatura;
     private String id;

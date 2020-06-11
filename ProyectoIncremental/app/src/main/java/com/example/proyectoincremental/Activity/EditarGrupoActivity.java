@@ -1,6 +1,5 @@
 package com.example.proyectoincremental.Activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,20 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import static com.example.proyectoincremental.Activity.CreateUserActivity.isNumeric;
 
 public class EditarGrupoActivity extends AppCompatActivity {
-    private EditText curso, nombre, descipcion, imagen;
-    private FirebaseDatabase database;
-    private DatabaseReference refBBD,refBBD2;
-    private String nombreS = "", crusoS = "", descripcionS = "", imagenS;
-    private int edadI;
-    private Button btnCrear, btnGoLogin;
-    private FirebaseAuth mAuth;
-    private SharedPreferences prefs, sfd;
-    private String NombreLocal;
-    private String descripcion;
-    EditText nombreGrupo, numeroGrupo;
-    Button btnEditar;
-    String id;
-    private  String snombreeditGrupo="",snumeroditGrupo="";
+    private DatabaseReference refBBD, refBBD2;
+    private EditText nombreGrupo, numeroGrupo;
+    private Button btnEditarGrupo;
+    private String id;
+    private String snombreeditGrupo = "", snumeroditGrupo = "";
     private FirebaseAuth auth;
     private String userid;
 
@@ -51,21 +41,27 @@ public class EditarGrupoActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             nombreGrupo.setText(getIntent().getExtras().getString("NombreLocal"));
-            id=getIntent().getExtras().getString("Id");
+            id = getIntent().getExtras().getString("Id");
             numeroGrupo.setText(getIntent().getExtras().getString("Contenido"));
         }
 
-        btnEditar=findViewById(R.id.btneditarGrupo);
-        btnEditar.setOnClickListener(new View.OnClickListener() {
+        btnEditarGrupo = findViewById(R.id.btneditarGrupo);
+        btnEditarGrupo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 auth = FirebaseAuth.getInstance();
 
                 FirebaseUser firebaseUser = auth.getCurrentUser();
 
-                userid = firebaseUser.getUid();
-                snombreeditGrupo=nombreGrupo.getText().toString();
-                snumeroditGrupo=numeroGrupo.getText().toString();
+
+                String userid = firebaseUser.getUid();
+                snombreeditGrupo = nombreGrupo.getText().toString();
+                snumeroditGrupo = numeroGrupo.getText().toString();
+                refBBD = database.getReference("Grupos").child(userid).child(id).child("nombreGrupo");
+                refBBD2 = database.getReference("Grupos").child(userid).child(id).child("numeroGrupo");
+                refBBD.setValue(snombreeditGrupo);
+                refBBD2.setValue(snumeroditGrupo);
+                onBackPressed();
 
                 if (!isNumeric(snumeroditGrupo)) {
                     Toast.makeText(EditarGrupoActivity.this, "El numero de grupo debe ser valor numerico", Toast.LENGTH_SHORT).show();

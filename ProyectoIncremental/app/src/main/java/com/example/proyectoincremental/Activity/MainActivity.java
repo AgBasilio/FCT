@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.proyectoincremental.R;
@@ -43,11 +41,9 @@ public class MainActivity extends AppCompatActivity {
     //--------------------------------------------------------------------------------
 
     private TextView nombreUsuarioMenu;
-    private Button btnAtrasMenu;
-    private SearchView searchView;
     private FirebaseDatabase dataBase;
     private SharedPreferences prefs;
-    String f;
+    private String f;
 
 
     private AppBarConfiguration mAppBarConfiguration;
