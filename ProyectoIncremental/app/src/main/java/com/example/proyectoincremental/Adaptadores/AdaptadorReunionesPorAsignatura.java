@@ -30,7 +30,6 @@ import java.util.List;
 import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
 
 public class AdaptadorReunionesPorAsignatura extends RecyclerView.Adapter<AdaptadorReunionesPorAsignatura.ViewHolder> implements ListAdapter {
-    private final List<String> listaNumeroGrupos;
     private Context context;
     private List<Reuniones> listaReuniones;
 
@@ -38,12 +37,8 @@ public class AdaptadorReunionesPorAsignatura extends RecyclerView.Adapter<Adapta
 
     private AdaptadorReunionesPorAsignatura.OnItemClickListener itemClickListener;
 
-    private Reuniones reunion;
-    private String numeroGrupo;
-
-    public AdaptadorReunionesPorAsignatura(List<Reuniones> listareuniones, List<String>listaNumeroGrupos, int layout, AdaptadorReunionesPorAsignatura.OnItemClickListener itemListener) {
+    public AdaptadorReunionesPorAsignatura(List<Reuniones> listareuniones, int layout, AdaptadorReunionesPorAsignatura.OnItemClickListener itemListener) {
         this.listaReuniones = listareuniones;
-        this.listaNumeroGrupos = listaNumeroGrupos;
         this.layout = layout;
         this.itemClickListener = itemListener;
     }
@@ -59,19 +54,16 @@ public class AdaptadorReunionesPorAsignatura extends RecyclerView.Adapter<Adapta
     @Override
     public void onBindViewHolder(@NonNull AdaptadorReunionesPorAsignatura.ViewHolder holder, final int position) {
 
-        reunion = listaReuniones.get(position);
-        numeroGrupo = listaNumeroGrupos.get(position);
+        Reuniones reunion = listaReuniones.get(position);
+
+        holder.nombre.setText(reunion.getNumeroGrupo());
+        holder.curso.setText(reunion.getHora());
 
         holder.bind(reunion, itemClickListener);
-
-        holder.nombre.setText(numeroGrupo);
-        holder.curso.setText(this.reunion.getHora());
-
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
 
         protected TextView curso;
         protected TextView nombre;

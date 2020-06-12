@@ -23,7 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class ReunionesProfesorActivity extends AppCompatActivity {
@@ -84,7 +88,7 @@ public class ReunionesProfesorActivity extends AppCompatActivity {
                             database.getReference("Grupos").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    ArrayList<String> numeroGrupoList = new ArrayList<>();
+                                    //ArrayList<String> numeroGrupoList = new ArrayList<>();
                                     for(Reuniones reunion : reunionesList) {
                                         Boolean numeroGrupoEncontrado = false;
 
@@ -94,7 +98,8 @@ public class ReunionesProfesorActivity extends AppCompatActivity {
                                                 if (dsds.getKey().equals(reunion.getGrupo())) {
                                                     numeroGrupoEncontrado = true;
                                                     //guardar nombre grupo
-                                                    numeroGrupoList.add(dsds.getValue(Grupos.class).getNumeroGrupo());
+                                                    //numeroGrupoList.add(dsds.getValue(Grupos.class).getNumeroGrupo());
+                                                    reunion.setNumeroGrupo(dsds.getValue(Grupos.class).getNumeroGrupo());
                                                     break;
                                                 }
                                             }
@@ -102,11 +107,28 @@ public class ReunionesProfesorActivity extends AppCompatActivity {
                                                 break;
                                         }
                                         if(!numeroGrupoEncontrado)
-                                            numeroGrupoList.add("Grupo sin Numero");
+                                            reunion.setNumeroGrupo("Grupo sin Numero");
+                                            //numeroGrupoList.add("Grupo sin Numero");
                                     }
-
-
-                                    recyclerView.setAdapter(new AdaptadorReunionesPorAsignatura(reunionesList, numeroGrupoList, R.layout.item_reunion_profesor, new AdaptadorReunionesPorAsignatura.OnItemClickListener() {
+                                    reunionesList.sort(new Comparator<Reuniones>() {
+                                        @Override
+                                        public int compare(Reuniones o1, Reuniones o2) {
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                            Date d1, d2;
+                                            try {
+                                                d1 = simpleDateFormat.parse(o1.getHora());
+                                            } catch (ParseException e) {
+                                                d1 = new Date();
+                                            }
+                                            try {
+                                                d2 = simpleDateFormat.parse(o2.getHora());
+                                            } catch (ParseException e) {
+                                                d2 = new Date();
+                                            }
+                                            return d1.compareTo(d2);
+                                        }
+                                    });
+                                    recyclerView.setAdapter(new AdaptadorReunionesPorAsignatura(reunionesList, R.layout.item_reunion_profesor, new AdaptadorReunionesPorAsignatura.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(final Reuniones reunion, int position, View itemView) {
                                             //Toast.makeText(ReunionesProfesorActivity.this, "Eliminar esta reunion.", Toast.LENGTH_LONG).show();

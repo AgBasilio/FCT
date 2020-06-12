@@ -5,6 +5,15 @@ public class Reuniones {
     String hora;
     String grupo;
     String asignatura;
+    String numeroGrupo;
+
+    public String getNumeroGrupo() {
+        return numeroGrupo;
+    }
+
+    public void setNumeroGrupo(String numeroGrupo) {
+        this.numeroGrupo = numeroGrupo;
+    }
 
     public String getHora() {
         return hora;

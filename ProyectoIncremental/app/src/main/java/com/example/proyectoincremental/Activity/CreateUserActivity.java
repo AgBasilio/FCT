@@ -89,9 +89,9 @@ public class CreateUserActivity extends AppCompatActivity {
                                     usuario.setContrasenna(contraseñaS);
                                     usuario.setTipo(Usuario.TIPO_ALUMNO);
 
-                                    usuario.setGrupo(" ");
+                                    usuario.setGrupo("");
                                     usuario.setIdgrupo("");
-                                    usuario.setAsignaturas(" ");
+                                    usuario.setAsignaturas("");
                                     usuario.setId(currentUser.getUid());
                                     usuario.setImagen("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
                                     refBBD.setValue(usuario);
