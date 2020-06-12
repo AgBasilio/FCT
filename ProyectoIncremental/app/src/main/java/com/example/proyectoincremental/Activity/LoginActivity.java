@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     resetPasword();
                 } else {
 
-                    Toast.makeText(LoginActivity.this, "ntroducir correo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Introducir correo", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                     saveOnPreferences(email, password);
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Rellene los campos", Toast.LENGTH_LONG).show();
                 }
             }
         });

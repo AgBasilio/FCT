@@ -1,4 +1,5 @@
 package com.example.proyectoincremental.ui.reuniones;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyectoincremental.Activity.ReunionesProfesorActivity;
 import com.example.proyectoincremental.Adaptadores.AdaptadorReuniones;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
@@ -101,20 +105,30 @@ public class ReunionesFragment extends Fragment {
                                 asignaturaList.add(asignatura);
                             }
 
-                            adaptadorReuniones = new AdaptadorReuniones(null, asignaturaList, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
+                            adaptadorReuniones = new AdaptadorReuniones(null, asignaturaList, R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Reuniones reuniones, int position, View itemView) {
-                                    recyclerView.setVisibility(View.INVISIBLE);
+//                                    recyclerView.setVisibility(View.INVISIBLE);
 
-                                    ReunionesProfesorFragment fragment = new ReunionesProfesorFragment(asignaturaList.get(position), recyclerView);
-                                    getActivity().getSupportFragmentManager().beginTransaction()
-                                                 .replace(containerId, fragment, "ReunionesProfesor")
-                                                 .addToBackStack(null)
-                                                 .commit();
+                                    Intent intent = new Intent(getContext(), ReunionesProfesorActivity.class);
+                                    intent.putExtra("Asignatura", asignaturaList.get(position));
 
+                                    getContext().startActivity(intent);
+
+//                                    ReunionesProfesorFragment fragment = new ReunionesProfesorFragment(asignaturaList.get(position), recyclerView);
+//                                    FragmentManager fm = getActivity().getSupportFragmentManager();
+//
+//                                    FragmentTransaction ft = fm.beginTransaction();
+//                                    //ft.add(containerId, fragment, "ReunionesProfesor");
+//                                    ft.replace(containerId, fragment, "ReunionesProfesor");
+//                                    //ft.addToBackStack("Reuniones");
+//                                    ft.commit();
                                 }
                             });
                             recyclerView.setAdapter(adaptadorReuniones);
+                        }
+                        else{
+                            Toast.makeText(getContext(), "No tiene asignaturas asignadas.", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -153,7 +167,7 @@ public class ReunionesFragment extends Fragment {
                             p.setId(dataSnapshot1.getKey());
                             listaReuniones.add(p);
                         }
-                        adaptadorReuniones = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, getContext(), R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
+                        adaptadorReuniones = new AdaptadorReuniones(listaReuniones, listaAsiganturasDefinidas, R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
 
                             @Override
                             public void onItemClick(final Reuniones reunionTarjeta, int position, View itemView) {

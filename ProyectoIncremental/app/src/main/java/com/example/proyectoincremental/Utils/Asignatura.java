@@ -2,9 +2,11 @@ package com.example.proyectoincremental.Utils;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Asignatura {
+//Implementamos Serializable porque Parcelable es demasiado para lo que lo usaremos
+public class Asignatura implements Serializable {
     String nombre;
     String curso;
     String descricion;

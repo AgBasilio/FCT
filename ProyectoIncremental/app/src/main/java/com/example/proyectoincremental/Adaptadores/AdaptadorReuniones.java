@@ -44,45 +44,23 @@ import java.util.List;
 import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
 
 public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.ViewHolder> implements ListAdapter {
-    private FirebaseDatabase database;
-    private Context context;
     protected List<Asignatura> asignaturas;
     private List<Reuniones> listaReuniones;
     private int layout;
-    private List<Asignatura> listaAdinaturasfiltradas;
-    private String[] asignaturasusuario = null;
     private AdaptadorReuniones.OnItemClickListener itemClickListener;
-    private CardView cardView;
-    private Grupos pp;
-    private RecyclerView recyclerView, recyclerView1;
-
-    private FirebaseUser firebaseUser;
-    private FirebaseAuth auth;
-    protected Asignatura asignatura;
-    private String id;
-    private AlertDialog.Builder builder;
-    private String userid, idgrupo;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorReuniones(List<Reuniones> listareuniones, List<Asignatura> asignaturas, Context context, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
+    public AdaptadorReuniones(List<Reuniones> listareuniones, List<Asignatura> asignaturas, int layout, AdaptadorReuniones.OnItemClickListener itemListener) {
         this.asignaturas = asignaturas;
         this.listaReuniones = listareuniones;
         this.layout = layout;
-        this.context = context;
         this.itemClickListener = itemListener;
-        this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
-
-
     }
 
     @Override
     public AdaptadorReuniones.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        database = FirebaseDatabase.getInstance();
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        recyclerView = (RecyclerView) v.findViewById(R.id.listarasignaturasparareunion);
 
-        context = parent.getContext();
-        auth = FirebaseAuth.getInstance();
         AdaptadorReuniones.ViewHolder vh = new AdaptadorReuniones.ViewHolder(v);
         return vh;
     }
@@ -90,13 +68,7 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     //traemos la informacion de la BBD
     @Override
     public void onBindViewHolder(@NonNull AdaptadorReuniones.ViewHolder holder, final int position) {
-        /**/
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        asignatura = asignaturas.get(position);
-//        reuniones=listaReuniones.get(position);
-
-        Asignatura asignatura = asignaturas.get(position);
+       Asignatura asignatura = asignaturas.get(position);
 
         //por defecto a blanco
         ((CardView) holder.itemView).setCardBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -115,12 +87,12 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
             }
         }
 
-        holder.nombre.setText(this.asignatura.getNombre());
-        holder.curso.setText(this.asignatura.getDescricion());
+        holder.nombre.setText(asignatura.getNombre());
+        holder.curso.setText(asignatura.getCurso());
 
-        if (!this.asignatura.getImgAsignatura().isEmpty()) {
+        if (!asignatura.getImgAsignatura().isEmpty()) {
 
-            Picasso.get().load(this.asignatura.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
+            Picasso.get().load(asignatura.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
         } else {
             Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.img);
         }
@@ -128,7 +100,6 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
 
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
-
 
         protected TextView curso;
         protected TextView nombre;
@@ -146,21 +117,14 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
         //clik al item
         public void bind(final Reuniones reuniones, final AdaptadorReuniones.OnItemClickListener itemListener) {
 
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-                    //  itemView.setBackgroundColor(Color.parseColor("#000000"));
                     itemListener.onItemClick(reuniones, getAdapterPosition(), itemView);
                 }
             });
-
         }
-
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -178,14 +142,10 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     }
 
     @Override
-    public void registerDataSetObserver(DataSetObserver observer) {
-
-    }
+    public void registerDataSetObserver(DataSetObserver observer) { }
 
     @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-
-    }
+    public void unregisterDataSetObserver(DataSetObserver observer) { }
 
     @Override
     public int getCount() {
@@ -221,6 +181,4 @@ public class AdaptadorReuniones extends RecyclerView.Adapter<AdaptadorReuniones.
     public interface OnItemClickListener {
         void onItemClick(Reuniones reunion, int position, View itemView);
     }
-
-
 }
