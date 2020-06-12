@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -47,6 +48,7 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
     private AlertDialog.Builder builder;
     String userid;
     public static final String URL_FOTO_USRr = "https://firebasestorage.googleapis.com/v0/b/bbdafanigths.appspot.com/o/fotosNormales%2F2694-1.jpg?alt=media&token=522e3e15-ff17-46c5-9dbc-0379af57871c";
+    private String URL_FOTO_USRs;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
     public AdaptadorAsignaturas(List<Asignatura> asignaturas, Context context, int layout, OnItemClickListener itemListener) {
@@ -78,12 +80,13 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
         holder.nombre.setText(asignatura.getNombre());
         holder.curso.setText(asignatura.getCurso());
         holder.bind(asignatura, itemClickListener);
-        if (!asignatura.getImgAsignatura().isEmpty()) {
+        if (!asignatura.getImgAsignatura().isEmpty() && URLUtil.isValidUrl(asignatura.getImgAsignatura())) {
 
             Picasso.get().load(asignatura.getImgAsignatura()).resize(540, 550).centerCrop().into(holder.img);
         } else {
 
-            Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.img);
+            URL_FOTO_USRs = "https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb";
+            Picasso.get().load(URL_FOTO_USRs).resize(540, 550).centerCrop().into(holder.img);
 
         }
     }
