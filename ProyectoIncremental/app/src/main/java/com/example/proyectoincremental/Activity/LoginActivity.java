@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private String email = "";
     private String password = "";
-    private DatabaseReference databaseReference;
     private FirebaseAuth auth;
     private Button resetPass;
     private Button crear;
@@ -66,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                     resetPasword();
                 } else {
 
-                    Toast.makeText(LoginActivity.this, "ntroducir correo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Introducir correo", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -88,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                     saveOnPreferences(email, password);
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "rellene ls campos", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Rellene los campos", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -126,18 +125,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    //metodo para recordar usuario
-  /*  @Override
-    protected void onStart() {
-        super.onStart();
-
-        //si el usuario ya a iniciado sesion , lo envia a la panatalla de inicio
-        if (mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            Toast.makeText(LoginActivity.this, "ya tiene usuario", Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }*/
     private void setCredentialsIfExist() {
         editTextEmail = (EditText) findViewById(R.id.emailLogin);
         editTextPassword = (EditText) findViewById(R.id.contraseñaLogin);

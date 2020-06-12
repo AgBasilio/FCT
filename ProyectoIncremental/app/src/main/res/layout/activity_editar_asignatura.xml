@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -48,6 +49,8 @@
 
 
         <Button
+            android:background="#92CF81"
+
             android:layout_marginTop="60dp"
             android:text="Editar Asignatura"
             android:id="@+id/btneditar"

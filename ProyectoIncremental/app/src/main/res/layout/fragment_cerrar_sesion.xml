@@ -4,15 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="fragmeto"
-        tools:ignore="MissingConstraints"></TextView>
-
     <Button
+        android:background="#F84949"
         android:id="@+id/btncerarcesion"
-        android:hint="cerrar cesion"
+        android:hint="Cerrar sesion"
+        android:textSize="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

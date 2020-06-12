@@ -41,7 +41,6 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
     private List<Asignatura>listaAdinaturasfiltradas;
     private int layout;
     private AdaptadorAsignaturas.OnItemClickListener itemClickListener;
-    private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
     private Asignatura asignatura;
     private String id;
@@ -74,6 +73,8 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
     @Override
     public void onBindViewHolder(@NonNull AdaptadorAsignaturas.ViewHolder holder, int position) {
         asignatura = asignaturas.get(position);
+
+
         holder.nombre.setText(asignatura.getNombre());
         holder.curso.setText(asignatura.getCurso());
         holder.bind(asignatura, itemClickListener);
@@ -123,8 +124,8 @@ public class AdaptadorAsignaturas extends RecyclerView.Adapter<AdaptadorAsignatu
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
+            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Editar");
+            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Eliminar");
             Edit.setOnMenuItemClickListener(onEditMenu);
             Delete.setOnMenuItemClickListener(onEditMenu);
         }

@@ -5,16 +5,17 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <EditText
-            android:layout_marginTop="100dp"
             android:id="@+id/nombreGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nombre"
+            android:layout_marginTop="100dp"
+            android:hint="Nombre"
             tools:ignore="MissingConstraints"></EditText>
 
         <EditText
@@ -22,7 +23,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="curso"
+            android:hint="Numero de grupo"
             tools:ignore="MissingConstraints">
 
         </EditText>
@@ -30,6 +31,8 @@
 
 
         <Button
+            android:background="#92CF81"
+
             android:layout_marginTop="60dp"
             android:text="Crear Grupo"
             android:id="@+id/btn"

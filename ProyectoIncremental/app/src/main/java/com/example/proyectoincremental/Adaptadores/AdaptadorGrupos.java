@@ -113,8 +113,8 @@ public class AdaptadorGrupos extends RecyclerView.Adapter<AdaptadorGrupos.ViewHo
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
+            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Editar");
+            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Eliminar");
             Edit.setOnMenuItemClickListener(onEditMenu);
             Delete.setOnMenuItemClickListener(onEditMenu);
         }

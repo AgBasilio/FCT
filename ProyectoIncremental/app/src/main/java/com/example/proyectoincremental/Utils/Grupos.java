@@ -7,6 +7,12 @@ public class Grupos {
 
     String id;
 
+    public Grupos() {
+        this.nombreGrupo = "";
+        this.numeroGrupo = "";
+        this.id = "";
+    }
+
     public String getNombreGrupo() {
         return nombreGrupo;
     }
@@ -29,6 +35,14 @@ public class Grupos {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        if(id.isEmpty())
+            return "No seleccionar";
+        else
+            return "Nombre: "+nombreGrupo + " - Numero: " + numeroGrupo;
     }
 }
 

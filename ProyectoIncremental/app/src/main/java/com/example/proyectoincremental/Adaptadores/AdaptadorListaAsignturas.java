@@ -12,9 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -22,15 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyectoincremental.Activity.EditarAsignaturaActivity;
 import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
 import com.example.proyectoincremental.Utils.Asignatura;
-import com.example.proyectoincremental.Utils.Grupos;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,26 +32,26 @@ import java.util.List;
 public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorListaAsignturas.ViewHolder> implements ListAdapter {
     private FirebaseDatabase database;
     private Context context;
-    private List<Asignatura> grupos;
+    private List<Asignatura> asignaturaList;
     private int layout;
     private List<Asignatura> listaAdinaturasfiltradas;
-    private String[] asignaturasusuario = null;
+    private List<String> idAsignaturaUsuarioList = null;
     private AdaptadorListaAsignturas.OnItemClickListener itemClickListener;
 
     private FirebaseUser firebaseUser;
     private FirebaseAuth auth;
-    private Asignatura grupo;
+    private Asignatura asignatura;
     private String id;
     private AlertDialog.Builder builder;
     private String userid;
 
     //Adaptador para carview eventos con imagen fecha , titulo y numero sitios libres
-    public AdaptadorListaAsignturas(List<Asignatura> asignaturas, Context context, int layout, AdaptadorListaAsignturas.OnItemClickListener itemListener, String[] asignaturasusuario) {
-        this.grupos = asignaturas;
+    public AdaptadorListaAsignturas(List<Asignatura> asignaturas, List<String> idAsignaturaUsuarioList, Context context, int layout, AdaptadorListaAsignturas.OnItemClickListener itemListener) {
+        this.asignaturaList = asignaturas;
         this.layout = layout;
         this.context = context;
         this.itemClickListener = itemListener;
-        this.asignaturasusuario = asignaturasusuario;
+        this.idAsignaturaUsuarioList = idAsignaturaUsuarioList;
         this.listaAdinaturasfiltradas = new ArrayList<>(asignaturas);
 
 
@@ -76,30 +70,27 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     //traemos la informacion de la BBD
     @Override
     public void onBindViewHolder(@NonNull AdaptadorListaAsignturas.ViewHolder holder, final int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        grupo = grupos.get(position);
+        asignatura = asignaturaList.get(position);
 
-        if (asignaturasusuario != null && asignaturasusuario.length > 0) {
-            for (String a : asignaturasusuario) {
-                if (a.equals(grupo.getNombre())) {
+        if (idAsignaturaUsuarioList != null && idAsignaturaUsuarioList.size() > 0) {
+            for (String a : idAsignaturaUsuarioList) {
+                if (a.equals(asignatura.getId())) {
 
                     holder.checkBox.setChecked(true);
                     //chekbox true defecto
-                    //Break para qtermianr el brak
+                    //Break para termianr el for
                     break;
                 }
             }
         }
 
-        holder.nombre.setText(grupo.getNombre());
-        holder.curso.setText(grupo.getDescricion());
-        holder.bind(grupo, itemClickListener);
-
-
+        holder.nombre.setText(asignatura.getNombre());
+        holder.curso.setText(asignatura.getDescricion());
+        holder.bind(asignatura, itemClickListener);
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         private TextView curso, nombre;
@@ -112,7 +103,6 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
             curso = (TextView) itemView.findViewById(R.id.ncurso);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
 
-            itemView.setOnCreateContextMenuListener(this);
         }
 
         //clik al item
@@ -128,106 +118,11 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
         }
 
 
-        @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
-            Edit.setOnMenuItemClickListener(onEditMenu);
-            Delete.setOnMenuItemClickListener(onEditMenu);
-        }
-
-        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                FirebaseUser firebaseUser = auth.getCurrentUser();
-
-                userid = firebaseUser.getUid();
-                switch (item.getItemId()) {
-                    case 1:
-
-                        builder = new AlertDialog.Builder(context);
-                        builder.setTitle("ATENCION");
-                        builder.setMessage("\n" + "Seguro que quieres Editar");
-                        // Set up the buttons
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //         intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
-                                    //       intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-                                    context.startActivity(intent);
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    Intent intent = new Intent(context, EditarGrupoActivity.class);
-                                    //   intent.putExtra("NombreLocal", grupos.get(getAdapterPosition()).getNombreGrupo());
-                                    intent.putExtra("Id", grupos.get(getAdapterPosition()).getId());
-                                    // intent.putExtra("Contenido", grupos.get(getAdapterPosition()).getNumeroGrupo());
-                                    context.startActivity(intent);
-                                    context.startActivity(intent);
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.show();
-
-
-                        break;
-
-                    case 2:
-
-                        builder = new AlertDialog.Builder(context);
-                        builder.setTitle("ATENCION");
-                        builder.setMessage("\n" + "Seguro que quieres Editar");
-                        // Set up the buttons
-                        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(grupos.get(getAdapterPosition()).getId()).removeValue();
-
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == DialogInterface.BUTTON_POSITIVE) {
-                                    database.getReference("Grupos").child(userid).child(grupos.get(getAdapterPosition()).getId()).removeValue();
-
-                                } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                                    dialog.cancel();
-                                }
-                            }
-                        });
-                        builder.show();
-                        break;
-                }
-                return true;
-            }
-        };
     }
-
-
 
     @Override
     public int getItemCount() {
-        return grupos.size();
+        return asignaturaList.size();
     }
 
     @Override
@@ -284,10 +179,4 @@ public class AdaptadorListaAsignturas extends RecyclerView.Adapter<AdaptadorList
     public interface OnItemClickListener {
         void onItemClick(Asignatura asignatura, int position, CheckBox checkBox);
     }
-
-
-    public interface CheckboxChechedListener {
-        void getCheckboxChechedListener(int position, Asignatura grupos, CheckBox checkBox);
-    }
-
 }

@@ -2,12 +2,23 @@ package com.example.proyectoincremental.Utils;
 
 import androidx.annotation.NonNull;
 
-public class Asignatura {
+import java.io.Serializable;
+import java.util.Objects;
+
+//Implementamos Serializable porque Parcelable es demasiado para lo que lo usaremos
+public class Asignatura implements Serializable {
     String nombre;
     String curso;
     String descricion;
     String imgAsignatura;
     String id;
+
+    public Asignatura() {
+    }
+
+    public Asignatura(String id) {
+        this.id = id;
+    }
 
     public String getId() {
         return id;
@@ -49,5 +60,16 @@ public class Asignatura {
         this.imgAsignatura = imgAsignatura;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Asignatura that = (Asignatura) o;
+        return id.equals(that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

@@ -5,6 +5,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:padding="15dp"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -14,7 +16,7 @@
             android:id="@+id/editnombreGrupo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nombre"
+            android:hint="Nombre"
             tools:ignore="MissingConstraints"></EditText>
 
         <EditText
@@ -22,12 +24,14 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:hint="curso"
+            android:hint="Curso"
             tools:ignore="MissingConstraints">
 
         </EditText>
 
         <Button
+            android:background="#92CF81"
+
             android:layout_marginTop="60dp"
             android:id="@+id/btneditarGrupo"
             android:layout_width="match_parent"

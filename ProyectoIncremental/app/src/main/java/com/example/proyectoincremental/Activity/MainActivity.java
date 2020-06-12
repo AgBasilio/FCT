@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.proyectoincremental.R;
@@ -24,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -36,18 +35,16 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
-    ;
+
     private FirebaseAuth auth;
     private DatabaseReference reference;
     private ArrayList<String> list;
     //--------------------------------------------------------------------------------
 
     private TextView nombreUsuarioMenu;
-    private Button btnAtrasMenu;
-    private SearchView searchView;
     private FirebaseDatabase dataBase;
     private SharedPreferences prefs;
-    String f;
+    private String f;
 
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -90,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                     //mostrar todo
 
-                    //empezar desde gestionar
+                    //empezar desde gestion
+                    navController.popBackStack(R.id.nav_reuniones, true);//para que no vuelva a reunion antes de cerrarse
                     navController.navigate(R.id.nav_gestionar);
                 }
                 else
@@ -119,6 +117,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        //if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//       //    if(getSupportFragmentManager().getBackStackEntryAt(0).getName().equals("Reuniones")){
+//        ReunionesProfesorFragment f = (ReunionesProfesorFragment) getSupportFragmentManager().findFragmentByTag("ReunionesProfesor");
+//            if(f != null){
+//                f.onDetach();
+//                f=null;
+////                getSupportFragmentManager().beginTransaction()
+////                        .remove(getSupportFragmentManager().findFragmentByTag("ReunionesProfesor"))
+////                        .commit();
+//                //getSupportFragmentManager().popBackStackImmediate();
+//                //getSupportFragmentManager().popBackStackImmediate();
+////            }
+//            //getSupportFragmentManager().popBackStackImmediate();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     protected void onResume() {

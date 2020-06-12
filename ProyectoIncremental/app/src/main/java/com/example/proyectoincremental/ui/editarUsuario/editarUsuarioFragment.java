@@ -3,6 +3,7 @@ package com.example.proyectoincremental.ui.editarUsuario;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.service.autofill.Dataset;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import com.example.proyectoincremental.Activity.EditarAsignaturaActivity;
 import com.example.proyectoincremental.Activity.MainActivity;
 import com.example.proyectoincremental.R;
+import com.example.proyectoincremental.Utils.Reuniones;
+import com.example.proyectoincremental.Utils.Usuario;
 import com.example.proyectoincremental.ui.gestionar.GruposViewModel;
 import com.example.proyectoincremental.ui.gestionar.fragmentos.AsignaturasFagment;
 import com.google.android.gms.tasks.Continuation;
@@ -51,6 +54,8 @@ public class editarUsuarioFragment extends Fragment {
     FirebaseUser currentUser;
     private FirebaseDatabase dataBase;
     String downloadURL;
+    Usuario usuario;
+    boolean tengoLosDatosDeLaBaseDeDatos = false;
     private StorageReference storageReference, storageReference2;
 
 
@@ -73,20 +78,75 @@ public class editarUsuarioFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         btnfoto = view.findViewById(R.id.btnCambiarFoto);
+
+        //
+        //   FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+
+            //Referenciamos al nodo Users
+            DatabaseReference reference = dataBase.getReference("Usuarios/" + currentUser.getUid());
+            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    tengoLosDatosDeLaBaseDeDatos = true;
+                    usuario = dataSnapshot.getValue(Usuario.class);
+                    String nombreUsuario = " ";
+                    String apellido1 = " ";
+                    String apellido2 = " ";
+                    int f = usuario.getEdad();
+
+                    String edad = String.valueOf(f);
+
+                    String imgPerfil = "";
+
+                    if (usuario != null) {
+                        nombreUsuario = usuario != null ? usuario.getNombre() : "";
+                        imgPerfil = usuario != null ? usuario.getImagen() : "";
+                        apellido1 = usuario != null ? usuario.getApellido1() : "";
+                        apellido2 = usuario != null ? usuario.getApellido2() : "";
+                        ediNombre.setText(nombreUsuario);
+                        ediApellido1.setText(apellido1);
+                        ediApellido2.setText(apellido2);
+                        ediEdad.setText(edad);
+                        Picasso.get().load(usuario.getImagen()).resize(450, 450).centerCrop().into(img);
+
+
+                        //     edifoto.setText(usuario.getImagen());
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+            ///
+        }
+
+
         btnfoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, GALLERY_INTENT);
-
+                if (tengoLosDatosDeLaBaseDeDatos) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, GALLERY_INTENT);
+                } else
+                    Toast.makeText(getContext(), "Aun no tenemos su imagen.", Toast.LENGTH_LONG).show();
             }
+
+
         });
 
         btneditar = view.findViewById(R.id.btnEditar);
         btneditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!tengoLosDatosDeLaBaseDeDatos) {
+                    Toast.makeText(getContext(), "Aun no tenemos sus datos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 sApellido1 = ediApellido1.getText().toString();
                 sApellido2 = ediApellido2.getText().toString();
                 sNombre = ediNombre.getText().toString();
@@ -100,12 +160,11 @@ public class editarUsuarioFragment extends Fragment {
                     refBBD3 = database.getReference("Usuarios/" + currentUser.getUid()).child("edad");
                     refBBD4 = database.getReference("Usuarios/" + currentUser.getUid()).child("imagen");
                     refBBD5 = database.getReference("Usuarios/" + currentUser.getUid()).child("nombre");
-
                     refBBD.setValue(sApellido1);
                     refBBD2.setValue(sApellido2);
                     refBBD3.setValue(edad);
                     if (sfoto == null) {
-                        refBBD4.setValue("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb");
+                        refBBD4.setValue(usuario.getImagen());
 
                     } else {
                         refBBD4.setValue(sfoto);
@@ -188,4 +247,6 @@ public class editarUsuarioFragment extends Fragment {
 
         return true;
     }
+
+
 }

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -22,10 +23,9 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyectoincremental.Activity.CrearUsuarioActivity;
-import com.example.proyectoincremental.Activity.EditarGrupoActivity;
 import com.example.proyectoincremental.R;
-import com.example.proyectoincremental.Utils.Grupos;
 import com.example.proyectoincremental.Utils.Usuario;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +35,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.proyectoincremental.Adaptadores.AdaptadorAsignaturas.URL_FOTO_USRr;
 
 public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.ViewHolder> implements ListAdapter, Filterable {
     private Context context;
@@ -79,12 +78,11 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
         usuario = usuarios.get(position);
         holder.nombre.setText(usuario.getNombre());
         holder.tipo.setText(usuario.getTipo());
-        if (!usuario.getImagen().isEmpty()) {
-            Picasso.get().load(usuario.getImagen()).resize(540, 550).centerCrop().into(holder.imgusuario);
+        if (URLUtil.isValidUrl(usuario.getImagen())) {
+            Picasso.get().load(usuario.getImagen()).error(R.drawable.cuenta).resize(540, 550).centerCrop().into(holder.imgusuario);
+
         } else {
-
-            Picasso.get().load(URL_FOTO_USRr).resize(540, 450).centerCrop().into(holder.imgusuario);
-
+            Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/proyecto-fct-83b84.appspot.com/o/cuenta.png?alt=media&token=9b30a70e-28c2-4e29-be65-18c599d09ffb").resize(540, 450).centerCrop().into(holder.imgusuario);
         }
         holder.bind(usuario, itemClickListener);
 
@@ -126,8 +124,8 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Edit");
-            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Delete");
+            MenuItem Edit = menu.add(Menu.NONE, 1, 1, "Editar");
+            MenuItem Delete = menu.add(Menu.NONE, 2, 2, "Eliminar");
             Edit.setOnMenuItemClickListener(onEditMenu);
             Delete.setOnMenuItemClickListener(onEditMenu);
         }
@@ -157,11 +155,12 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
                                     intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
                                     intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
-                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContrasenna());
                                     intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
-                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("IdGrupo", usuarios.get(getAdapterPosition()).getIdgrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
+                                    intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
 
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
@@ -179,11 +178,13 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                     intent.putExtra("Apellido1", usuarios.get(getAdapterPosition()).getApellido1());
                                     intent.putExtra("Apellido2", usuarios.get(getAdapterPosition()).getApellido2());
                                     intent.putExtra("Asignaturas", usuarios.get(getAdapterPosition()).getAsignaturas());
-                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContraseña());
+                                    intent.putExtra("Contraseña", usuarios.get(getAdapterPosition()).getContrasenna());
                                     intent.putExtra("Email", usuarios.get(getAdapterPosition()).getEmail());
-                                    intent.putExtra("Grupos", usuarios.get(getAdapterPosition()).getGrupo());
+                                    intent.putExtra("IdGrupo", usuarios.get(getAdapterPosition()).getIdgrupo());
                                     intent.putExtra("Tipo", usuarios.get(getAdapterPosition()).getTipo());
                                     intent.putExtra("Edad", usuarios.get(getAdapterPosition()).getEdad());
+                                    intent.putExtra("Foto", usuarios.get(getAdapterPosition()).getImagen());
+
                                     context.startActivity(intent);
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
@@ -209,6 +210,11 @@ public class AdaptadorUsuarios extends RecyclerView.Adapter<AdaptadorUsuarios.Vi
                                 if (which == DialogInterface.BUTTON_POSITIVE) {
                                     databsaserefernece = database.getReference("Usuarios").child(usuarios.get(getAdapterPosition()).getId());
                                     databsaserefernece.removeValue();
+
+                                    //eliminar de asignaturas definidas
+                                    database.getReference("AsignaturasDefinidas").child(usuarios.get(getAdapterPosition()).getId()).removeValue();
+                                    //eliminar de grupo definido
+                                    database.getReference("GruposDefinidos").child(usuarios.get(getAdapterPosition()).getIdgrupo()).child(usuarios.get(getAdapterPosition()).getId()).removeValue();
 
                                 } else if (which == DialogInterface.BUTTON_NEGATIVE) {
                                     dialog.cancel();
