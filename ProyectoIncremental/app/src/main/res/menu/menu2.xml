@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/search2"
+        android:icon="@mipmap/ic_search_foreground_round"
         android:orderInCategory="100"
         android:title="Search"
-        app:showAsAction="always|collapseActionView"
-        android:icon="@mipmap/ic_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
 
-        />
+        app:showAsAction="always|collapseActionView" />
 </menu>

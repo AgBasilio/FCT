@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
+        navigationView.setItemIconTintList(null);
     }
 
 //    @Override
