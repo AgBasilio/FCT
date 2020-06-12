@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ public class ReunionesProfesorActivity extends AppCompatActivity {
     private void loadLayoutReuniones() {
         //el el onclick de asignatura
         //buscar reuniones para la asignatura y si hay
+        //escucho solo una vez, porque estoy escuchando todas las reuniones
         database.getReference("Reuniones").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -101,13 +104,39 @@ public class ReunionesProfesorActivity extends AppCompatActivity {
                                         if(!numeroGrupoEncontrado)
                                             numeroGrupoList.add("Grupo sin Numero");
                                     }
-                                    AdaptadorReunionesPorAsignatura a = new AdaptadorReunionesPorAsignatura(reunionesList, numeroGrupoList, R.layout.item_reunion_profesor, new AdaptadorReunionesPorAsignatura.OnItemClickListener() {
+
+
+                                    recyclerView.setAdapter(new AdaptadorReunionesPorAsignatura(reunionesList, numeroGrupoList, R.layout.item_reunion_profesor, new AdaptadorReunionesPorAsignatura.OnItemClickListener() {
                                         @Override
-                                        public void onItemClick(Reuniones reunion, int position, View itemView) {
-                                            Toast.makeText(ReunionesProfesorActivity.this, "Eliminar esta reunion.", Toast.LENGTH_LONG).show();
+                                        public void onItemClick(final Reuniones reunion, int position, View itemView) {
+                                            //Toast.makeText(ReunionesProfesorActivity.this, "Eliminar esta reunion.", Toast.LENGTH_LONG).show();
+                                            AlertDialog.Builder builder;
+                                            builder = new AlertDialog.Builder(ReunionesProfesorActivity.this);
+                                            builder.setTitle("ATENCION");
+                                            builder.setMessage("\n" + "Seguro que quieres eliminar la reunion del dia "+reunion.getHora());
+                                            // Set up the buttons
+                                            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (which == DialogInterface.BUTTON_POSITIVE) {
+                                                        database.getReference("Reuniones").child(reunion.getGrupo()).child(reunion.getId()).removeValue();
+                                                        //quitar reunion de reunionesList y notificar al adaptador
+                                                        onBackPressed();
+                                                    } else if (which == DialogInterface.BUTTON_NEGATIVE) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                            });
+                                            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                            builder.show();
                                         }
-                                    });
-                                    recyclerView.setAdapter(a);
+                                    }));
                                 }
 
                                 @Override

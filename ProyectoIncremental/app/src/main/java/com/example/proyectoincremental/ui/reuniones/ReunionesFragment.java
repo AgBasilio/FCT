@@ -108,21 +108,10 @@ public class ReunionesFragment extends Fragment {
                             adaptadorReuniones = new AdaptadorReuniones(null, asignaturaList, R.layout.item_asignatura, new AdaptadorReuniones.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(Reuniones reuniones, int position, View itemView) {
-//                                    recyclerView.setVisibility(View.INVISIBLE);
-
                                     Intent intent = new Intent(getContext(), ReunionesProfesorActivity.class);
                                     intent.putExtra("Asignatura", asignaturaList.get(position));
 
                                     getContext().startActivity(intent);
-
-//                                    ReunionesProfesorFragment fragment = new ReunionesProfesorFragment(asignaturaList.get(position), recyclerView);
-//                                    FragmentManager fm = getActivity().getSupportFragmentManager();
-//
-//                                    FragmentTransaction ft = fm.beginTransaction();
-//                                    //ft.add(containerId, fragment, "ReunionesProfesor");
-//                                    ft.replace(containerId, fragment, "ReunionesProfesor");
-//                                    //ft.addToBackStack("Reuniones");
-//                                    ft.commit();
                                 }
                             });
                             recyclerView.setAdapter(adaptadorReuniones);
